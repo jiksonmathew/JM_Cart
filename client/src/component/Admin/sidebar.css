@@ -1,0 +1,120 @@
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+
+  background: white;
+  border-right: 1px solid rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px 0;
+}
+
+/* Logo */
+.sidebar > a:first-child {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.sidebar > a > img {
+  width: 120px;
+  transition: 0.3s;
+}
+
+.sidebar > a > img:hover {
+  filter: drop-shadow(0 0 6px tomato);
+}
+
+/* Links */
+.sidebar a {
+  text-decoration: none;
+  color: rgba(0,0,0,0.65);
+
+  font-family: "Roboto";
+  font-size: 15px;
+  font-weight: 400;
+
+  padding: 12px 25px;
+
+  display: flex;
+  align-items: center;
+
+  transition: 0.3s;
+}
+
+/* Icon spacing */
+.sidebar a svg {
+  margin-right: 10px;
+}
+
+/* Hover */
+.sidebar a:hover {
+  color: tomato;
+  background: rgba(0,0,0,0.03);
+}
+
+/* TreeView */
+.treeItemLink {
+  text-decoration: none;
+  color: rgba(0,0,0,0.7);
+
+  display: flex;
+  align-items: center;
+
+  padding: 6px 0;
+}
+
+.treeItemLink svg {
+  margin-right: 8px;
+}
+
+.treeItemLink:hover {
+  color: tomato;
+}
+
+/* Fix MUI Tree spacing */
+.MuiTreeItem-content {
+  padding-left: 20px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    padding: 10px;
+  }
+
+  /* Hide logo on small screens */
+  .sidebar > a:first-child {
+    display: none;
+  }
+
+  /* Links */
+  .sidebar a {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 5px;
+    border-radius: 5px;
+  }
+
+  /* Icons */
+  .sidebar a svg {
+    margin-right: 6px;
+    font-size: 18px;
+  }
+
+  /* TreeView spacing */
+  .MuiTreeItem-content {
+    padding-left: 10px;
+  }
+
+}

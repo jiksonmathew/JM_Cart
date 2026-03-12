@@ -1,0 +1,80 @@
+.myOrdersPage {
+  width: 100%;
+  min-height: 80vh;
+  padding: 30px 5%;
+  background: #f4f6f8;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Heading */
+
+#myOrdersHeading {
+  text-align: center;
+  font-size: 22px;
+  padding: 12px;
+  margin-bottom: 20px;
+
+  background: #2c2c2c;
+  color: white;
+}
+
+/* Grid container */
+
+.ordersGrid {
+  width: 100%;
+  height: 500px;
+  background: white;
+  border-radius: 6px;
+}
+
+/* Table text */
+
+.ag-theme-alpine {
+  font-family: Roboto, sans-serif;
+}
+
+/* Status colors */
+
+.greenColor {
+  color: green;
+  font-weight: 600;
+}
+
+.redColor {
+  color: red;
+  font-weight: 600;
+}
+
+/* Link icon */
+
+.ag-theme-alpine a {
+  color: #555;
+  transition: 0.3s;
+}
+
+.ag-theme-alpine a:hover {
+  color: tomato;
+}
+
+/* Header */
+
+.ag-theme-alpine .ag-header {
+  background: tomato;
+  color: white;
+}
+
+/* Mobile */
+
+@media (max-width:768px) {
+
+  .ordersGrid {
+    height: 400px;
+  }
+
+  #myOrdersHeading {
+    font-size: 18px;
+  }
+
+}

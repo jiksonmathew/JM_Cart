@@ -1,0 +1,93 @@
+.updateOrderForm {
+  margin: 2rem auto;
+  padding: 2rem;
+  width: 400px;
+
+  background-color: white;
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Title */
+.updateOrderForm h1 {
+  text-align: center;
+  font-family: "Roboto";
+  font-size: 24px;
+  color: rgba(0,0,0,0.75);
+}
+
+/* Input wrapper */
+.updateOrderForm > div {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Select dropdown */
+.updateOrderForm > div > select {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 5px;
+
+  font-family: "Roboto";
+  font-size: 14px;
+
+  outline: none;
+}
+
+/* Icon */
+.updateOrderForm > div > svg {
+  position: absolute;
+  left: 10px;
+  font-size: 20px;
+  color: rgba(0,0,0,0.6);
+}
+
+/* Button */
+#createProductBtn {
+  background: tomato !important;
+  color: white !important;
+  font-weight: 500;
+}
+
+#createProductBtn:hover {
+  background: rgb(179,66,46) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+
+  .updateOrderForm {
+    width: 100%;
+    max-width: 95%;
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .updateOrderForm h1 {
+    font-size: 20px;
+  }
+
+  .updateOrderForm > div > select {
+    font-size: 16px;
+    padding: 12px 12px 12px 40px;
+  }
+
+  .updateOrderForm > div > svg {
+    font-size: 18px;
+    left: 10px;
+  }
+
+  #createProductBtn {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+}

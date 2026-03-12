@@ -1,0 +1,102 @@
+.orderDetailsPage {
+  background: #f5f5f5;
+  padding: 30px 5%;
+  min-height: 80vh;
+}
+
+/* Heading */
+
+.orderHeading {
+  margin-bottom: 25px;
+  color: tomato;
+  font-weight: 500;
+}
+
+/* Section title */
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+/* Container */
+
+.orderDetailsContainer {
+  background: white;
+  padding: 30px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+/* Info box */
+
+.orderDetailsContainerBox div {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.orderDetailsContainerBox p {
+  font-weight: 500;
+  width: 120px;
+}
+
+.orderDetailsContainerBox span {
+  color: #555;
+}
+
+/* Status */
+
+.greenColor {
+  color: green;
+  font-weight: 600;
+}
+
+.redColor {
+  color: red;
+  font-weight: 600;
+}
+
+/* Order items */
+
+.orderDetailsCartItems {
+  background: white;
+  padding: 30px;
+  border-radius: 6px;
+}
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.orderItem img {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.orderItem a {
+  flex: 1;
+  color: #333;
+  text-decoration: none;
+}
+
+.orderItem span {
+  color: #555;
+}
+
+/* Mobile */
+
+@media (max-width:768px) {
+
+  .orderItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orderItem img {
+    margin-bottom: 10px;
+  }
+
+}

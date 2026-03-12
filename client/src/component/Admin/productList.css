@@ -1,0 +1,106 @@
+.productListContainer {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #f4f6f8;
+  border-left: 1px solid rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Heading */
+#productListHeading {
+  font-family: "Roboto";
+  font-size: 28px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.7);
+
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* DataGrid container */
+.productListTable {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Table cell font */
+.productListTable div {
+  font-family: "Roboto";
+  font-size: 14px;
+  color: rgba(0,0,0,0.75);
+}
+
+/* Header styling */
+.MuiDataGrid-columnHeaders {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 500;
+}
+
+/* Action icons */
+.productListTable a,
+.productListTable button {
+  color: rgba(0,0,0,0.6);
+  transition: 0.3s;
+}
+
+.productListTable a:hover {
+  color: #1976d2;
+}
+
+.productListTable button:hover {
+  color: red;
+}
+
+/* Status colors */
+.greenColor {
+  color: green;
+  font-weight: 500;
+}
+
+.redColor {
+  color: red;
+  font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+
+  .productListContainer {
+    padding: 15px;
+  }
+
+  #productListHeading {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  /* Table wrapper */
+  .productListTable {
+    overflow-x: auto;
+  }
+
+  /* Table text */
+  .productListTable div {
+    font-size: 12px;
+  }
+
+  /* DataGrid header */
+  .MuiDataGrid-columnHeaders {
+    font-size: 13px;
+  }
+
+  /* Action icons */
+  .productListTable a,
+  .productListTable button {
+    font-size: 16px;
+  }
+
+}

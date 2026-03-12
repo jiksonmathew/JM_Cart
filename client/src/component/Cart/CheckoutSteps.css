@@ -1,0 +1,44 @@
+.MuiStepConnector-root {
+  top: 15px;
+}
+
+.MuiStepConnector-line {
+  border-color: rgba(0, 0, 0, 0.2);
+  border-top-width: 2px;
+}
+
+.MuiStepConnector-active .MuiStepConnector-line,
+.MuiStepConnector-completed .MuiStepConnector-line {
+  border-color: tomato;
+}
+
+/* Step icon size */
+
+.MuiStepLabel-iconContainer svg {
+  font-size: 28px;
+}
+
+/* Step label */
+
+.MuiStepLabel-label {
+  font-family: "Roboto";
+  font-size: 14px;
+}
+
+
+@media (max-width: 768px) {
+
+  .MuiStepConnector-root {
+    top: 12px;
+  }
+
+  .MuiStepLabel-iconContainer svg {
+    font-size: 22px;
+  }
+
+  .MuiStepLabel-label {
+    font-size: 12px;
+    text-align: center;
+  }
+
+}

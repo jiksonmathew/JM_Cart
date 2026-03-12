@@ -1,0 +1,178 @@
+.confirmOrderPage {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 20px;
+
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+}
+
+/* Shipping Info */
+
+.confirmshippingArea h6 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.confirmshippingAreaBox div {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.confirmshippingAreaBox p {
+  font-weight: 500;
+}
+
+.confirmshippingAreaBox span {
+  color: #555;
+}
+
+/* Cart Items */
+
+.confirmCartItems {
+  margin-top: 40px;
+}
+
+.confirmCartItems h6 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.confirmCartItemsContainer {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.confirmCartItemsContainer div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.confirmCartItemsContainer img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.confirmCartItemsContainer a {
+  flex: 1;
+  text-decoration: none;
+  color: #444;
+}
+
+.confirmCartItemsContainer span {
+  font-size: 14px;
+}
+
+/* Order Summary */
+
+.orderSummary {
+  border: 1px solid #eee;
+  padding: 25px;
+  border-radius: 6px;
+}
+
+.orderSummary h6 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.orderSummary div div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.orderSummaryTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid tomato;
+}
+
+.orderSummary button {
+  margin-top: 20px;
+  width: 100%;
+  background: tomato;
+  border: none;
+  color: white;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.orderSummary button:hover {
+  background: #e53935;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .confirmOrderPage {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 15px;
+  }
+
+  /* Shipping info */
+  .confirmshippingArea h6 {
+    font-size: 18px;
+  }
+
+  .confirmshippingAreaBox div {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .confirmshippingAreaBox p {
+    font-size: 14px;
+  }
+
+  .confirmshippingAreaBox span {
+    font-size: 13px;
+  }
+
+  /* Cart items */
+  .confirmCartItems h6 {
+    font-size: 18px;
+  }
+
+  .confirmCartItemsContainer div {
+    gap: 10px;
+  }
+
+  .confirmCartItemsContainer img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .confirmCartItemsContainer a {
+    font-size: 14px;
+  }
+
+  .confirmCartItemsContainer span {
+    font-size: 13px;
+  }
+
+  /* Order summary */
+  .orderSummary {
+    padding: 20px;
+    margin-top: 15px;
+  }
+
+  .orderSummary h6 {
+    font-size: 18px;
+  }
+
+  .orderSummary button {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+}

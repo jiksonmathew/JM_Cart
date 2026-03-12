@@ -1,0 +1,117 @@
+.LoginSignUpContainer{
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#f3f3f3;
+}
+
+.LoginSignUpBox{
+  width:420px;
+  max-width:90%;
+  background:white;
+  padding:30px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* Tabs */
+
+.login_signUp_toggle{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.login_signUp_toggle p{
+  flex:1;
+  text-align:center;
+  cursor:pointer;
+  font-weight:500;
+}
+
+/* switch bar */
+
+.switchBar{
+  width:100%;
+  height:3px;
+  background:#eee;
+  margin-bottom:20px;
+}
+
+.switchBar div{
+  width:50%;
+  height:100%;
+  background:tomato;
+  transition:0.3s;
+}
+
+/* forms */
+
+.loginForm,
+.signUpForm{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* inputs */
+
+.inputBox{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid #ddd;
+  padding:10px;
+}
+
+.inputBox input{
+  border:none;
+  outline:none;
+  flex:1;
+}
+
+/* buttons */
+
+.loginBtn,
+.signUpBtn{
+  background:tomato;
+  border:none;
+  color:white;
+  padding:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.loginBtn:hover,
+.signUpBtn:hover{
+  background:#d44d30;
+}
+
+/* avatar */
+
+.avatarUpload{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatarUpload img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
+
+.avatarUpload input{
+  flex:1;
+}
+
+/* mobile */
+
+@media(max-width:600px){
+
+  .LoginSignUpBox{
+    padding:25px;
+  }
+
+}

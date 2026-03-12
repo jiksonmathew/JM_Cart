@@ -1,0 +1,71 @@
+.pageNotFound {
+  min-height: 70vh;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 20px;
+}
+
+/* Icon */
+
+.notFoundIcon {
+  font-size: 80px !important;
+  color: tomato;
+}
+
+/* Text */
+
+.notFoundText {
+  margin-top: 15px;
+  font-size: 26px;
+}
+
+/* Button */
+
+.notFoundBtn {
+  margin-top: 25px;
+  padding: 12px 25px;
+
+  background: #333;
+  color: white;
+
+  text-decoration: none;
+  border-radius: 4px;
+
+  transition: 0.3s;
+}
+
+.notFoundBtn:hover {
+  background: tomato;
+}
+
+/* Mobile */
+
+@media (max-width:768px) {
+
+  .pageNotFound {
+    min-height: 60vh;
+    padding: 30px 20px;
+  }
+
+  .notFoundIcon {
+    font-size: 65px !important;
+  }
+
+  .notFoundText {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
+  .notFoundBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+}

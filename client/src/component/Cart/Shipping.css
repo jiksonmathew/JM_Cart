@@ -1,0 +1,102 @@
+.shippingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 20px;
+}
+
+.shippingBox {
+  width: 420px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 25px;
+}
+
+.shippingHeading {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* Form */
+
+.shippingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Field */
+
+.shippingField {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.shippingField svg {
+  position: absolute;
+  left: 10px;
+  color: #666;
+}
+
+.shippingField input,
+.shippingField select {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Button */
+
+.shippingBtn {
+  margin-top: 10px;
+  padding: 12px;
+  background: tomato;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.shippingBtn:hover {
+  background: #e53935;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .shippingContainer {
+    padding: 20px 15px;
+  }
+
+  .shippingBox {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+  }
+
+  .shippingHeading {
+    font-size: 18px;
+  }
+
+  .shippingField input,
+  .shippingField select {
+    font-size: 16px;
+    padding: 12px 12px 12px 40px;
+  }
+
+  .shippingField svg {
+    font-size: 18px;
+  }
+
+  .shippingBtn {
+    font-size: 16px;
+    padding: 13px;
+  }
+
+}

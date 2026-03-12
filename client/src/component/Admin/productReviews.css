@@ -1,0 +1,131 @@
+.productReviewsContainer {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+
+  background-color: #f4f6f8;
+  border-left: 1px solid rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 30px;
+}
+
+/* Form Card */
+.productReviewsForm {
+  width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  padding: 25px;
+
+  background: white;
+  border-radius: 8px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Heading */
+.productReviewsFormHeading {
+  font-family: "Roboto";
+  font-size: 24px;
+  font-weight: 500;
+
+  text-align: center;
+  color: rgba(0,0,0,0.75);
+}
+
+/* Input wrapper */
+.productReviewsForm > div {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Input */
+.productReviewsForm > div > input {
+  width: 100%;
+
+  padding: 10px 12px 10px 40px;
+
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 5px;
+
+  font-family: "Roboto";
+  font-size: 14px;
+
+  outline: none;
+}
+
+/* Icon */
+.productReviewsForm > div > svg {
+  position: absolute;
+  left: 10px;
+  font-size: 20px;
+  color: rgba(0,0,0,0.6);
+}
+
+/* DataGrid spacing */
+.productListTable {
+  margin-top: 40px;
+  width: 100%;
+
+  background: white;
+  border-radius: 8px;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Rating color */
+.greenColor {
+  color: green;
+  font-weight: 500;
+}
+
+.redColor {
+  color: red;
+  font-weight: 500;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .productReviewsContainer {
+    padding: 20px 15px;
+  }
+
+  .productReviewsForm {
+    width: 100%;
+    max-width: 95%;
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .productReviewsFormHeading {
+    font-size: 20px;
+  }
+
+  .productReviewsForm > div > input {
+    font-size: 16px;
+    padding: 12px 12px 12px 40px;
+  }
+
+  .productReviewsForm > div > svg {
+    font-size: 18px;
+  }
+
+  /* Table adjustments */
+  .productListTable {
+    margin-top: 30px;
+    overflow-x: auto;
+  }
+
+  .productListTable div {
+    font-size: 12px;
+  }
+
+}

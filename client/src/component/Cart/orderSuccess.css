@@ -1,0 +1,68 @@
+.orderSuccess {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  gap: 20px;
+}
+
+/* Success icon */
+
+.successIcon {
+  font-size: 80px;
+  color: #4caf50;
+}
+
+/* Text */
+
+.successText {
+  font-size: 22px;
+  color: #333;
+}
+
+/* Button */
+
+.orderBtn {
+  background: #333;
+  color: white;
+  text-decoration: none;
+
+  padding: 10px 25px;
+  border-radius: 5px;
+
+  transition: 0.3s;
+}
+
+.orderBtn:hover {
+  background: tomato;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .orderSuccess {
+    min-height: 55vh;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .successIcon {
+    font-size: 60px;
+  }
+
+  .successText {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+
+  .orderBtn {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+
+}
