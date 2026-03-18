@@ -38,12 +38,9 @@ const Home = () => {
   return (
     <>
       <section className="banner">
-        <button>
-          {" "}
-          <a href="#products" className="shop-btn">
-            Shop Now
-          </a>
-        </button>
+        <a href="#products" className="shop-btn">
+          Shop Now
+        </a>
       </section>
 
       <h2 className="homeHeading" id="products">

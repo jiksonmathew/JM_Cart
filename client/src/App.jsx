@@ -43,6 +43,7 @@ import PublicRoute from "./component/Route/PublicRoute";
 import ScrollToTop from "./component/layout/Scroll Top/ScrollToTop";
 import { getUserDetails } from "./features/user/userSlice";
 import Navbar from "./component/layout/Navbar/Navbar";
+import Loader from "./component/layout/Loader/Loader";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const App = () => {
   }, [dispatch]);
 
   if (!isChecked) {
-    return <div>Loading app...</div>;
+    return <Loader />;
   }
 
   return (

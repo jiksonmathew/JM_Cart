@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getFeaturedProducts } from "../../features/product/productSlice";
-
+import Loader from "../layout/Loader/Loader";
 import ProductCard from "./ProductCard";
 
 import "./FeaturedProducts.css";
@@ -22,7 +22,7 @@ const FeaturedProducts = () => {
   return (
     <div className="featuredProducts">
       <div className="products">
-        {featuredLoading && <p>Loading featured products...</p>}
+        {featuredLoading && <Loader />}
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
