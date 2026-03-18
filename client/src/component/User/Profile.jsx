@@ -1,34 +1,49 @@
-import React, { Fragment, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserDetails } from "../../features/user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../layout/Loader/Loader";
 import "./Profile.css";
+import toast from "react-hot-toast";
 
 const Profile = () => {
-  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { user, isChecked, isAuthenticated } = useSelector(
+    (state) => state.user,
+  );
+
   useEffect(() => {
+    if (!isChecked) return;
+
     if (!isAuthenticated) {
+      toast.error("Please login to access your profile");
       navigate("/login");
     }
-  }, [navigate, isAuthenticated]);
+  }, [isChecked, isAuthenticated, navigate]);
 
-  if (loading) return <Loader />;
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      dispatch(getUserDetails());
+    }
+  }, [isAuthenticated, user, dispatch]);
+
+  if (!isChecked) return <Loader />;
+  if (isAuthenticated && !user) return <Loader />;
 
   return (
     <div className="profileContainer">
-      {/* LEFT SIDE */}
-
       <div className="profileLeft">
         <h1>My Profile</h1>
 
-        <img src={user?.avatar?.url || "/Profile.png"} alt={user?.name} />
+        <img
+          src={user?.avatar?.url || "/Profile.png"}
+          alt={user?.name || "User Avatar"}
+        />
 
         <Link to="/me/update">Edit Profile</Link>
       </div>
-
-      {/* RIGHT SIDE */}
 
       <div className="profileRight">
         <div className="profileInfo">
@@ -43,7 +58,11 @@ const Profile = () => {
 
         <div className="profileInfo">
           <h4>Joined On</h4>
-          <p>{user?.createdAt?.substring(0, 10)}</p>
+          <p>
+            {user?.createdAt
+              ? new Date(user.createdAt).toLocaleDateString()
+              : ""}
+          </p>
         </div>
 
         <div className="profileActions">

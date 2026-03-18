@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./UpdatePassword.css";
+
 import Loader from "../layout/Loader/Loader";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearErrors,
   updatePassword,
-  resetUpdate,
+  resetUpdateUser,
 } from "../../features/user/userSlice";
 
 import { useNavigate } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -40,6 +42,16 @@ const UpdatePassword = () => {
   const updatePasswordSubmit = (e) => {
     e.preventDefault();
 
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     dispatch(
       updatePassword({
         oldPassword,
@@ -55,13 +67,12 @@ const UpdatePassword = () => {
       dispatch(clearErrors());
     }
 
-    if (isUpdated) {
+    if (!loading && isUpdated) {
       toast.success("Password updated successfully");
-
-      dispatch(resetUpdate());
+      dispatch(resetUpdateUser());
       navigate("/account");
     }
-  }, [dispatch, error, isUpdated, navigate]);
+  }, [error, isUpdated, loading]);
 
   if (loading) return <Loader />;
 

@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import "./UpdateProfile.css";
+
 import Loader from "../layout/Loader/Loader";
 
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -8,12 +9,13 @@ import FaceIcon from "@mui/icons-material/Face";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateProfile,
-  loadUser,
   clearErrors,
-  resetUpdate,
+  getUserDetails,
+  resetUpdateUser,
 } from "../../features/user/userSlice";
 
 import { useNavigate } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 const UpdateProfile = () => {
@@ -32,13 +34,16 @@ const UpdateProfile = () => {
   const updateProfileSubmit = (e) => {
     e.preventDefault();
 
+    if (!name.trim() || !email.trim()) {
+      toast.error("Name and Email are required");
+      return;
+    }
+
     const myForm = new FormData();
     myForm.append("name", name);
     myForm.append("email", email);
 
-    if (avatar) {
-      myForm.append("avatar", avatar);
-    }
+    if (avatar) myForm.append("avatar", avatar);
 
     dispatch(updateProfile(myForm));
   };
@@ -52,7 +57,9 @@ const UpdateProfile = () => {
   };
 
   useEffect(() => {
-    if (user) {
+    if (!user) {
+      dispatch(getUserDetails());
+    } else {
       setName(user.name);
       setEmail(user.email);
       setAvatarPreview(user?.avatar?.url || "/Profile.png");
@@ -65,12 +72,10 @@ const UpdateProfile = () => {
 
     if (isUpdated) {
       toast.success("Profile Updated Successfully");
-
-      dispatch(loadUser());
-      dispatch(resetUpdate());
+      dispatch(resetUpdateUser());
       navigate("/account");
     }
-  }, [dispatch, error, user, isUpdated, navigate]);
+  }, [user, error, isUpdated]);
 
   if (loading) return <Loader />;
 
@@ -89,7 +94,6 @@ const UpdateProfile = () => {
               <FaceIcon />
               <input
                 type="text"
-                placeholder="Name"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -100,7 +104,6 @@ const UpdateProfile = () => {
               <MailOutlineIcon />
               <input
                 type="email"
-                placeholder="Email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +111,7 @@ const UpdateProfile = () => {
             </div>
 
             <div id="updateProfileImage">
-              <img src={avatarPreview} alt="Avatar Preview" />
+              <img src={avatarPreview} alt="preview" />
 
               <input
                 type="file"

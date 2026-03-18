@@ -1,28 +1,24 @@
 import React, { Fragment, useEffect, useState } from "react";
 import "./Products.css";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
   clearErrors,
-  fetchProducts,
+  getAllProducts,
 } from "../../features/product/productSlice";
-
 import Loader from "../layout/Loader/Loader";
 import ProductCard from "../Home/ProductCard";
-
 import Pagination from "@mui/material/Pagination";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
-
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { useParams, useSearchParams } from "react-router-dom";
 
 const categories = [
   "Smartphone",
   "Laptop",
-  "Television",
-  "Refrigerator",
   "Washing Machine",
+  "Refrigerator",
+  "Television",
   "Shirts",
   "Pants",
   "Footwear",
@@ -57,16 +53,20 @@ const Products = () => {
     filteredProductsCount,
   } = useSelector((state) => state.product);
 
-  // Reset page when keyword changes
+  useEffect(() => {
+    setPrice([
+      Number(searchParams.get("minPrice")) || 0,
+      Number(searchParams.get("maxPrice")) || 100000,
+    ]);
+  }, [searchParams]);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [keyword]);
 
-  // Update URL params
   useEffect(() => {
-    const params = {};
+    const params = { page: currentPage };
 
-    if (currentPage > 1) params.page = currentPage;
     if (category) params.category = category;
     if (ratings > 0) params.ratings = ratings;
     if (price[0] !== 0) params.minPrice = price[0];
@@ -75,10 +75,9 @@ const Products = () => {
     setSearchParams(params);
   }, [currentPage, category, ratings, price, setSearchParams]);
 
-  // Fetch products
   useEffect(() => {
     dispatch(
-      fetchProducts({
+      getAllProducts({
         keyword: keyword || "",
         currentPage,
         price,
@@ -88,7 +87,6 @@ const Products = () => {
     );
   }, [dispatch, keyword, currentPage, price, category, ratings]);
 
-  // Error handler
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -96,12 +94,11 @@ const Products = () => {
     }
   }, [error, dispatch]);
 
-  const setCurrentPageNo = (event, value) => {
+  const setCurrentPageNo = (_, value) => {
     setCurrentPage(value);
   };
 
-  const priceHandler = (event, newPrice) => {
-    setPrice(newPrice);
+  const priceHandler = () => {
     setCurrentPage(1);
   };
 
@@ -110,9 +107,17 @@ const Products = () => {
     setCurrentPage(1);
   };
 
-  const ratingsHandler = (event, newRating) => {
+  const ratingsHandler = (_, newRating) => {
     setRatings(newRating);
     setCurrentPage(1);
+  };
+
+  const clearFilters = () => {
+    setPrice([0, 100000]);
+    setCategory("");
+    setRatings(0);
+    setCurrentPage(1);
+    setSearchParams({});
   };
 
   const count = filteredProductsCount ?? productCount;
@@ -122,22 +127,24 @@ const Products = () => {
       {loading ? (
         <Loader />
       ) : (
-        <Fragment>
+        <>
           <h2 className="productsHeading">Products</h2>
 
           <div className="productsPage">
-            {/* Filters */}
             <div className="filterBox">
               <Typography>Price</Typography>
+
               <Slider
                 value={price}
-                onChange={priceHandler}
+                onChange={(_, newValue) => setPrice(newValue)}
+                onChangeCommitted={priceHandler}
                 valueLabelDisplay="auto"
                 min={0}
                 max={100000}
               />
 
               <Typography>Categories</Typography>
+
               <ul className="categoryBox">
                 {categories.map((cat) => (
                   <li
@@ -163,18 +170,24 @@ const Products = () => {
                   max={5}
                 />
               </fieldset>
+
+              {(category ||
+                ratings > 0 ||
+                price[0] !== 0 ||
+                price[1] !== 100000) && (
+                <button className="clearFiltersBtn" onClick={clearFilters}>
+                  Clear Filters
+                </button>
+              )}
             </div>
 
-            {/* Product List */}
             <div className="products">
-              {products &&
-                products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
-                ))}
+              {products?.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
             </div>
           </div>
 
-          {/* Pagination */}
           {count > resultPerPage && (
             <div className="paginationBox">
               <Pagination
@@ -185,7 +198,7 @@ const Products = () => {
               />
             </div>
           )}
-        </Fragment>
+        </>
       )}
     </Fragment>
   );

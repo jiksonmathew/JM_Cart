@@ -1,172 +1,134 @@
 .aboutSection {
-  min-height: 100vh;
   width: 100%;
-  background: #f5f7fb;
+  min-height: 79vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
   position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
-
-/* Gradient background */
 
 .aboutSectionGradient {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #4e51ff, #4a89bd);
+  width: 100%;
+  height: 80vh;
+  background: linear-gradient(135deg, #1976d2, #6a11cb);
+  top: 0;
+  left: 0;
   z-index: -1;
 }
 
-/* Container */
-
 .aboutSectionContainer {
-  background: white;
-  width: 850px;
-  max-width: 95%;
-  padding: 50px 45px;
-  border-radius: 12px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  width: 80%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.6s ease-in-out;
 }
-
-/* Heading */
 
 .aboutHeading {
   text-align: center;
-  color: #ff523b;
+  margin-bottom: 16px;
   font-weight: 600;
-  margin-bottom: 40px;
-  letter-spacing: 1px;
+  font-size: 22px;
 }
-
-/* Layout */
 
 .aboutContent {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 50px;
+  gap: 32px;
 }
-
-/* Left Section */
 
 .aboutLeft {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
 }
 
 .aboutAvatar {
-  width: 150px !important;
-  height: 150px !important;
-  margin-bottom: 15px;
-  border: 4px solid #f0f0f0;
-}
-
-.aboutName {
-  font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 10px;
+  width: 120px !important;
+  height: 120px !important;
+  margin-bottom: 16px;
 }
 
 .aboutDescription {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #666;
-  max-width: 320px;
+  font-size: 15px;
+  color: #444;
 }
-
-/* Right Section */
 
 .aboutRight {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.aboutRight h6 {
-  font-weight: 500;
-}
-
-/* Social */
-
-.aboutSocial {
-  margin-top: 20px;
-  display: flex;
-  gap: 25px;
-}
-
-.aboutSocial a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #f4f4f4;
-  transition: 0.3s;
+  text-align: center;
 }
 
 .aboutSocial svg {
-  font-size: 26px;
+  font-size: 35px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-/* Icons */
-
-.instagramSvgIcon {
+.instagramSvgIcon:hover {
   color: #e1306c;
+  transform: scale(1.2);
 }
 
-.facebookSvgIcon {
+.facebookSvgIcon:hover {
   color: #1877f2;
+  transform: scale(1.2);
 }
 
-.aboutSocial a:hover {
-  background: #ececec;
-  transform: translateY(-3px);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Mobile */
+@media (max-width: 992px) {
+  .aboutSectionContainer {
+    width: 90%;
+  }
+}
 
 @media (max-width: 768px) {
+  .aboutContent {
+    flex-direction: column;
+    gap: 20px;
+  }
 
   .aboutSectionContainer {
-    padding: 35px 25px;
+    padding: 24px;
   }
 
   .aboutHeading {
-    font-size: 22px;
-    margin-bottom: 25px;
+    font-size: 20px;
   }
+}
 
-  .aboutContent {
-    flex-direction: column;
-    gap: 30px;
+@media (max-width: 480px) {
+  .aboutSectionContainer {
+    padding: 20px;
+    border-radius: 12px;
   }
 
   .aboutAvatar {
-    width: 120px !important;
-    height: 120px !important;
+    width: 100px !important;
+    height: 100px !important;
   }
 
   .aboutDescription {
-    font-size: 13px;
-    max-width: 100%;
-  }
-
-  .aboutSocial {
-    gap: 18px;
-  }
-
-  .aboutSocial a {
-    width: 42px;
-    height: 42px;
+    font-size: 14px;
   }
 
   .aboutSocial svg {
-    font-size: 22px;
+    font-size: 28px;
   }
 }

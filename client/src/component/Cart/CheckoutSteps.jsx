@@ -1,50 +1,53 @@
-import { Typography, Stepper, Step, StepLabel } from "@mui/material";
+import { Typography, Stepper, StepLabel, Step } from "@mui/material";
+
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+
 import "./CheckoutSteps.css";
+import logo from "../../images/jm_cart.png";
+const CheckoutSteps = ({ activeStep }) => {
+  const steps = [
+    {
+      label: "Shipping Details",
+      icon: <LocalShippingIcon />,
+    },
+    {
+      label: "Confirm Order",
+      icon: <LibraryAddCheckIcon />,
+    },
+    {
+      label: "Payment",
+      icon: <AccountBalanceIcon />,
+    },
+  ];
 
-const steps = [
-  {
-    label: "Shipping Details",
-    icon: <LocalShippingIcon />,
-  },
-  {
-    label: "Confirm Order",
-    icon: <LibraryAddCheckIcon />,
-  },
-  {
-    label: "Payment",
-    icon: <AccountBalanceIcon />,
-  },
-];
-
-const CheckoutSteps = ({ activeStep = 0 }) => {
   return (
-    <Stepper
-      alternativeLabel
-      activeStep={activeStep}
-      sx={{
-        width: "100%",
-        margin: "30px 0",
-      }}
-    >
-      {steps.map((step, index) => (
-        <Step key={step.label} completed={activeStep >= index}>
-          <StepLabel
-            icon={step.icon}
-            sx={{
-              "& .MuiStepLabel-label": {
-                fontWeight: 500,
-                color: activeStep >= index ? "tomato" : "#555",
-              },
-            }}
-          >
-            <Typography variant="body2">{step.label}</Typography>
-          </StepLabel>
-        </Step>
-      ))}
-    </Stepper>
+    <>
+      <div className="stepContainer">
+        <div className="logo">
+          {" "}
+          <img src={logo} alt="JM_CART" className="logo" />
+        </div>
+        <div className="stepper">
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step, index) => (
+              <Step key={index} completed={activeStep >= index}>
+                <StepLabel icon={step.icon}>
+                  <Typography
+                    style={{
+                      color: activeStep >= index ? "tomato" : "rgba(0,0,0,0.6)",
+                    }}
+                  >
+                    {step.label}
+                  </Typography>
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
+      </div>
+    </>
   );
 };
 

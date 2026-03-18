@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import "./Search.css";
+
+import toast from "react-hot-toast";
 
 const Search = () => {
   const [keyword, setKeyword] = useState("");
@@ -11,11 +15,12 @@ const Search = () => {
 
     const query = keyword.trim();
 
-    if (query) {
-      navigate(`/products/${query}`);
-    } else {
-      navigate("/products");
+    if (!query) {
+      toast.error("Please enter a product name");
+      return;
     }
+
+    navigate(`/products/${query}`);
   };
 
   return (
@@ -26,9 +31,12 @@ const Search = () => {
           placeholder="Search products..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
+          autoFocus
         />
 
-        <button type="submit">Search</button>
+        <button type="submit" disabled={!keyword.trim()}>
+          Search
+        </button>
       </form>
     </div>
   );

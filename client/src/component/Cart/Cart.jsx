@@ -1,48 +1,94 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import "./Cart.css";
+
 import CartItemCard from "./CartItemCard";
+
 import { useSelector, useDispatch } from "react-redux";
-import { addToCart, removeFromCart } from "../../features/cart/cartSlice";
+import {
+  addToCart,
+  removeCartItem,
+  getUserCart,
+} from "../../features/cart/cartSlice";
+
 import Typography from "@mui/material/Typography";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+
 import { Link, useNavigate } from "react-router-dom";
+
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems = [] } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  const increaseQuantity = (productId, quantity, stock) => {
-    if (!isAuthenticated) return navigate("/login?redirect=cart");
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(getUserCart());
+    }
+  }, [dispatch, isAuthenticated]);
+
+  const increaseQuantity = async (productId, quantity, stock) => {
+    if (!isAuthenticated) {
+      toast.error("Please login to modify cart");
+      return navigate("/login?redirect=cart");
+    }
 
     const newQty = quantity + 1;
-    if (newQty > stock) return;
 
-    dispatch(addToCart({ productId, quantity: newQty }));
+    if (newQty > stock) {
+      toast.error("Stock limit reached");
+      return;
+    }
+
+    await dispatch(addToCart({ productId, quantity: newQty }));
+    dispatch(getUserCart());
   };
 
-  const decreaseQuantity = (productId, quantity) => {
-    if (!isAuthenticated) return navigate("/login?redirect=cart");
+  const decreaseQuantity = async (productId, quantity) => {
+    if (!isAuthenticated) {
+      toast.error("Please login to modify cart");
+      return navigate("/login?redirect=cart");
+    }
 
     const newQty = quantity - 1;
+
     if (newQty < 1) return;
 
-    dispatch(addToCart({ productId, quantity: newQty }));
+    await dispatch(addToCart({ productId, quantity: newQty }));
+    dispatch(getUserCart());
   };
 
-  const deleteCartItems = (cartId) => {
-    if (!isAuthenticated) return navigate("/login?redirect=cart");
+  const deleteCartItems = async (cartId) => {
+    if (!isAuthenticated) {
+      toast.error("Please login first");
+      return navigate("/login?redirect=cart");
+    }
 
-    dispatch(removeFromCart(cartId));
+    try {
+      await dispatch(removeCartItem(cartId)).unwrap();
+      await dispatch(getUserCart());
+      toast.success("Item removed from cart");
+    } catch (err) {
+      toast.error("Failed to remove item");
+    }
   };
 
   const checkoutHandler = () => {
-    if (!isAuthenticated) return navigate("/login?redirect=shipping");
+    if (!isAuthenticated) {
+      toast.error("Please login to checkout");
+      return navigate("/login?redirect=shipping");
+    }
 
     navigate("/shipping");
   };
+
+  const grossTotal = cartItems.reduce(
+    (acc, item) => acc + item.quantity * (item.product?.price ?? 0),
+    0,
+  );
 
   return (
     <Fragment>
@@ -67,7 +113,7 @@ const Cart = () => {
               <div className="cartInput">
                 <button
                   onClick={() =>
-                    decreaseQuantity(item.product._id, item.quantity)
+                    decreaseQuantity(item.product?._id, item.quantity)
                   }
                 >
                   -
@@ -78,9 +124,9 @@ const Cart = () => {
                 <button
                   onClick={() =>
                     increaseQuantity(
-                      item.product._id,
+                      item.product?._id,
                       item.quantity,
-                      item.product.stock,
+                      item.product?.stock,
                     )
                   }
                 >
@@ -89,7 +135,7 @@ const Cart = () => {
               </div>
 
               <p className="cartSubtotal">
-                ₹{item.product.price * item.quantity}
+                ₹{(item.product?.price || 0) * item.quantity}
               </p>
             </div>
           ))}
@@ -99,14 +145,7 @@ const Cart = () => {
 
             <div className="cartGrossProfitBox">
               <p>Gross Total</p>
-
-              <p>
-                ₹
-                {cartItems.reduce(
-                  (acc, item) => acc + item.quantity * item.product.price,
-                  0,
-                )}
-              </p>
+              <p>₹{grossTotal}</p>
             </div>
 
             <div></div>

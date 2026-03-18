@@ -1,106 +1,97 @@
 .productListContainer {
-  width: 100%;
+  flex: 1;
+  padding: 10px;
+  background: #f5f7fa;
   min-height: 100vh;
-  box-sizing: border-box;
-  background-color: #f4f6f8;
-  border-left: 1px solid rgba(0,0,0,0.1);
-
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
 }
 
-/* Heading */
 #productListHeading {
-  font-family: "Roboto";
-  font-size: 28px;
-  font-weight: 500;
-  color: rgba(0,0,0,0.7);
-
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
 }
 
-/* DataGrid container */
-.productListTable {
-  background: white;
-  border-radius: 8px;
+.MuiDataGrid-root {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border: none;
   overflow: hidden;
-
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Table cell font */
-.productListTable div {
-  font-family: "Roboto";
-  font-size: 14px;
-  color: rgba(0,0,0,0.75);
-}
-
-/* Header styling */
 .MuiDataGrid-columnHeaders {
-  background-color: #1976d2;
-  color: white;
-  font-weight: 500;
+  background: #f5f7fa;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
 }
 
-/* Action icons */
-.productListTable a,
-.productListTable button {
-  color: rgba(0,0,0,0.6);
-  transition: 0.3s;
+.MuiDataGrid-row:hover {
+  background: #f9fbff;
 }
 
-.productListTable a:hover {
+.MuiDataGrid-cell {
+  font-size: 14px;
+}
+
+.MuiDataGrid-cell a {
   color: #1976d2;
+  margin-right: 8px;
+  transition: 0.2s;
 }
 
-.productListTable button:hover {
-  color: red;
+.MuiDataGrid-cell a:hover {
+  color: #0d47a1;
 }
 
-/* Status colors */
-.greenColor {
-  color: green;
-  font-weight: 500;
+.MuiDataGrid-cell button {
+  min-width: auto !important;
+  padding: 4px !important;
 }
 
-.redColor {
-  color: red;
-  font-weight: 500;
+.MuiDataGrid-cell button svg {
+  color: #d32f2f;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+.MuiDataGrid-cell button:hover {
+  background: rgba(211, 47, 47, 0.1) !important;
+}
 
+.lowStock {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.inStock {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+@media (max-width: 992px) {
   .productListContainer {
-    padding: 15px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .productListContainer {
+    padding: 16px;
   }
 
   #productListHeading {
-    font-size: 22px;
-    margin-bottom: 15px;
+    font-size: 20px;
   }
 
-  /* Table wrapper */
-  .productListTable {
+  .MuiDataGrid-root {
     overflow-x: auto;
   }
+}
 
-  /* Table text */
-  .productListTable div {
-    font-size: 12px;
+@media (max-width: 480px) {
+  #productListHeading {
+    font-size: 18px;
   }
 
-  /* DataGrid header */
-  .MuiDataGrid-columnHeaders {
+  .MuiDataGrid-cell {
     font-size: 13px;
   }
-
-  /* Action icons */
-  .productListTable a,
-  .productListTable button {
-    font-size: 16px;
-  }
-
 }

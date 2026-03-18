@@ -1,8 +1,16 @@
 import "./CartItemCard.css";
+
 import { Link } from "react-router-dom";
+
+import toast from "react-hot-toast";
 
 const CartItemCard = ({ item, deleteCartItems }) => {
   if (!item || !item.product) return null;
+
+  const handleRemove = () => {
+    deleteCartItems(item._id);
+    toast.success("Item removed from cart");
+  };
 
   return (
     <div className="CartItemCard">
@@ -14,9 +22,9 @@ const CartItemCard = ({ item, deleteCartItems }) => {
       <div>
         <Link to={`/product/${item.product?._id}`}>{item.product?.name}</Link>
 
-        <span>Price: ₹{item.product?.price}</span>
+        <span>Price: ₹{item.product?.price?.toFixed(2)}</span>
 
-        <p onClick={() => deleteCartItems(item._id)}>Remove</p>
+        <p onClick={handleRemove}>Remove</p>
       </div>
     </div>
   );

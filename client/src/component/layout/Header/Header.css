@@ -1,4 +1,42 @@
-/* ================= MENU BUTTON ================= */
+.adminNavbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background: #111;
+  color: white;
+}
+
+.adminLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adminLeft img {
+  height: 40px;
+}
+
+.adminLeft h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.adminTabs {
+  display: flex;
+  gap: 25px;
+}
+
+.adminTabs a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.adminTabs a:hover {
+  color: tomato;
+}
 
 .menu-btn {
   position: fixed;
@@ -10,25 +48,17 @@
   z-index: 2000;
 }
 
-
-/* ================= NAV OVERLAY ================= */
-
 .nav-overlay {
   position: fixed;
   top: 0;
   left: 0;
-
   height: 100vh;
   width: 100%;
-
   background: black;
-
   transform: translateX(-100%);
   transition: transform 0.6s ease-in-out;
-
   display: flex;
   align-items: center;
-
   z-index: 1500;
 }
 
@@ -36,36 +66,23 @@
   transform: translateX(0);
 }
 
-
-/* ================= NAV CONTENT ================= */
-
 .nav-content {
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 0 60px;
 }
-
-
-/* ================= LOGO ================= */
 
 .nav-overlay img {
   width: 220px;
   cursor: pointer;
 }
 
-
-/* ================= NAV LINKS ================= */
-
 .nav-links {
   list-style: none;
-
   display: flex;
   gap: 60px;
-
   margin: 0;
   padding: 0;
 }
@@ -74,19 +91,14 @@
   font-size: 28px;
   color: white;
   cursor: pointer;
-
   opacity: 0;
-
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Link style */
 .nav-links a {
   text-decoration: none;
   color: white;
 }
-
-/* Flying animation start */
 
 .nav-links li:nth-child(1) {
   transform: translateX(-300px);
@@ -104,32 +116,22 @@
   transform: translateY(200px);
 }
 
-/* Animate */
-
 .nav-overlay.active .nav-links li {
   opacity: 1;
   transform: translate(0, 0);
 }
-
-/* Hover */
 
 .nav-links li:hover {
   transform: translateY(-8px) scale(1.1);
   transition: 0.3s;
 }
 
-
-/* ================= NAV ICONS ================= */
-
 .nav-icons {
   display: flex;
   gap: 30px;
-
   color: white;
-
   opacity: 0;
   transform: translateX(200px);
-
   transition: all 0.8s ease;
 }
 
@@ -143,14 +145,10 @@
   transform: scale(1.2);
 }
 
-/* Animate icons */
-
 .nav-overlay.active .nav-icons {
   opacity: 1;
   transform: translateX(0);
 }
-
-
 
 .speedDial {
   position: fixed;
@@ -164,18 +162,22 @@
   border-radius: 100%;
 }
 
+@media (max-width: 992px) {
+  .nav-content {
+    padding: 0 30px;
+  }
 
-/* ================= RESPONSIVE ================= */
+  .nav-links {
+    gap: 40px;
+  }
+}
 
-@media (max-width:768px) {
-
-  /* Menu button */
+@media (max-width: 768px) {
   .menu-btn {
     top: 15px;
     left: 20px;
   }
 
-  /* Navigation content layout */
   .nav-content {
     flex-direction: column;
     justify-content: center;
@@ -184,12 +186,10 @@
     text-align: center;
   }
 
-  /* Logo */
   .nav-overlay img {
     width: 160px;
   }
 
-  /* Nav links */
   .nav-links {
     flex-direction: column;
     gap: 35px;
@@ -199,7 +199,6 @@
     font-size: 24px;
   }
 
-  /* Icons */
   .nav-icons {
     gap: 25px;
   }
@@ -208,10 +207,18 @@
     font-size: 26px;
   }
 
-  /* SpeedDial */
   .speedDial {
     right: 15px;
     top: 15px;
   }
+}
 
+@media (max-width: 480px) {
+  .nav-links li {
+    font-size: 20px;
+  }
+
+  .nav-icons svg {
+    font-size: 22px;
+  }
 }

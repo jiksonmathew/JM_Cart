@@ -1,131 +1,129 @@
 .productReviewsContainer {
-  width: 100%;
+  flex: 1;
+  padding: 32px;
+  background: #f5f7fa;
   min-height: 100vh;
-  box-sizing: border-box;
-
-  background-color: #f4f6f8;
-  border-left: 1px solid rgba(0,0,0,0.1);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding: 30px;
 }
 
-/* Form Card */
 .productReviewsForm {
-  width: 400px;
-
+  max-width: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 29px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-
-  padding: 25px;
-
-  background: white;
-  border-radius: 8px;
-
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  gap: 16px;
 }
 
-/* Heading */
 .productReviewsFormHeading {
-  font-family: "Roboto";
-  font-size: 24px;
-  font-weight: 500;
-
   text-align: center;
-  color: rgba(0,0,0,0.75);
+  font-weight: 600;
+  font-size: 21px;
 }
 
-/* Input wrapper */
 .productReviewsForm > div {
   display: flex;
   align-items: center;
-  position: relative;
-}
-
-/* Input */
-.productReviewsForm > div > input {
-  width: 100%;
-
-  padding: 10px 12px 10px 40px;
-
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 5px;
-
-  font-family: "Roboto";
-  font-size: 14px;
-
-  outline: none;
-}
-
-/* Icon */
-.productReviewsForm > div > svg {
-  position: absolute;
-  left: 10px;
-  font-size: 20px;
-  color: rgba(0,0,0,0.6);
-}
-
-/* DataGrid spacing */
-.productListTable {
-  margin-top: 40px;
-  width: 100%;
-
-  background: white;
+  background: #f1f3f6;
+  padding: 10px 16px;
   border-radius: 8px;
-
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Rating color */
+.productReviewsForm svg {
+  margin-right: 8px;
+  color: #777;
+}
+
+.productReviewsForm input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+}
+
+#createProductBtn {
+  background: #1976d2 !important;
+}
+
+#createProductBtn:hover {
+  background: #0d47a1 !important;
+}
+
+.MuiDataGrid-root {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border: none;
+}
+
+.MuiDataGrid-columnHeaders {
+  background: #f5f7fa;
+  font-weight: 600;
+}
+
+.MuiDataGrid-row:hover {
+  background: #f9fbff;
+}
+
 .greenColor {
-  color: green;
-  font-weight: 500;
+  color: #2e7d32;
+  font-weight: 600;
 }
 
 .redColor {
-  color: red;
-  font-weight: 500;
+  color: #d32f2f;
+  font-weight: 600;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
+.MuiDataGrid-cell button {
+  min-width: auto !important;
+  padding: 4px !important;
+}
 
+.MuiDataGrid-cell button svg {
+  color: #d32f2f;
+}
+
+@media (max-width: 992px) {
   .productReviewsContainer {
-    padding: 20px 15px;
+    padding: 20px;
   }
 
   .productReviewsForm {
-    width: 100%;
-    max-width: 95%;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .productReviewsContainer {
+    padding: 16px;
+  }
+
+  .productReviewsForm {
     padding: 20px;
-    gap: 15px;
+    border-radius: 12px;
   }
 
   .productReviewsFormHeading {
-    font-size: 20px;
-  }
-
-  .productReviewsForm > div > input {
-    font-size: 16px;
-    padding: 12px 12px 12px 40px;
-  }
-
-  .productReviewsForm > div > svg {
     font-size: 18px;
   }
+}
 
-  /* Table adjustments */
-  .productListTable {
-    margin-top: 30px;
-    overflow-x: auto;
+@media (max-width: 480px) {
+  .productReviewsForm {
+    padding: 16px;
+    gap: 12px;
   }
 
-  .productListTable div {
-    font-size: 12px;
+  .productReviewsForm > div {
+    padding: 8px 12px;
   }
 
+  .productReviewsForm input {
+    font-size: 13px;
+  }
 }

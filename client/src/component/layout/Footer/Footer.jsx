@@ -8,7 +8,6 @@ const Footer = () => {
     <footer className="footer">
       <div className="footerLeft">
         <h4>Download Our App</h4>
-
         <p>Download App for Android and iOS mobile phones</p>
 
         <div className="footerStores">
@@ -18,35 +17,23 @@ const Footer = () => {
       </div>
 
       <div className="footerMiddle">
-        <h1>ECOMMERCE</h1>
-
+        <h1>JM-CART</h1>
         <p>High Quality is our first priority</p>
-
-        <p className="footerCopyright">
-          © 2024 Ecommerce. All rights reserved.
-        </p>
+        <p className="footerCopyright">© 2026 JM-Cart. All rights reserved.</p>
       </div>
 
       <div className="footerRight">
         <h4>Follow Us</h4>
 
-        <a
-          href="https://instagram.com/meabhisingh"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://instagram.com/gxnmtw" target="_blank" rel="noreferrer">
           Instagram
         </a>
 
-        <a
-          href="https://youtube.com/6packprogramemr"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Youtube
+        <a href="https://youtube.com/" target="_blank" rel="noreferrer">
+          YouTube
         </a>
 
-        <a href="https://facebook.com" target="_blank" rel="noreferrer">
+        <a href="https://facebook.com/gxnmtw" target="_blank" rel="noreferrer">
           Facebook
         </a>
       </div>

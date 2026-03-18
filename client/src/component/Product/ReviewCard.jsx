@@ -1,24 +1,22 @@
-import React from "react";
 import Rating from "@mui/material/Rating";
-import profilePng from "../../images/Profile.png";
-
-const ReviewCard = ({ review }) => {
-  if (!review) return null;
-
+import "./ReviewCard.css";
+const ReviewCard = ({ review, user, onRemove }) => {
   return (
     <div className="reviewCard">
-      <img src={profilePng} alt="User" />
+      <Rating value={review.rating} readOnly precision={0.5} />
 
-      <p>{review.name}</p>
+      <p className="reviewUser">{review.name}</p>
 
-      <Rating
-        value={review.rating || 0}
-        readOnly
-        precision={0.5}
-        size="small"
-      />
+      <span className="reviewComment">{review.comment}</span>
 
-      <span className="reviewCardComment">{review.comment}</span>
+      {user && review.user === user._id && (
+        <button
+          className="removeReviewBtn"
+          onClick={() => onRemove(review._id)}
+        >
+          Remove
+        </button>
+      )}
     </div>
   );
 };

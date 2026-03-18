@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useSelector, useDispatch } from "react-redux";
-import { Typography } from "@mui/material";
-import api from "../../app/api";
-import "./payment.css";
-
 import { createOrder, clearErrors } from "../../features/order/orderSlice";
 import { clearCart } from "../../features/cart/cartSlice";
-
+import { Typography } from "@mui/material";
+import api from "../../app/api";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import "./payment.css";
 
 const Payment = () => {
   const dispatch = useDispatch();
@@ -31,7 +29,10 @@ const Payment = () => {
       product: item.product._id,
       name: item.product.name,
       price: item.product.price,
-      image: item.product.images?.[0]?.url,
+      image:
+        item.product?.images?.[0]?.url ||
+        item.product?.image ||
+        "/placeholder.png",
       quantity: item.quantity,
     })),
     itemsPrice: orderInfo?.itemsPrice,
@@ -40,7 +41,6 @@ const Payment = () => {
     totalPrice: orderInfo?.totalPrice,
   };
 
-  // Load Razorpay Script
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -48,9 +48,8 @@ const Payment = () => {
     document.body.appendChild(script);
   }, []);
 
-  // Redirect if cart empty
   useEffect(() => {
-    if (!orderInfo || totalItems === 0) {
+    if (!orderInfo?.totalPrice || totalItems === 0) {
       navigate("/cart");
     }
   }, [orderInfo, totalItems, navigate]);
@@ -85,8 +84,6 @@ const Payment = () => {
               razorpay_signature: response.razorpay_signature,
             });
 
-            console.log("VERIFY RESPONSE:", verifyRes.data);
-
             if (!verifyRes.data.success) {
               toast.error("Payment verification failed");
               setProcessing(false);
@@ -101,21 +98,18 @@ const Payment = () => {
               },
             };
 
-            console.log("ORDER TO CREATE:", finalOrder);
-
-            const res = await dispatch(createOrder(finalOrder)).unwrap();
-
-            console.log("ORDER RESPONSE:", res);
+            await dispatch(createOrder(finalOrder)).unwrap();
 
             toast.success("Payment Successful 🎉");
 
             dispatch(clearCart());
             sessionStorage.removeItem("orderInfo");
 
-            navigate("/success");
+            setTimeout(() => {
+              navigate("/success");
+            }, 1500);
           } catch (err) {
-            console.log("ORDER ERROR:", err);
-            toast.error("Order creation failed");
+            toast.error(err?.message || "Order creation failed");
             setProcessing(false);
           }
         },
@@ -133,14 +127,24 @@ const Payment = () => {
         theme: {
           color: "#3399cc",
         },
+
+        modal: {
+          ondismiss: function () {
+            toast.error("Payment cancelled");
+            setProcessing(false);
+            navigate("/cart");
+          },
+        },
       };
 
       const razor = new window.Razorpay(options);
+
       razor.open();
 
-      razor.on("payment.failed", () => {
+      razor.on("payment.failed", function () {
         toast.error("Payment Failed");
         setProcessing(false);
+        navigate("/cart");
       });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Payment Failed");
@@ -173,7 +177,7 @@ const Payment = () => {
           >
             {processing
               ? "Processing..."
-              : `Pay ₹${orderInfo?.totalPrice || 0}`}
+              : `Pay ₹${orderInfo?.totalPrice?.toFixed(2) || 0}`}
           </button>
         </form>
       </div>

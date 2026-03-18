@@ -1,27 +1,55 @@
 import { useSelector } from "react-redux";
+
 import { Typography } from "@mui/material";
+
 import { Link, useNavigate } from "react-router-dom";
+
 import CheckoutSteps from "./CheckoutSteps";
+
+import toast from "react-hot-toast";
+
 import "./ConfirmOrder.css";
 
 const ConfirmOrder = () => {
   const navigate = useNavigate();
 
-  const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.user);
+  const { shippingInfo, cartItems = [] } = useSelector((state) => state.cart);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.quantity * item.product.price,
+    (acc, item) => acc + item.quantity * (item.product?.price || 0),
     0,
   );
 
   const shippingCharges = subtotal > 1000 ? 0 : 40;
-  const tax = subtotal * 0.18;
-  const totalPrice = subtotal + shippingCharges + tax;
 
-  const address = `${shippingInfo?.address || ""}, ${shippingInfo?.city || ""}, ${shippingInfo?.state || ""}, ${shippingInfo?.pinCode || ""}, ${shippingInfo?.country || ""}`;
+  const tax = Math.round(subtotal * 0.18);
+
+  const totalPrice = Math.round(subtotal + shippingCharges + tax);
+
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }).format(price);
+
+  const address = `${shippingInfo?.address || ""}, ${
+    shippingInfo?.city || ""
+  }, ${shippingInfo?.state || ""}, ${
+    shippingInfo?.pinCode || ""
+  }, ${shippingInfo?.country || ""}`;
 
   const proceedToPayment = () => {
+    if (!isAuthenticated) {
+      toast.error("Please login first");
+      return navigate("/login");
+    }
+
+    if (!shippingInfo || cartItems.length === 0) {
+      toast.error("Missing shipping information or cart items");
+      return navigate("/cart");
+    }
+
     const data = {
       itemsPrice: subtotal,
       shippingPrice: shippingCharges,
@@ -30,6 +58,7 @@ const ConfirmOrder = () => {
     };
 
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
+
     navigate("/process/payment");
   };
 
@@ -38,9 +67,7 @@ const ConfirmOrder = () => {
       <CheckoutSteps activeStep={1} />
 
       <div className="confirmOrderPage">
-        {/* LEFT SIDE */}
         <div>
-          {/* Shipping Info */}
           <div className="confirmshippingArea">
             <Typography variant="h6">Shipping Info</Typography>
 
@@ -62,7 +89,6 @@ const ConfirmOrder = () => {
             </div>
           </div>
 
-          {/* Cart Items */}
           <div className="confirmCartItems">
             <Typography variant="h6">Your Cart Items</Typography>
 
@@ -70,7 +96,11 @@ const ConfirmOrder = () => {
               {cartItems.map((item) => (
                 <div key={item._id}>
                   <img
-                    src={item.product?.images?.[0]?.url}
+                    src={
+                      item.product?.images?.[0]?.url ||
+                      item.product?.image ||
+                      "/placeholder.png"
+                    }
                     alt={item.product?.name}
                   />
 
@@ -79,8 +109,11 @@ const ConfirmOrder = () => {
                   </Link>
 
                   <span>
-                    {item.quantity} × ₹{item.product?.price} =
-                    <b> ₹{item.product?.price * item.quantity}</b>
+                    {item.quantity} × {formatPrice(item.product?.price || 0)} =
+                    <b>
+                      {" "}
+                      {formatPrice((item.product?.price || 0) * item.quantity)}
+                    </b>
                   </span>
                 </div>
               ))}
@@ -88,7 +121,6 @@ const ConfirmOrder = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
         <div>
           <div className="orderSummary">
             <Typography variant="h6">Order Summary</Typography>
@@ -96,7 +128,7 @@ const ConfirmOrder = () => {
             <div>
               <div>
                 <p>Subtotal:</p>
-                <span>₹{subtotal.toFixed(2)}</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
 
               <div>
@@ -104,13 +136,13 @@ const ConfirmOrder = () => {
                 <span>
                   {shippingCharges === 0
                     ? "FREE"
-                    : `₹${shippingCharges.toFixed(2)}`}
+                    : formatPrice(shippingCharges)}
                 </span>
               </div>
 
               <div>
                 <p>GST (18%):</p>
-                <span>₹{tax.toFixed(2)}</span>
+                <span>{formatPrice(tax)}</span>
               </div>
             </div>
 
@@ -118,7 +150,7 @@ const ConfirmOrder = () => {
               <p>
                 <b>Total:</b>
               </p>
-              <span>₹{totalPrice.toFixed(2)}</span>
+              <span>{formatPrice(totalPrice)}</span>
             </div>
 
             <button onClick={proceedToPayment}>Proceed To Payment</button>

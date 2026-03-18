@@ -1,180 +1,109 @@
 .banner {
-  background-image: url("../../images/cover.jfif");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vmin;
-
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-
-  color: white;
-
-  position: relative;   /* ADD THIS */
-  overflow: hidden;     /* ADD THIS */
-}
-.banner > h1 {
-  margin: 5vmax;
-
-  font: 600 2.5vmax "Roboto";
-}
-
-.banner > p {
-  font: 300 1.4vmax "Lucida Sans";
-}
-
-.banner > a > button {
-  margin-bottom: 5vmax;
-  cursor: pointer;
-  background-color: white;
-  border: 1px solid white;
-  border-radius: 0;
-  padding: 1vmax;
-  transition: all 0.5s;
-  width: 9vmax;
-  font: 500 1vmax "Roboto";
-}
-.banner > a > button:hover {
-  background-color: rgba(255, 255, 255, 0);
-  color: white;
-}
-
-.banner::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-
   width: 100%;
-  height: 100%;
+  height: 79vh;
+  background: url("/banner.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  background-color: #ffffff;
+.shop-btn {
+  background: linear-gradient(45deg, #ffd54f, #ffb300);
+  border: none;
+  outline: none;
+  display: inline-block;
+  padding: 11px 26px;
+  color: #0d47a1;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  position: absolute;
+  top: 75%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  box-shadow: none;
+}
 
-  clip-path: polygon(100% 68%, 0 100%, 100% 100%);
+.shop-btn:hover {
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%) scale(1.08);
+  background: linear-gradient(45deg, #ffe082, #ffc107);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#products {
+  scroll-margin-top: 140px;
 }
 
 .homeHeading {
   text-align: center;
-  font-family: Roboto;
-  font-size: 1.4vmax;
-  border-bottom: 1px solid rgba(21, 21, 21, 0.5);
-  width: 20vmax;
-  padding: 1vmax;
-  margin: 5vmax auto;
-  color: rgb(0, 0, 0, 0.7);
+  font-size: 29px;
+  margin: 32px 0 16px;
+  font-weight: 600;
+  color: #333;
 }
 
-.container {
-  display: flex;
-  margin: 2vmax auto;
-  width: 80vw;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100%;
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: auto;
+  padding: 16px;
 }
 
-.productCard {
-  width: 14vmax;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: rgb(48, 48, 48);
-  margin: 2vmax;
-  transition: all 0.5s;
-  padding-bottom: 0.5vmax;
-}
-
-.productCard > img {
-  width: 14vmax;
-}
-
-.productCard > div {
-  margin: 0.5vmax;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.productCardSpan {
-  margin: 0.5vmax;
-  font: 300 0.7vmax "Roboto";
-}
-
-.productCard > p {
-  font-family: "Roboto";
-  font-size: 1.2vmax;
-  margin: 1vmax 0.5vmax;
-  margin-bottom: 0;
-}
-
-.productCard > span {
-  margin: 0.5vmax;
-  color: tomato;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  font-size: 1vmax;
-}
-
-.productCard:hover {
-  box-shadow: 0 0 5px rgba(15, 15, 15, 0.26);
-
-  transform: translateY(-1vmax);
-}
-
-
-@media screen and (max-width: 600px) {
-
+@media (max-width: 992px) {
   .banner {
-    height: 70vh;
-    padding: 20px;
+    height: 65vh;
   }
 
-  .banner > h1 {
-    font-size: 5vw;
-    margin: 3vmax;
+  .shop-btn {
+    top: 70%;
+    left: 30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    height: 55vh;
   }
 
-  .banner > p {
-    font-size: 3.5vw;
-  }
-
-  .banner > a > button {
-    width: 35vw;
-    padding: 2vw;
-    font-size: 3vw;
+  .shop-btn {
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .homeHeading {
-    font-size: 3.5vw;
-    width: 60vw;
+    font-size: 24px;
   }
 
-  .container {
-    width: 95vw;
-    margin: auto;
+  .products {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    height: 45vh;
   }
 
-  .productCard {
-    width: 40vw;
-    margin: 3vw;
+  .shop-btn {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 
-  .productCard > img {
-    width: 40vw;
+  .homeHeading {
+    font-size: 20px;
   }
 
-  .productCard > p {
-    font-size: 3.5vw;
+  .products {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
   }
-
-  .productCard > span {
-    font-size: 3vw;
-  }
-
-  .productCard > div > span {
-    font-size: 2.8vw;
-  }
-
 }

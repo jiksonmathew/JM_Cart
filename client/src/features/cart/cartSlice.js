@@ -2,61 +2,49 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../app/api";
 
 const initialState = {
+  loading: false,
   cartItems: [],
   shippingInfo: {},
-  loading: false,
+  message: null,
   error: null,
 };
 
-//
-// GET USER CART
-//
-export const getCart = createAsyncThunk(
-  "cart/getCart",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await api.get("/cart");
-      return data.cart;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch cart",
-      );
-    }
-  },
-);
-
-//
-// ADD TO CART
-//
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ productId, quantity }, { rejectWithValue }) => {
+  async (cartData, thunkAPI) => {
     try {
-      const { data } = await api.post("/cart", {
-        productId,
-        quantity,
-      });
-
-      return data.cartItem;
+      const { data } = await api.post(`/cart`, cartData);
+      return data;
     } catch (error) {
-      return rejectWithValue(
+      return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to add item",
       );
     }
   },
 );
 
-//
-// REMOVE CART ITEM
-//
-export const removeFromCart = createAsyncThunk(
-  "cart/removeFromCart",
-  async (cartId, { rejectWithValue }) => {
+export const getUserCart = createAsyncThunk(
+  "cart/getUserCart",
+  async (_, thunkAPI) => {
     try {
-      await api.delete(`/cart/${cartId}`);
-      return cartId;
+      const { data } = await api.get(`/cart`);
+      return data.cartItems;
     } catch (error) {
-      return rejectWithValue(
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to fetch cart",
+      );
+    }
+  },
+);
+
+export const removeCartItem = createAsyncThunk(
+  "cart/removeCartItem",
+  async (id, thunkAPI) => {
+    try {
+      const { data } = await api.delete(`/cart/${id}`);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to remove item",
       );
     }
@@ -75,80 +63,51 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.cartItems = [];
     },
-
-    clearCartErrors: (state) => {
-      state.error = null;
-    },
   },
 
   extraReducers: (builder) => {
     builder
 
-      // ---------------- GET CART ----------------
-      .addCase(getCart.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-
-      .addCase(getCart.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cartItems = action.payload;
-      })
-
-      .addCase(getCart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      // ---------------- ADD TO CART ----------------
       .addCase(addToCart.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-
-        const item = action.payload;
-
-        const existItem = state.cartItems.find(
-          (i) => i.product._id === item.product._id,
-        );
-
-        if (existItem) {
-          existItem.quantity = item.quantity;
-        } else {
-          state.cartItems.push(item);
-        }
+        state.cartItems = action.payload.cartItems;
+        state.message = action.payload.message;
       })
-
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ---------------- REMOVE FROM CART ----------------
-      .addCase(removeFromCart.pending, (state) => {
+      .addCase(getUserCart.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
-      .addCase(removeFromCart.fulfilled, (state, action) => {
+      .addCase(getUserCart.fulfilled, (state, action) => {
         state.loading = false;
-
-        state.cartItems = state.cartItems.filter(
-          (item) => item._id !== action.payload,
-        );
+        state.cartItems = action.payload;
+      })
+      .addCase(getUserCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      .addCase(removeFromCart.rejected, (state, action) => {
+      .addCase(removeCartItem.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+        state.cartItems = action.payload.cartItems;
+      })
+      .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { saveShippingInfo, clearCart, clearCartErrors } =
-  cartSlice.actions;
+export const { saveShippingInfo, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

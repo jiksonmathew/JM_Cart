@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
-/* Swiper */
+import {
+  getProductDetails,
+  createProductReview,
+  clearErrors,
+  deleteReview,
+} from "../../features/product/productSlice";
+import { addToCart } from "../../features/cart/cartSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-/* MUI */
 import Rating from "@mui/material/Rating";
 import {
   Dialog,
@@ -18,43 +21,23 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-
-/* Toast */
-import { toast } from "react-toastify";
-
-/* Components */
 import Loader from "../layout/Loader/Loader";
 import ReviewCard from "./ReviewCard";
-
-/* Redux */
-import {
-  fetchProductDetails,
-  clearErrors,
-} from "../../features/product/productSlice";
-
-import { addToCart } from "../../features/cart/cartSlice";
-
-/* CSS */
+import toast from "react-hot-toast";
+import no_image from "../../images/image_not_available.png";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const {
-    productDetails: product,
-    loading,
-    error,
-  } = useSelector((state) => state.product);
-
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { product, loading, error } = useSelector((state) => state.product);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-
-  /* Quantity Controls */
 
   const increaseQuantity = () => {
     if (quantity >= product?.stock) return;
@@ -66,8 +49,6 @@ const ProductDetails = () => {
     setQuantity((prev) => prev - 1);
   };
 
-  /* Add To Cart */
-
   const addToCartHandler = async () => {
     if (!isAuthenticated) {
       toast.error("Please login to add items to cart");
@@ -77,25 +58,69 @@ const ProductDetails = () => {
     try {
       await dispatch(
         addToCart({
-          productId: product._id, // ✅ FIXED
+          productId: product._id,
           quantity,
         }),
       ).unwrap();
 
       toast.success("Item Added To Cart");
     } catch (err) {
-      toast.error(err || "Failed to add item to cart");
-      console.error(err);
+      toast.error(err?.message || "Failed to add item");
     }
   };
 
-  /* Review Dialog */
-
   const submitReviewToggle = () => {
-    setOpen((prev) => !prev);
+    setOpen(!open);
   };
 
-  /* Fetch Product */
+  const reviewSubmitHandler = async () => {
+    if (!isAuthenticated) {
+      toast.error("Login required to review");
+      return;
+    }
+
+    if (!rating || !comment) {
+      toast.error("Please add rating and comment");
+      return;
+    }
+
+    try {
+      await dispatch(
+        createProductReview({
+          rating,
+          comment,
+          productId: id,
+        }),
+      ).unwrap();
+
+      toast.success("Review Submitted");
+
+      setOpen(false);
+      setRating(0);
+      setComment("");
+
+      dispatch(getProductDetails(id));
+    } catch (err) {
+      toast.error(err?.message || "Failed to submit review");
+    }
+  };
+
+  const handleRemoveReview = async (reviewId) => {
+    try {
+      await dispatch(
+        deleteReview({
+          reviewId,
+          productId: id,
+        }),
+      ).unwrap();
+
+      toast.success("Review removed");
+
+      dispatch(getProductDetails(id));
+    } catch (err) {
+      toast.error(err || "Failed to remove review");
+    }
+  };
 
   useEffect(() => {
     if (error) {
@@ -103,7 +128,7 @@ const ProductDetails = () => {
       dispatch(clearErrors());
     }
 
-    dispatch(fetchProductDetails(id));
+    dispatch(getProductDetails(id));
   }, [dispatch, id, error]);
 
   const ratingOptions = {
@@ -118,26 +143,30 @@ const ProductDetails = () => {
   return (
     <>
       <div className="ProductDetails">
-        {/* PRODUCT IMAGE SLIDER */}
-
-        <div>
-          {product?.images?.length > 0 && (
-            <Swiper
-              modules={[Navigation, Pagination]}
-              navigation
-              pagination={{ clickable: true }}
-              slidesPerView={1}
-            >
-              {product.images.map((img) => (
-                <SwiperSlide key={img.url}>
-                  <img src={img.url} alt="Product" className="CarouselImage" />
+        <div className="carousel">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            navigation
+            pagination={{ clickable: true }}
+            slidesPerView={1}
+          >
+            {product?.images?.length > 0 ? (
+              product.images.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    src={img.url}
+                    alt={product.name}
+                    className="CarouselImage"
+                  />
                 </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
+              ))
+            ) : (
+              <SwiperSlide>
+                <img src={no_image} alt="No image" className="CarouselImage" />
+              </SwiperSlide>
+            )}
+          </Swiper>
         </div>
-
-        {/* PRODUCT INFO */}
 
         <div>
           <div className="detailsBlock-1">
@@ -156,24 +185,11 @@ const ProductDetails = () => {
             <h1>₹{product?.price}</h1>
 
             <div className="detailsBlock-3-1">
-              {/* QUANTITY */}
-
               <div className="detailsBlock-3-1-1">
-                <button onClick={decreaseQuantity} disabled={quantity <= 1}>
-                  -
-                </button>
-
+                <button onClick={decreaseQuantity}>-</button>
                 <input type="number" readOnly value={quantity} />
-
-                <button
-                  onClick={increaseQuantity}
-                  disabled={quantity >= product?.stock}
-                >
-                  +
-                </button>
+                <button onClick={increaseQuantity}>+</button>
               </div>
-
-              {/* ADD TO CART */}
 
               <button disabled={product?.stock < 1} onClick={addToCartHandler}>
                 {product?.stock < 1 ? "Out Of Stock" : "Add to Cart"}
@@ -199,8 +215,6 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* REVIEW DIALOG */}
-
       <Dialog open={open} onClose={submitReviewToggle}>
         <DialogTitle>Submit Review</DialogTitle>
 
@@ -221,18 +235,21 @@ const ProductDetails = () => {
 
         <DialogActions>
           <Button onClick={submitReviewToggle}>Cancel</Button>
-          <Button onClick={submitReviewToggle}>Submit</Button>
+          <Button onClick={reviewSubmitHandler}>Submit</Button>
         </DialogActions>
       </Dialog>
-
-      {/* REVIEWS */}
 
       <h3 className="reviewsHeading">REVIEWS</h3>
 
       {product?.reviews?.length > 0 ? (
         <div className="reviews">
           {product.reviews.map((review) => (
-            <ReviewCard key={review._id} review={review} />
+            <ReviewCard
+              key={review._id}
+              review={review}
+              user={user}
+              onRemove={handleRemoveReview}
+            />
           ))}
         </div>
       ) : (

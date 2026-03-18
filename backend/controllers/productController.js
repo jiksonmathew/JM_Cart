@@ -77,25 +77,34 @@ exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
 });
 
 exports.updateProduct = catchAsyncError(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  let product = await Product.findById(req.params.id);
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
 
-  const updatedProduct = await Product.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  let imagesLinks = product.images ? [...product.images] : [];
+
+  if (req.files && req.files.length > 0) {
+    req.files.forEach((file) => {
+      imagesLinks.push({
+        public_id: file.filename,
+        url: file.path,
+      });
+    });
+  }
+
+  req.body.images = imagesLinks;
+
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
   res.status(200).json({
     success: true,
     message: "Product updated successfully",
-    product: updatedProduct,
+    product,
   });
 });
 
@@ -235,3 +244,19 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
     success: true,
   });
 });
+
+exports.getFeaturedProducts = async (req, res) => {
+  try {
+    const products = await Product.aggregate([{ $sample: { size: 8 } }]);
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

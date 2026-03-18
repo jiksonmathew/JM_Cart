@@ -6,7 +6,9 @@ const {
   verifyPayment,
 } = require("../controllers/paymentController");
 
-router.post("/payment/process", processPayment);
-router.post("/payment/verify", verifyPayment);
+const { isAuthenticated } = require("../middlewares/auth");
+
+router.post("/payment/process", isAuthenticated, processPayment);
+router.post("/payment/verify", isAuthenticated, verifyPayment);
 
 module.exports = router;

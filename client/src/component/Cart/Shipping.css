@@ -1,102 +1,89 @@
 .shippingContainer {
+  width: 100%;
+  min-height: 90vh;
+  background: linear-gradient(135deg, #eef2f7, #f9fbfd);
   display: flex;
   justify-content: center;
   align-items: center;
-
-  padding: 40px 20px;
+  padding: 10px;
 }
 
 .shippingBox {
-  width: 420px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  padding: 25px;
+  background: #fff;
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .shippingHeading {
   text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
 }
-
-/* Form */
 
 .shippingForm {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.1rem;
 }
-
-/* Field */
 
 .shippingField {
   display: flex;
   align-items: center;
-  position: relative;
+  background: #f1f3f6;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  transition: 0.3s;
 }
 
 .shippingField svg {
-  position: absolute;
-  left: 10px;
-  color: #666;
+  color: #777;
+  margin-right: 0.5rem;
 }
 
 .shippingField input,
 .shippingField select {
+  border: none;
+  outline: none;
+  background: transparent;
   width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  font-size: 0.95rem;
 }
 
-/* Button */
+.shippingField:focus-within {
+  background: #e3f2fd;
+  box-shadow: 0 0 0 2px #90caf9;
+}
 
 .shippingBtn {
-  margin-top: 10px;
-  padding: 12px;
-  background: tomato;
-  color: white;
+  margin-top: 0.5rem;
+  background: #1976d2;
+  color: #fff;
   border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 4px;
+  transition: 0.3s;
 }
 
 .shippingBtn:hover {
-  background: #e53935;
+  background: #0d47a1;
 }
 
-/* Mobile */
+.shippingBtn:disabled {
+  background: #90caf9;
+  cursor: not-allowed;
+}
 
-@media (max-width: 768px) {
-
-  .shippingContainer {
-    padding: 20px 15px;
-  }
-
+@media (max-width: 500px) {
   .shippingBox {
-    width: 100%;
-    max-width: 420px;
-    padding: 20px;
+    margin: 1rem;
+    padding: 1.5rem;
   }
-
-  .shippingHeading {
-    font-size: 18px;
-  }
-
-  .shippingField input,
-  .shippingField select {
-    font-size: 16px;
-    padding: 12px 12px 12px 40px;
-  }
-
-  .shippingField svg {
-    font-size: 18px;
-  }
-
-  .shippingBtn {
-    font-size: 16px;
-    padding: 13px;
-  }
-
 }

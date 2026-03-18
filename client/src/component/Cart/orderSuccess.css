@@ -1,68 +1,74 @@
 .orderSuccess {
-  min-height: 60vh;
-
+  width: 100%;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
+  justify-content: center;
   text-align: center;
-  gap: 20px;
+  gap: 16px;
+  background: linear-gradient(135deg, #e8f5e9, #f9fbfd);
 }
-
-/* Success icon */
 
 .successIcon {
-  font-size: 80px;
-  color: #4caf50;
+  font-size: 80px !important;
+  color: #2e7d32;
+  animation: pop 0.4s ease;
 }
-
-/* Text */
 
 .successText {
-  font-size: 22px;
+  font-weight: 500;
   color: #333;
+  font-size: 16px;
 }
 
-/* Button */
-
 .orderBtn {
-  background: #333;
-  color: white;
+  margin-top: 16px;
   text-decoration: none;
-
-  padding: 10px 25px;
-  border-radius: 5px;
-
+  background: #1976d2;
+  color: #fff;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-weight: 500;
   transition: 0.3s;
 }
 
 .orderBtn:hover {
-  background: tomato;
+  background: #0d47a1;
 }
 
-/* Mobile */
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
 @media (max-width: 768px) {
-
-  .orderSuccess {
-    min-height: 55vh;
-    gap: 15px;
-    padding: 20px;
-  }
-
   .successIcon {
-    font-size: 60px;
+    font-size: 70px !important;
   }
 
   .successText {
-    font-size: 18px;
-    line-height: 1.4;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .successIcon {
+    font-size: 60px !important;
+  }
+
+  .successText {
+    font-size: 14px;
   }
 
   .orderBtn {
-    padding: 12px 28px;
-    font-size: 15px;
+    width: 100%;
+    max-width: 250px;
   }
-
 }

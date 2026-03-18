@@ -2,113 +2,95 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../app/api";
 
 const initialState = {
-  shippingInfo: {},
-  orders: [],
-  orderDetails: {},
   loading: false,
+  order: null,
+  orders: [],
+  message: null,
   error: null,
-  success: false,
-  isDeleted: false,
+  isCreated: false,
   isUpdated: false,
+  isDeleted: false,
 };
 
-//
-// CREATE ORDER
-//
 export const createOrder = createAsyncThunk(
   "order/createOrder",
-  async (order, { rejectWithValue }) => {
+  async (orderData, thunkAPI) => {
     try {
-      const { data } = await api.post("/order/new", order);
+      const { data } = await api.post("/order/new", orderData);
       return data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to create order",
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
       );
     }
   },
 );
 
-//
-// GET MY ORDERS
-//
-export const myOrders = createAsyncThunk(
-  "order/myOrders",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await api.get("/orders/me");
-      return data.orders;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch orders",
-      );
-    }
-  },
-);
-
-//
-// GET ORDER DETAILS
-//
-export const getOrderDetails = createAsyncThunk(
-  "order/getOrderDetails",
-  async (id, { rejectWithValue }) => {
+export const getSingleOrder = createAsyncThunk(
+  "order/getSingleOrder",
+  async (id, thunkAPI) => {
     try {
       const { data } = await api.get(`/order/${id}`);
       return data.order;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch order details",
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
       );
     }
   },
 );
 
-//
-// ADMIN - GET ALL ORDERS
-//
+export const getMyOrders = createAsyncThunk(
+  "order/getMyOrders",
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await api.get("/orders/me");
+      return data.orders;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
+      );
+    }
+  },
+);
+
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
-  async (_, { rejectWithValue }) => {
+  async (_, thunkAPI) => {
     try {
       const { data } = await api.get("/admin/orders");
       return data.orders;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch all orders",
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
       );
     }
   },
 );
 
-//
-// ADMIN - UPDATE ORDER
-//
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
-  async ({ id, formData }, { rejectWithValue }) => {
+  async ({ id, orderData }, thunkAPI) => {
     try {
-      const { data } = await api.put(`/admin/order/${id}`, formData);
-      return data.success;
+      const { data } = await api.put(`/admin/order/${id}`, orderData);
+      return data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to update order",
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
       );
     }
   },
 );
 
-//
-// ADMIN - DELETE ORDER
-//
 export const deleteOrder = createAsyncThunk(
   "order/deleteOrder",
-  async (id, { rejectWithValue }) => {
+  async (id, thunkAPI) => {
     try {
       const { data } = await api.delete(`/admin/order/${id}`);
-      return data.success;
+      return data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to delete order",
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Something went wrong",
       );
     }
   },
@@ -123,111 +105,91 @@ const orderSlice = createSlice({
       state.error = null;
     },
 
-    resetOrderFlags: (state) => {
-      state.success = false;
+    resetDeleteOrder: (state) => {
       state.isDeleted = false;
+    },
+
+    resetOrderFlags: (state) => {
+      state.isCreated = false;
       state.isUpdated = false;
+      state.isDeleted = false;
+      state.message = null;
     },
   },
 
   extraReducers: (builder) => {
     builder
 
-      // ---------------- CREATE ORDER ----------------
       .addCase(createOrder.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload.success;
-
-        if (action.payload.order) {
-          state.orders.push(action.payload.order);
-        }
+        state.isCreated = true;
+        state.order = action.payload.order;
       })
-
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ---------------- MY ORDERS ----------------
-      .addCase(myOrders.pending, (state) => {
+      .addCase(getSingleOrder.pending, (state) => {
         state.loading = true;
-        state.error = null;
+      })
+      .addCase(getSingleOrder.fulfilled, (state, action) => {
+        state.loading = false;
+        state.order = action.payload;
+      })
+      .addCase(getSingleOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      .addCase(myOrders.fulfilled, (state, action) => {
+      .addCase(getMyOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
       })
-
-      .addCase(myOrders.rejected, (state, action) => {
+      .addCase(getMyOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ---------------- ORDER DETAILS ----------------
-      .addCase(getOrderDetails.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-
-      .addCase(getOrderDetails.fulfilled, (state, action) => {
-        state.loading = false;
-        state.orderDetails = action.payload;
-      })
-
-      .addCase(getOrderDetails.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      // ---------------- ADMIN GET ALL ORDERS ----------------
       .addCase(getAllOrders.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = action.payload;
       })
-
       .addCase(getAllOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ---------------- UPDATE ORDER ----------------
       .addCase(updateOrder.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
-      .addCase(updateOrder.fulfilled, (state) => {
+      .addCase(updateOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.isUpdated = true;
+        state.message = action.payload.message;
       })
-
       .addCase(updateOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ---------------- DELETE ORDER ----------------
       .addCase(deleteOrder.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-
-      .addCase(deleteOrder.fulfilled, (state) => {
+      .addCase(deleteOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.isDeleted = true;
+        state.message = action.payload.message;
       })
-
       .addCase(deleteOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
@@ -235,6 +197,7 @@ const orderSlice = createSlice({
   },
 });
 
-export const { clearErrors, resetOrderFlags } = orderSlice.actions;
+export const { clearErrors, resetOrderFlags, resetDeleteOrder } =
+  orderSlice.actions;
 
 export default orderSlice.reducer;

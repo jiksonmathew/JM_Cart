@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ForgotPassword.css";
 
 import Loader from "../layout/Loader/Loader";
+
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
     if (message) {
       toast.success(message);
     }
-  }, [dispatch, error, message]);
+  }, [error, message]);
 
   if (loading) return <Loader />;
 

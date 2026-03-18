@@ -1,97 +1,78 @@
 .paymentContainer {
+  width: 100%;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  min-height: 65vh;
-  background: #fff;
-  padding: 20px;
+  background: linear-gradient(135deg, #eef2f7, #f9fbfd);
 }
 
-/* Form */
-
 .paymentForm {
-  width: 380px;
-  padding: 25px;
-  border: 1px solid #eee;
-  border-radius: 6px;
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
 }
 
 .paymentTitle {
-  text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px !important;
+  font-weight: 600 !important;
+  color: #333;
+  font-size: 18px;
 }
-
-/* Input fields */
-
-.paymentField {
-  display: flex;
-  align-items: center;
-  position: relative;
-  margin-bottom: 18px;
-}
-
-.paymentField svg {
-  position: absolute;
-  left: 10px;
-  color: #666;
-}
-
-.paymentInput {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-/* Button */
 
 .paymentFormBtn {
   width: 100%;
-  padding: 12px;
-  background: tomato;
+  padding: 13px;
   border: none;
-  color: white;
+  background: #1976d2;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 15px;
+  transition: 0.3s;
 }
 
 .paymentFormBtn:hover {
-  background: #e53935;
+  background: #0d47a1;
 }
 
-/* Mobile */
+.paymentFormBtn:disabled {
+  background: #90caf9;
+  cursor: not-allowed;
+}
+
+.paymentForm::after {
+  content: "🔒 Secure Payment powered by Razorpay";
+  display: block;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #777;
+}
 
 @media (max-width: 768px) {
-
-  .paymentContainer {
-    padding: 15px;
-    min-height: 60vh;
-  }
-
   .paymentForm {
-    width: 100%;
-    max-width: 420px;
-    padding: 20px;
+    padding: 24px;
+    border-radius: 12px;
   }
 
   .paymentTitle {
-    font-size: 20px;
-  }
-
-  .paymentInput {
     font-size: 16px;
-    padding: 12px 12px 12px 40px;
   }
+}
 
-  .paymentField svg {
-    font-size: 18px;
+@media (max-width: 480px) {
+  .paymentForm {
+    margin: 16px;
+    padding: 20px;
   }
 
   .paymentFormBtn {
-    font-size: 16px;
-    padding: 13px;
+    font-size: 14px;
+    padding: 11px;
   }
-
 }

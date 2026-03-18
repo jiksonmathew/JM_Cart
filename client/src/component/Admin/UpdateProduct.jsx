@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
   clearErrors,
+  getProductDetails,
   updateProduct,
-  fetchProductDetails,
   resetUpdateProduct,
 } from "../../features/product/productSlice";
 
@@ -17,6 +18,7 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import StorageIcon from "@mui/icons-material/Storage";
 
 import SideBar from "./Sidebar";
+import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
 
 const UpdateProduct = () => {
@@ -28,56 +30,61 @@ const UpdateProduct = () => {
     (state) => state.product,
   );
 
-  const { error: updateError } = useSelector((state) => state.product);
-
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState("");
 
   const [images, setImages] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
   const categories = [
+    "Smartphone",
     "Laptop",
+    "Television",
+    "Refrigerator",
+    "Washing Machine",
+    "Shirts",
+    "Pants",
     "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "SmartPhones",
   ];
 
   useEffect(() => {
-    if (!product || product._id !== id) {
-      dispatch(fetchProductDetails(id));
-    } else {
-      setName(product.name);
-      setPrice(product.price);
-      setDescription(product.description);
-      setCategory(product.category);
-      setStock(product.stock);
-      setOldImages(product.images);
-    }
+    dispatch(getProductDetails(id));
+  }, [dispatch, id]);
 
+  useEffect(() => {
+    if (product) {
+      setName(product.name || "");
+      setPrice(product.price || "");
+      setDescription(product.description || "");
+      setCategory(product.category || "");
+      setStock(product.stock || "");
+      setOldImages(product.images || []);
+    }
+  }, [product]);
+
+  useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
     }
+  }, [error, dispatch]);
 
-    if (updateError) {
-      toast.error(updateError);
-      dispatch(clearErrors());
-    }
-
+  useEffect(() => {
     if (isUpdated) {
       toast.success("Product Updated Successfully");
-      navigate("/admin/products");
-      dispatch(resetUpdateProduct());
+
+      const timer = setTimeout(() => {
+        navigate("/admin/products");
+        dispatch(resetUpdateProduct());
+      }, 2000);
+
+      return () => clearTimeout(timer);
     }
-  }, [dispatch, error, updateError, isUpdated, product, id, navigate]);
+  }, [isUpdated, navigate, dispatch]);
 
   const updateProductSubmitHandler = (e) => {
     e.preventDefault();
@@ -94,7 +101,7 @@ const UpdateProduct = () => {
       formData.append("images", image);
     });
 
-    dispatch(updateProduct({ id, formData }));
+    dispatch(updateProduct({ id, productData: formData }));
   };
 
   const updateProductImagesChange = (e) => {
@@ -102,14 +109,15 @@ const UpdateProduct = () => {
 
     setImages([]);
     setImagesPreview([]);
-    setOldImages([]);
 
     files.forEach((file) => {
       const reader = new FileReader();
 
-      reader.onloadend = () => {
-        setImagesPreview((prev) => [...prev, reader.result]);
-        setImages((prev) => [...prev, file]); // store real file
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((prev) => [...prev, reader.result]);
+          setImages((prev) => [...prev, file]);
+        }
       };
 
       reader.readAsDataURL(file);
@@ -121,107 +129,108 @@ const UpdateProduct = () => {
       <SideBar />
 
       <div className="newProductContainer">
-        <form
-          className="createProductForm"
-          encType="multipart/form-data"
-          onSubmit={updateProductSubmitHandler}
-        >
-          <h1>Update Product</h1>
-
-          <div>
-            <SpellcheckIcon />
-            <input
-              type="text"
-              placeholder="Product Name"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <AttachMoneyIcon />
-            <input
-              type="number"
-              placeholder="Price"
-              required
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <DescriptionIcon />
-            <textarea
-              placeholder="Product Description"
-              rows="2"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <AccountTreeIcon />
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">Choose Category</option>
-
-              {categories.map((cate) => (
-                <option key={cate} value={cate}>
-                  {cate}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <StorageIcon />
-            <input
-              type="number"
-              placeholder="Stock"
-              required
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-            />
-          </div>
-
-          {/* Upload Images */}
-          <div id="createProductFormFile">
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={updateProductImagesChange}
-            />
-          </div>
-
-          {/* Old Images */}
-          <h3>Old Images</h3>
-          <div id="createProductFormImage">
-            {oldImages?.map((image, index) => (
-              <img key={index} src={image.url} alt="Old Preview" />
-            ))}
-          </div>
-
-          {/* New Images */}
-          <h3>New Images</h3>
-          <div id="createProductFormImage">
-            {imagesPreview.map((image, index) => (
-              <img key={index} src={image} alt="Preview" />
-            ))}
-          </div>
-
-          <Button
-            id="createProductBtn"
-            type="submit"
-            variant="contained"
-            disabled={loading}
+        {loading ? (
+          <Loader />
+        ) : (
+          <form
+            className="createProductForm"
+            encType="multipart/form-data"
+            onSubmit={updateProductSubmitHandler}
           >
-            Update
-          </Button>
-        </form>
+            <h1>Update Product</h1>
+
+            <div>
+              <SpellcheckIcon />
+              <input
+                type="text"
+                placeholder="Product Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <AttachMoneyIcon />
+              <input
+                type="number"
+                placeholder="Price"
+                required
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <DescriptionIcon />
+              <textarea
+                placeholder="Product Description"
+                rows="2"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <AccountTreeIcon />
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option value="">Choose Category</option>
+
+                {categories.map((cate) => (
+                  <option key={cate} value={cate}>
+                    {cate}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <StorageIcon />
+              <input
+                type="number"
+                placeholder="Stock"
+                required
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+              />
+            </div>
+
+            <div id="createProductFormFile">
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={updateProductImagesChange}
+              />
+            </div>
+
+            <h3>Old Images</h3>
+            <div id="createProductFormImage">
+              {oldImages.map((image, index) => (
+                <img key={index} src={image.url} alt="Old Preview" />
+              ))}
+            </div>
+
+            <h3>New Images</h3>
+            <div id="createProductFormImage">
+              {imagesPreview.map((image, index) => (
+                <img key={index} src={image} alt="Preview" />
+              ))}
+            </div>
+
+            <Button
+              id="createProductBtn"
+              type="submit"
+              variant="contained"
+              disabled={loading}
+            >
+              Update
+            </Button>
+          </form>
+        )}
       </div>
     </div>
   );

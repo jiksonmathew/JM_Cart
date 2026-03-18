@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 import "./newProduct.css";
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   createProduct,
   clearErrors,
+  resetProduct,
 } from "../../features/product/productSlice";
+
 import { Button, Typography } from "@mui/material";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DescriptionIcon from "@mui/icons-material/Description";
 import StorageIcon from "@mui/icons-material/Storage";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
 import SideBar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const categories = [
-  "Smartphones",
+  "Smartphone",
   "Laptop",
   "Television",
   "Refrigerator",
@@ -30,7 +34,9 @@ const NewProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, success } = useSelector((state) => state.product);
+  const { loading, error, message, product } = useSelector(
+    (state) => state.product,
+  );
 
   const [form, setForm] = useState({
     name: "",
@@ -49,11 +55,12 @@ const NewProduct = () => {
       dispatch(clearErrors());
     }
 
-    if (success) {
-      toast.success("Product created successfully");
+    if (product) {
+      toast.success(message || "Product created successfully");
+      dispatch(resetProduct());
       navigate("/admin/dashboard");
     }
-  }, [dispatch, error, success, navigate]);
+  }, [dispatch, error, product, message, navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -82,6 +89,16 @@ const NewProduct = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    if (!form.category) {
+      toast.error("Please select a category");
+      return;
+    }
+
+    if (images.length === 0) {
+      toast.error("Please upload at least one image");
+      return;
+    }
+
     const myForm = new FormData();
 
     myForm.set("name", form.name);
@@ -106,6 +123,7 @@ const NewProduct = () => {
           className="createProductForm"
           onSubmit={submitHandler}
           encType="multipart/form-data"
+          autoComplete="off"
         >
           <Typography variant="h4">Create Product</Typography>
 
@@ -176,7 +194,6 @@ const NewProduct = () => {
           <div id="createProductFormFile">
             <input
               type="file"
-              name="images"
               accept="image/*"
               multiple
               onChange={handleImages}

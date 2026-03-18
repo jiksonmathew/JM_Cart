@@ -1,5 +1,6 @@
 const Cart = require("../models/cartModel");
 
+// ADD OR UPDATE CART ITEM
 exports.addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -11,7 +12,7 @@ exports.addToCart = async (req, res) => {
       });
     }
 
-    const qty = quantity || 1;
+    const qty = Number(quantity) || 1;
 
     let cartItem = await Cart.findOne({
       user: req.user._id,
@@ -22,16 +23,21 @@ exports.addToCart = async (req, res) => {
       cartItem.quantity = qty;
       await cartItem.save();
     } else {
-      cartItem = await Cart.create({
+      await Cart.create({
         user: req.user._id,
         product: productId,
         quantity: qty,
       });
     }
 
+    const cartItems = await Cart.find({ user: req.user._id }).populate(
+      "product",
+      "name price stock images",
+    );
+
     res.status(200).json({
       success: true,
-      cartItem,
+      cartItems,
     });
   } catch (error) {
     res.status(500).json({
@@ -41,13 +47,17 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+// GET USER CART
 exports.getUserCart = async (req, res) => {
   try {
-    const cart = await Cart.find({ user: req.user._id }).populate("product");
+    const cartItems = await Cart.find({ user: req.user._id }).populate(
+      "product",
+      "name price stock images",
+    );
 
     res.status(200).json({
       success: true,
-      cart,
+      cartItems,
     });
   } catch (error) {
     res.status(500).json({
@@ -57,13 +67,38 @@ exports.getUserCart = async (req, res) => {
   }
 };
 
+// REMOVE SINGLE CART ITEM
+// REMOVE SINGLE CART ITEM
 exports.removeCartItem = async (req, res) => {
   try {
+    const cartItem = await Cart.findById(req.params.id);
+
+    if (!cartItem) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart item not found",
+      });
+    }
+
+    // Ensure the item belongs to the logged-in user
+    if (cartItem.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this cart item",
+      });
+    }
+
     await Cart.findByIdAndDelete(req.params.id);
+
+    const cartItems = await Cart.find({ user: req.user._id }).populate(
+      "product",
+      "name price stock images",
+    );
 
     res.status(200).json({
       success: true,
       message: "Item removed from cart",
+      cartItems,
     });
   } catch (error) {
     res.status(500).json({

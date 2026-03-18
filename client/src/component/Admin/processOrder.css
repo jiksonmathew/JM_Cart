@@ -1,93 +1,170 @@
+.confirmOrderPage {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  padding: 32px;
+  background: #f5f7fa;
+}
+
+.confirmshippingArea,
+.confirmCartItems {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.confirmshippingArea > p,
+.confirmCartItems > p {
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.orderDetailsContainerBox > div {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.orderDetailsContainerBox p {
+  min-width: 90px;
+  font-weight: 500;
+  color: #555;
+}
+
+.orderDetailsContainerBox span {
+  color: #333;
+}
+
+.greenColor {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.redColor {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.confirmCartItemsContainer > div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.confirmCartItemsContainer img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.confirmCartItemsContainer a {
+  flex: 1;
+  text-decoration: none;
+  color: #1976d2;
+}
+
+.confirmCartItemsContainer span {
+  font-size: 14px;
+}
+
 .updateOrderForm {
-  margin: 2rem auto;
-  padding: 2rem;
-  width: 400px;
-
-  background-color: white;
-  border-radius: 8px;
-
+  background: #fff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  gap: 19px;
+  height: fit-content;
 }
 
-/* Title */
 .updateOrderForm h1 {
+  font-size: 22px;
   text-align: center;
-  font-family: "Roboto";
-  font-size: 24px;
-  color: rgba(0,0,0,0.75);
 }
 
-/* Input wrapper */
 .updateOrderForm > div {
   display: flex;
   align-items: center;
-  position: relative;
+  background: #f1f3f6;
+  padding: 10px 16px;
+  border-radius: 8px;
 }
 
-/* Select dropdown */
-.updateOrderForm > div > select {
-  width: 100%;
-  padding: 10px 12px 10px 40px;
+.updateOrderForm svg {
+  margin-right: 8px;
+  color: #777;
+}
 
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 5px;
-
-  font-family: "Roboto";
-  font-size: 14px;
-
+.updateOrderForm select {
+  border: none;
   outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 15px;
 }
 
-/* Icon */
-.updateOrderForm > div > svg {
-  position: absolute;
-  left: 10px;
-  font-size: 20px;
-  color: rgba(0,0,0,0.6);
-}
-
-/* Button */
 #createProductBtn {
-  background: tomato !important;
-  color: white !important;
-  font-weight: 500;
+  background: #1976d2 !important;
 }
 
 #createProductBtn:hover {
-  background: rgb(179,66,46) !important;
+  background: #0d47a1 !important;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+  .confirmOrderPage {
+    grid-template-columns: 1fr;
+  }
+}
 
+@media (max-width: 768px) {
+  .confirmOrderPage {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .confirmshippingArea,
+  .confirmCartItems,
   .updateOrderForm {
-    width: 100%;
-    max-width: 95%;
-    padding: 1.5rem;
-    gap: 1rem;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .confirmCartItemsContainer > div {
+    gap: 12px;
+  }
+
+  .confirmCartItemsContainer img {
+    width: 50px;
+    height: 50px;
   }
 
   .updateOrderForm h1 {
     font-size: 20px;
   }
+}
 
-  .updateOrderForm > div > select {
-    font-size: 16px;
-    padding: 12px 12px 12px 40px;
+@media (max-width: 480px) {
+  .confirmCartItemsContainer {
+    display: flex;
+    flex-direction: column;
   }
 
-  .updateOrderForm > div > svg {
-    font-size: 18px;
-    left: 10px;
+  .confirmCartItemsContainer > div {
+    align-items: flex-start;
   }
 
-  #createProductBtn {
-    padding: 12px;
-    font-size: 16px;
+  .confirmCartItemsContainer a {
+    font-size: 14px;
   }
 
+  .orderDetailsContainerBox > div {
+    flex-direction: column;
+    gap: 4px;
+  }
 }

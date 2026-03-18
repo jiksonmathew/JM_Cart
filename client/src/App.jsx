@@ -1,40 +1,33 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
-
+import { useLocation } from "react-router-dom";
+import WebFont from "webfontloader";
 import "./App.css";
 
-import Header from "./component/layout/Header/Header";
 import Footer from "./component/layout/Footer/Footer";
 import UserOptions from "./component/layout/Header/UserOptions";
-
 import Home from "./component/Home/Home";
 import ProductDetails from "./component/Product/ProductDetails";
 import Products from "./component/Product/Products";
 import Search from "./component/Product/Search";
-
 import LoginSignUp from "./component/User/LoginSignUp";
 import Profile from "./component/User/Profile";
 import UpdateProfile from "./component/User/UpdateProfile";
 import UpdatePassword from "./component/User/UpdatePassword";
 import ForgotPassword from "./component/User/ForgotPassword";
 import ResetPassword from "./component/User/ResetPassword";
-
 import MyOrders from "./component/Order/MyOrders";
 import OrderDetails from "./component/Order/OrderDetails";
-
 import Cart from "./component/Cart/Cart";
 import Shipping from "./component/Cart/Shipping";
 import Payment from "./component/Cart/Payment";
 import ConfirmOrder from "./component/Cart/ConfirmOrder";
 import OrderSuccess from "./component/Cart/OrderSuccess";
-
 import About from "./component/layout/About/About";
 import Contact from "./component/layout/Contact/Contact";
 import NotFound from "./component/layout/Not Found/NotFound";
-
 import Dashboard from "./component/Admin/Dashboard";
 import Sidebar from "./component/Admin/Sidebar";
 import UpdateProduct from "./component/Admin/UpdateProduct";
@@ -45,46 +38,49 @@ import ProductReviews from "./component/Admin/ProductReviews";
 import NewProduct from "./component/Admin/NewProduct";
 import ProcessOrder from "./component/Admin/ProcessOrder";
 import ProductList from "./component/Admin/ProductList";
-
 import ProtectedRoute from "./component/Route/ProtectedRoute";
 import PublicRoute from "./component/Route/PublicRoute";
 import ScrollToTop from "./component/layout/Scroll Top/ScrollToTop";
-
-import { loadUser } from "./features/user/userSlice";
-import { getCart } from "./features/cart/cartSlice";
+import { getUserDetails } from "./features/user/userSlice";
+import Navbar from "./component/layout/Navbar/Navbar";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isAuthenticated, user, isChecked } = useSelector(
+    (state) => state.user,
+  );
 
-  // Load user on app start
+  const location = useLocation();
+  const hideNavbarRoutes = [
+    "/shipping",
+    "/order/confirm",
+    "/payment",
+    "/process/payment",
+  ];
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    WebFont.load({
+      google: {
+        families: ["Poppins:300,400,500,600", "Roboto"],
+      },
+    });
+  }, []);
 
-    if (token) {
-      dispatch(loadUser());
-    }
+  useEffect(() => {
+    dispatch(getUserDetails());
   }, [dispatch]);
 
-  // Load cart after authentication
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(getCart());
-    }
-  }, [dispatch, isAuthenticated]);
+  if (!isChecked) {
+    return <div>Loading app...</div>;
+  }
 
   return (
-    <BrowserRouter>
-      <ToastContainer position="bottom-center" />
-
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
       <ScrollToTop />
-
-      <Header />
-
       {isAuthenticated && <UserOptions user={user} />}
-
+      {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/products" element={<Products />} />
@@ -95,7 +91,6 @@ const App = () => {
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
 
-        {/* Auth */}
         <Route
           path="/login"
           element={
@@ -105,7 +100,6 @@ const App = () => {
           }
         />
 
-        {/* User */}
         <Route
           path="/account"
           element={
@@ -133,7 +127,6 @@ const App = () => {
           }
         />
 
-        {/* Orders */}
         <Route
           path="/orders"
           element={
@@ -152,7 +145,6 @@ const App = () => {
           }
         />
 
-        {/* Cart */}
         <Route
           path="/cart"
           element={
@@ -198,7 +190,6 @@ const App = () => {
           }
         />
 
-        {/* Admin */}
         <Route
           path="/admin/dashboard"
           element={
@@ -289,12 +280,11 @@ const App = () => {
           }
         />
 
-        {/* 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />
-    </BrowserRouter>
+    </>
   );
 };
 

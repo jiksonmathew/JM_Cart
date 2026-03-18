@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./ResetPassword.css";
+
 import Loader from "../layout/Loader/Loader";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearErrors,
   resetPassword,
-  resetUpdate,
+  resetUpdateUser,
 } from "../../features/user/userSlice";
 
 import { useNavigate, useParams } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -28,10 +30,15 @@ const ResetPassword = () => {
   const resetPasswordSubmit = (e) => {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     dispatch(
       resetPassword({
         token,
-        passwordData: {
+        passwords: {
           password,
           confirmPassword,
         },
@@ -47,11 +54,10 @@ const ResetPassword = () => {
 
     if (isUpdated) {
       toast.success("Password updated successfully");
-
-      dispatch(resetUpdate());
+      dispatch(resetUpdateUser());
       navigate("/login");
     }
-  }, [dispatch, error, isUpdated, navigate]);
+  }, [error, isUpdated]);
 
   if (loading) return <Loader />;
 

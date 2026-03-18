@@ -1,12 +1,13 @@
 const express = require("express");
-const router = express.Router();
-const { isAuthenticated } = require("../middlewares/auth");
-
 const {
   addToCart,
   getUserCart,
   removeCartItem,
 } = require("../controllers/cartController");
+
+const { isAuthenticated } = require("../middlewares/auth");
+
+const router = express.Router();
 
 router.post("/cart", isAuthenticated, addToCart);
 router.get("/cart", isAuthenticated, getUserCart);

@@ -1,5 +1,7 @@
 import "./aboutSection.css";
+
 import { Typography, Avatar } from "@mui/material";
+
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 
@@ -14,7 +16,6 @@ const About = () => {
         </Typography>
 
         <div className="aboutContent">
-          {/* Left Section */}
           <div className="aboutLeft">
             <Avatar
               src="https://res.cloudinary.com/dqkj7zp9t/image/upload/v1773305289/jikson_di7mbv.jpg"
@@ -29,7 +30,6 @@ const About = () => {
             </Typography>
           </div>
 
-          {/* Right Section */}
           <div className="aboutRight">
             <Typography variant="h6">Follow Me</Typography>
 

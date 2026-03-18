@@ -1,5 +1,7 @@
 import "./Contact.css";
+
 import { Button, Typography } from "@mui/material";
+
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 
@@ -9,6 +11,8 @@ const Contact = () => {
 
   return (
     <section className="contactContainer">
+      <div className="contactGradient"></div>
+
       <div className="contactCard">
         <Typography variant="h4" className="contactTitle">
           Contact Us
@@ -16,25 +20,19 @@ const Contact = () => {
 
         <Typography className="contactText">
           If you have any questions or project inquiries, feel free to contact
-          us.
+          me.
         </Typography>
 
-        {/* EMAIL */}
         <a href={`mailto:${email}`} className="contactLink">
-          <Button
-            variant="contained"
-            startIcon={<EmailIcon />}
-            component="span"
-          >
+          <Button variant="contained" startIcon={<EmailIcon />}>
             Send Email
           </Button>
         </a>
 
         <Typography className="contactEmail">{email}</Typography>
 
-        {/* PHONE */}
         <a href={`tel:${phone}`} className="contactLink">
-          <Button variant="outlined" startIcon={<PhoneIcon />} component="span">
+          <Button variant="outlined" startIcon={<PhoneIcon />}>
             Call Us
           </Button>
         </a>

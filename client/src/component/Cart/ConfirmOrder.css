@@ -1,150 +1,156 @@
 .confirmOrderPage {
+  display: flex;
   max-width: 1200px;
-  margin: auto;
-  padding: 30px 20px;
-
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
+  margin: 32px auto;
+  gap: 32px;
+  padding: 16px;
 }
 
-/* Shipping Info */
+.confirmOrderPage > div:first-child {
+  flex: 2;
+}
 
-.confirmshippingArea h6 {
-  font-size: 20px;
-  margin-bottom: 15px;
+.confirmOrderPage > div:last-child {
+  flex: 1;
+}
+
+.confirmshippingArea,
+.confirmCartItems {
+  background: #fff;
+  padding: 19px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
 }
 
 .confirmshippingAreaBox div {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .confirmshippingAreaBox p {
   font-weight: 500;
-}
-
-.confirmshippingAreaBox span {
+  width: 100px;
   color: #555;
 }
 
-/* Cart Items */
-
-.confirmCartItems {
-  margin-top: 40px;
-}
-
-.confirmCartItems h6 {
-  font-size: 20px;
-  margin-bottom: 15px;
+.confirmshippingAreaBox span {
+  color: #333;
 }
 
 .confirmCartItemsContainer {
-  max-height: 250px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 13px;
 }
 
-.confirmCartItemsContainer div {
+.confirmCartItemsContainer > div {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 16px;
+  background: #f9fafb;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .confirmCartItemsContainer img {
   width: 60px;
   height: 60px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
 }
 
 .confirmCartItemsContainer a {
   flex: 1;
   text-decoration: none;
-  color: #444;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.confirmCartItemsContainer a:hover {
+  text-decoration: underline;
 }
 
 .confirmCartItemsContainer span {
   font-size: 14px;
+  color: #444;
 }
-
-/* Order Summary */
 
 .orderSummary {
-  border: 1px solid #eee;
-  padding: 25px;
-  border-radius: 6px;
+  background: #fff;
+  padding: 19px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 100px;
 }
 
-.orderSummary h6 {
-  text-align: center;
-  margin-bottom: 20px;
+.orderSummary > div {
+  margin: 16px 0;
 }
 
-.orderSummary div div {
+.orderSummary > div > div {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .orderSummaryTotal {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 2px solid tomato;
+  font-size: 18px;
+  border-top: 1px solid #eee;
+  padding-top: 13px;
+  font-weight: 600;
 }
 
 .orderSummary button {
-  margin-top: 20px;
   width: 100%;
-  background: tomato;
+  margin-top: 16px;
+  padding: 11px;
   border: none;
-  color: white;
-  padding: 12px;
+  background: #1976d2;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 15px;
+  transition: 0.3s;
 }
 
 .orderSummary button:hover {
-  background: #e53935;
+  background: #0d47a1;
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-
+@media (max-width: 992px) {
   .confirmOrderPage {
-    grid-template-columns: 1fr;
     gap: 20px;
-    padding: 20px 15px;
   }
+}
 
-  /* Shipping info */
-  .confirmshippingArea h6 {
-    font-size: 18px;
-  }
-
-  .confirmshippingAreaBox div {
+@media (max-width: 768px) {
+  .confirmOrderPage {
     flex-direction: column;
-    gap: 2px;
+    padding: 16px;
   }
 
-  .confirmshippingAreaBox p {
-    font-size: 14px;
+  .orderSummary {
+    position: static;
   }
 
-  .confirmshippingAreaBox span {
-    font-size: 13px;
+  .confirmCartItemsContainer > div {
+    flex-direction: column;
+    align-items: flex-start;
   }
+}
 
-  /* Cart items */
-  .confirmCartItems h6 {
-    font-size: 18px;
-  }
-
-  .confirmCartItemsContainer div {
-    gap: 10px;
+@media (max-width: 480px) {
+  .confirmshippingArea,
+  .confirmCartItems,
+  .orderSummary {
+    padding: 16px;
+    border-radius: 12px;
   }
 
   .confirmCartItemsContainer img {
@@ -152,27 +158,11 @@
     height: 50px;
   }
 
-  .confirmCartItemsContainer a {
-    font-size: 14px;
-  }
-
-  .confirmCartItemsContainer span {
-    font-size: 13px;
-  }
-
-  /* Order summary */
-  .orderSummary {
-    padding: 20px;
-    margin-top: 15px;
-  }
-
-  .orderSummary h6 {
-    font-size: 18px;
+  .orderSummaryTotal {
+    font-size: 16px;
   }
 
   .orderSummary button {
-    font-size: 16px;
-    padding: 12px;
+    font-size: 14px;
   }
-
 }

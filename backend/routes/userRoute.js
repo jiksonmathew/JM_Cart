@@ -9,6 +9,7 @@ const {
   getAllUsers,
   getSingleUser,
   updateUserProfile,
+  updateUserRole,
   deleteUser,
   forgotPassword,
   resetPassword,

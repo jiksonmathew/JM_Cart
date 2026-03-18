@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./dashboard.css";
 import { Typography } from "@mui/material";
@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
+import toast from "react-hot-toast";
+
 import {
   Chart as ChartJS,
   ArcElement,
@@ -17,9 +19,20 @@ import {
   Legend,
 } from "chart.js";
 
-import { getAdminProduct } from "../../features/product/productSlice";
-import { getAllOrders } from "../../features/order/orderSlice";
-import { getAllUsers } from "../../features/user/userSlice";
+import {
+  getAdminProducts,
+  clearErrors as clearProductErrors,
+} from "../../features/product/productSlice";
+
+import {
+  getAllOrders,
+  clearErrors as clearOrderErrors,
+} from "../../features/order/orderSlice";
+
+import {
+  getAllUsers,
+  clearErrors as clearUserErrors,
+} from "../../features/user/userSlice";
 
 ChartJS.register(
   ArcElement,
@@ -33,25 +46,62 @@ ChartJS.register(
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
-  const { products = [] } = useSelector((state) => state.product);
-  const { orders = [] } = useSelector((state) => state.order);
-  const { users = [] } = useSelector((state) => state.user);
+  const {
+    products = [],
+    loading: productLoading,
+    error: productError,
+  } = useSelector((state) => state.product);
+
+  const {
+    orders = [],
+    loading: orderLoading,
+    error: orderError,
+  } = useSelector((state) => state.order);
+
+  const {
+    users = [],
+    loading: userLoading,
+    error: userError,
+  } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getAdminProduct());
+    dispatch(getAdminProducts());
     dispatch(getAllOrders());
     dispatch(getAllUsers());
-
-    // simulate loading
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   }, [dispatch]);
 
+  useEffect(() => {
+    if (productError) {
+      toast.error(productError);
+      dispatch(clearProductErrors());
+    }
+
+    if (orderError) {
+      toast.error(orderError);
+      dispatch(clearOrderErrors());
+    }
+
+    if (userError) {
+      toast.error(userError);
+      dispatch(clearUserErrors());
+    }
+  }, [productError, orderError, userError, dispatch]);
+
+  if (productLoading || orderLoading || userLoading) return <Loader />;
+
   const outOfStock = products.filter((item) => item.stock === 0).length;
-  const totalAmount = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+
+  const totalAmount = orders.reduce(
+    (acc, item) => acc + (item.totalPrice || 0),
+    0,
+  );
+
+  const formatPrice = (price) =>
+    new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }).format(price);
 
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],
@@ -76,9 +126,7 @@ const Dashboard = () => {
     ],
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <div className="dashboard">
       <Sidebar />
 
@@ -88,7 +136,7 @@ const Dashboard = () => {
         <div className="dashboardSummary">
           <div>
             <p>
-              Total Amount <br /> ₹{totalAmount}
+              Total Amount <br /> {formatPrice(totalAmount)}
             </p>
           </div>
 

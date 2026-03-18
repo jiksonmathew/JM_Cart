@@ -1,17 +1,20 @@
 import { useEffect } from "react";
+
 import { CgMouse } from "react-icons/cg";
+
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { toast } from "react-hot-toast";
-
-import "./Home.css";
-import ProductCard from "./ProductCard";
-import Loader from "../layout/Loader/Loader";
-
 import {
-  fetchProducts,
+  getAllProducts,
   clearErrors,
 } from "../../features/product/productSlice";
+
+import { useLocation } from "react-router-dom";
+
+import toast from "react-hot-toast";
+
+import "./Home.css";
+import Loader from "../layout/Loader/Loader";
+import FeaturedProducts from "./FeaturedProducts";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,14 +22,10 @@ const Home = () => {
 
   const keyword = new URLSearchParams(location.search).get("keyword") || "";
 
-  const {
-    loading,
-    error,
-    products = [],
-  } = useSelector((state) => state.product);
+  const { loading, error } = useSelector((state) => state.product);
 
   useEffect(() => {
-    dispatch(fetchProducts(keyword));
+    dispatch(getAllProducts({ keyword }));
   }, [dispatch, keyword]);
 
   useEffect(() => {
@@ -36,35 +35,24 @@ const Home = () => {
     }
   }, [error, dispatch]);
 
-  if (loading) return <Loader />;
-
   return (
     <>
       <section className="banner">
-        <p>Welcome to Ecommerce</p>
-
-        <h1>Find Amazing Products Below</h1>
-
-        <a href="#products">
-          <button>
-            Scroll <CgMouse />
-          </button>
-        </a>
+        <button>
+          {" "}
+          <a href="#products" className="shop-btn">
+            Shop Now
+          </a>
+        </button>
       </section>
 
-      <h2 className="homeHeading">
+      <h2 className="homeHeading" id="products">
         {keyword ? `Search Results for "${keyword}"` : "Featured Products"}
       </h2>
 
-      <section className="container" id="products">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))
-        ) : (
-          <p className="noProducts">No products found.</p>
-        )}
-      </section>
+      {loading && <Loader />}
+
+      <FeaturedProducts />
     </>
   );
 };

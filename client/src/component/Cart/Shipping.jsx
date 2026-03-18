@@ -1,8 +1,12 @@
 import { useState } from "react";
+
 import "./Shipping.css";
+
 import { useSelector, useDispatch } from "react-redux";
 import { saveShippingInfo } from "../../features/cart/cartSlice";
+
 import { useNavigate } from "react-router-dom";
+
 import { Country, State } from "country-state-city";
 
 import PinDropIcon from "@mui/icons-material/PinDrop";
@@ -13,6 +17,8 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 
 import toast from "react-hot-toast";
+
+import CheckoutSteps from "./CheckoutSteps";
 
 const Shipping = () => {
   const dispatch = useDispatch();
@@ -27,18 +33,41 @@ const Shipping = () => {
   const [pinCode, setPinCode] = useState(shippingInfo?.pinCode || "");
   const [phoneNo, setPhoneNo] = useState(shippingInfo?.phoneNo || "");
 
+  const handleCountryChange = (value) => {
+    setCountry(value);
+    setStateValue("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!/^[0-9]{10}$/.test(phoneNo)) {
-      toast.error("Phone number must be 10 digits");
+    const cleanAddress = address.trim();
+    const cleanCity = city.trim();
+
+    if (cleanAddress.length < 5) {
+      toast.error("Address must be at least 5 characters");
+      return;
+    }
+
+    if (cleanCity.length < 2) {
+      toast.error("City name is too short");
+      return;
+    }
+
+    if (!/^[0-9]{6}$/.test(pinCode)) {
+      toast.error("Pin code must be 6 digits");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phoneNo)) {
+      toast.error("Enter a valid phone number");
       return;
     }
 
     dispatch(
       saveShippingInfo({
-        address,
-        city,
+        address: cleanAddress,
+        city: cleanCity,
         state: stateValue,
         country,
         pinCode,
@@ -50,98 +79,108 @@ const Shipping = () => {
   };
 
   return (
-    <div className="shippingContainer">
-      <div className="shippingBox">
-        <h2 className="shippingHeading">Shipping Details</h2>
+    <>
+      <CheckoutSteps activeStep={0} />
 
-        <form className="shippingForm" onSubmit={handleSubmit}>
-          <div className="shippingField">
-            <HomeIcon />
-            <input
-              type="text"
-              placeholder="Address"
-              value={address}
-              required
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
+      <div className="shippingContainer">
+        <div className="shippingBox">
+          <h2 className="shippingHeading">Shipping Details</h2>
 
-          <div className="shippingField">
-            <LocationCityIcon />
-            <input
-              type="text"
-              placeholder="City"
-              value={city}
-              required
-              onChange={(e) => setCity(e.target.value)}
-            />
-          </div>
-
-          <div className="shippingField">
-            <PinDropIcon />
-            <input
-              type="text"
-              placeholder="Pin Code"
-              value={pinCode}
-              required
-              onChange={(e) => setPinCode(e.target.value)}
-            />
-          </div>
-
-          <div className="shippingField">
-            <PhoneIcon />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={phoneNo}
-              required
-              onChange={(e) => setPhoneNo(e.target.value)}
-            />
-          </div>
-
-          <div className="shippingField">
-            <PublicIcon />
-            <select
-              value={country}
-              required
-              onChange={(e) => setCountry(e.target.value)}
-            >
-              <option value="">Select Country</option>
-
-              {Country.getAllCountries().map((item) => (
-                <option key={item.isoCode} value={item.isoCode}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {country && (
+          <form className="shippingForm" onSubmit={handleSubmit}>
             <div className="shippingField">
-              <TransferWithinAStationIcon />
-
-              <select
-                value={stateValue}
+              <HomeIcon />
+              <input
+                type="text"
+                placeholder="Enter full address"
+                value={address}
                 required
-                onChange={(e) => setStateValue(e.target.value)}
-              >
-                <option value="">Select State</option>
+                onChange={(e) => setAddress(e.target.value)}
+              />
+            </div>
 
-                {State.getStatesOfCountry(country).map((item) => (
+            <div className="shippingField">
+              <LocationCityIcon />
+              <input
+                type="text"
+                placeholder="City"
+                value={city}
+                required
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+
+            <div className="shippingField">
+              <PinDropIcon />
+              <input
+                type="text"
+                placeholder="Pin Code"
+                value={pinCode}
+                maxLength="6"
+                required
+                onChange={(e) => setPinCode(e.target.value.replace(/\D/g, ""))}
+              />
+            </div>
+
+            <div className="shippingField">
+              <PhoneIcon />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                value={phoneNo}
+                maxLength="10"
+                required
+                onChange={(e) => setPhoneNo(e.target.value.replace(/\D/g, ""))}
+              />
+            </div>
+
+            <div className="shippingField">
+              <PublicIcon />
+              <select
+                value={country}
+                required
+                onChange={(e) => handleCountryChange(e.target.value)}
+              >
+                <option value="">Select Country</option>
+
+                {Country.getAllCountries().map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
                     {item.name}
                   </option>
                 ))}
               </select>
             </div>
-          )}
 
-          <button className="shippingBtn" type="submit" disabled={!stateValue}>
-            Continue
-          </button>
-        </form>
+            {country && (
+              <div className="shippingField">
+                <TransferWithinAStationIcon />
+
+                <select
+                  value={stateValue}
+                  required
+                  onChange={(e) => setStateValue(e.target.value)}
+                >
+                  <option value="">Select State</option>
+
+                  {State.getStatesOfCountry(country).map((item) => (
+                    <option key={item.isoCode} value={item.isoCode}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <button
+              className="shippingBtn"
+              type="submit"
+              disabled={!stateValue || !country}
+            >
+              Continue
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

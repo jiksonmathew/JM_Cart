@@ -1,150 +1,115 @@
-/* ================= HEADING ================= */
-
 .productsHeading {
-  margin: 2vmax auto;
-  width: 15vw;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.17);
-  padding: 2vmax;
-  color: rgba(0, 0, 0, 0.7);
-  font: 500 1.5vmax "Roboto";
   text-align: center;
+  font-size: 2rem;
+  margin: 1.5rem 0;
+  font-weight: 600;
+  color: #111827;
 }
-
-/* ================= PAGE LAYOUT ================= */
 
 .productsPage {
-  width: 100%;
   display: flex;
+  gap: 20px;
+  padding: 0 20px;
 }
 
-/* ================= FILTER SIDEBAR ================= */
-
 .filterBox {
-  width: 220px;
-  padding: 20px;
+  width: 200px;
+  min-width: 200px;
+  background: #ffffff;
+  color: #111827;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   position: sticky;
-  top: 100px;
+  top: 90px;
   height: fit-content;
 }
 
-/* ================= CATEGORY ================= */
+.filterBox .MuiTypography-root {
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+  margin-bottom: 10px !important;
+}
 
 .categoryBox {
   list-style: none;
   padding: 0;
+  margin-top: 10px;
 }
 
 .category-link {
-  list-style: none;
-  color: rgba(0, 0, 0, 0.61);
-  font: 400 0.9rem "Roboto";
-  margin: 0.4vmax 0;
+  padding: 8px 12px;
+  margin: 6px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.category-link:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.activeCategory {
+  background: #2563eb;
+  color: white;
+}
+
+.MuiSlider-root {
+  color: #2563eb !important;
+}
+
+.clearFiltersBtn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  background: #111827;
+  color: white;
+  border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.category-link:hover {
-  color: tomato;
+.clearFiltersBtn:hover {
+  background: #1f2937;
 }
-
-.activeCategory {
-  color: tomato;
-  font-weight: 600;
-}
-
-/* ================= PRODUCT GRID ================= */
 
 .products {
   flex: 1;
-
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-
-  gap: 30px;
-  padding: 20px;
-  width: 100%;
-
-  min-height: 40vh;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
-/* ================= PAGINATION ================= */
+.products > * {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.products > *:hover {
+  transform: translateY(-6px);
+}
 
 .paginationBox {
   display: flex;
   justify-content: center;
-  margin: 6vmax;
+  margin: 2rem 0;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  padding: 0;
-}
-
-.page-item {
-  background-color: white;
-  list-style: none;
-  border: 1px solid rgba(0, 0, 0, 0.18);
-  padding: 1vmax 1.5vmax;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.page-item:first-child {
-  border-radius: 5px 0 0 5px;
-}
-
-.page-item:last-child {
-  border-radius: 0 5px 5px 0;
-}
-
-.page-link {
-  text-decoration: none;
-  font: 300 0.7vmax "Roboto";
-  color: rgb(80, 80, 80);
-}
-
-.page-item:hover {
-  background-color: rgb(230, 230, 230);
-}
-
-.page-item:hover .page-link {
-  color: black;
-}
-
-.pageItemActive {
-  background-color: tomato;
-}
-
-.pageLinkActive {
-  color: white;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 900px) {
-
+@media (max-width: 768px) {
   .productsPage {
     flex-direction: column;
   }
 
   .filterBox {
-    width: 90%;
-    margin: auto;
-    position: static;
-    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+    top: 0;
   }
 
-}
-
-@media screen and (max-width: 600px) {
-
-  .page-link {
-    font: 300 1.7vmax "Roboto";
+  .products {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
-
-  .category-link {
-    font: 400 1.8vmax "Roboto";
-  }
-
 }

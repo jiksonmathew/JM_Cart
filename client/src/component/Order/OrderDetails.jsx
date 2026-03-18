@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import "./orderDetails.css";
 import { useSelector, useDispatch } from "react-redux";
+import { getSingleOrder, clearErrors } from "../../features/order/orderSlice";
 import { Link, useParams } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { getOrderDetails, clearErrors } from "../../features/order/orderSlice";
 import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
 
@@ -11,11 +11,7 @@ const OrderDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const {
-    orderDetails: order,
-    error,
-    loading,
-  } = useSelector((state) => state.order);
+  const { order, error, loading } = useSelector((state) => state.order);
 
   useEffect(() => {
     if (error) {
@@ -23,16 +19,16 @@ const OrderDetails = () => {
       dispatch(clearErrors());
     }
 
-    dispatch(getOrderDetails(id));
+    dispatch(getSingleOrder(id));
   }, [dispatch, error, id]);
 
-  return loading ? (
-    <Loader />
-  ) : (
+  if (loading || !order) return <Loader />;
+
+  return (
     <div className="orderDetailsPage">
       <div className="orderDetailsContainer">
         <Typography variant="h4" className="orderHeading">
-          Order #{order?._id}
+          Order #{order._id}
         </Typography>
 
         <Typography className="sectionTitle">Shipping Info</Typography>
@@ -100,9 +96,7 @@ const OrderDetails = () => {
           {order?.orderItems?.map((item) => (
             <div key={item.product} className="orderItem">
               <img src={item.image} alt={item.name} />
-
               <Link to={`/product/${item.product}`}>{item.name}</Link>
-
               <span>
                 {item.quantity} × ₹{item.price} =
                 <b> ₹{item.quantity * item.price}</b>
