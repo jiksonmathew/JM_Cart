@@ -15,7 +15,7 @@ const errorMiddleware = require("./middlewares/error");
 // CORS
 app.use(
   cors({
-    origin: "https://jm-cart.onrender.com/",
+    origin: "https://jm-cart.onrender.com",
     credentials: true,
   }),
 );
