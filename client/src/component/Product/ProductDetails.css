@@ -2,9 +2,9 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 3vmax;
+  padding: 48px; /* 3vmax ≈ ~48px */
   box-sizing: border-box;
-  gap: 2rem;
+  gap: 32px;
 }
 
 .carousel {
@@ -34,23 +34,23 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .detailsBlock-1 > h2 {
-  font-size: 2rem;
+  font-size: 32px;
   margin: 0;
 }
 
 .detailsBlock-1 > p {
   color: gray;
-  font-size: 0.9rem;
+  font-size: 14px;
 }
 
 .detailsBlock-2 {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .detailsBlock-2-span {
@@ -58,14 +58,14 @@
 }
 
 .detailsBlock-3 > h1 {
-  font-size: 2rem;
+  font-size: 32px;
   margin: 0;
 }
 
 .detailsBlock-3-1 {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .detailsBlock-3-1-1 {
@@ -74,7 +74,7 @@
 }
 
 .detailsBlock-3-1-1 button {
-  padding: 0.7rem 1.5rem;
+  padding: 11px 24px;
   color: white;
   border: none;
   background-color: tomato;
@@ -83,14 +83,14 @@
 }
 
 .detailsBlock-3-1-1 input {
-  padding: 0.7rem;
+  padding: 11px;
   text-align: center;
   border: 1px solid #ccc;
-  margin: 0 0.5rem;
+  margin: 0 8px;
 }
 
 .detailsBlock-3-1 button:last-child {
-  padding: 0.7rem 1.5rem;
+  padding: 11px 24px;
   background-color: tomato;
   color: white;
   border: none;
@@ -112,12 +112,12 @@
 
 .detailsBlock-4 > p {
   color: #555;
-  line-height: 1.5;
+  line-height: 24px;
 }
 
 .submitReview {
   width: fit-content;
-  padding: 0.6rem 1.2rem;
+  padding: 10px 20px;
   background-color: black;
   color: white;
   border: none;
@@ -130,14 +130,14 @@
 
 .reviewsHeading {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 48px;
 }
 
 .reviews {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .noReviews {

@@ -1,28 +1,29 @@
+/* 🔹 NAVBAR */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: white;
+  border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
   z-index: 1000;
-  gap: 20px;
 }
 
+/* 🔹 LOGO */
 .logo {
   width: 120px;
 }
 
+/* 🔹 SEARCH */
 .search-bar {
   display: flex;
   flex: 1;
   max-width: 400px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
-  background: #f9fafb;
 }
 
 .search-bar input {
@@ -30,19 +31,17 @@
   border: none;
   padding: 8px;
   outline: none;
-  background: transparent;
-  font-size: 14px;
 }
 
 .search-bar button {
   background: #2563eb;
-  border: none;
   color: white;
+  border: none;
   padding: 8px 12px;
   cursor: pointer;
-  font-size: 14px;
 }
 
+/* 🔹 NAV LINKS */
 .nav-links {
   display: flex;
   gap: 20px;
@@ -50,59 +49,103 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #374151;
+  color: #333;
   font-weight: 600;
-  font-size: 16px;
-  transition: 0.2s;
 }
 
-.nav-links a:hover {
-  color: #2563eb;
-}
-
+/* 🔹 RIGHT */
 .right {
   display: flex;
-  gap: 15px;
+  gap: 10px;
+}
+
+/* 🍔 HAMBURGER */
+.menu-icon {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
   cursor: pointer;
 }
 
-@media (max-width: 992px) {
-  .search-bar {
-    max-width: 300px;
-  }
+.menu-icon span {
+  width: 25px;
+  height: 3px;
+  background: black;
+  transition: 0.3s;
 }
 
-@media (max-width: 768px) {
+/* 🔥 ANIMATION */
+.menu-icon.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-icon.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* 📱 SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  height: 100vh;
+  background: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: 0.3s ease;
+  z-index: 999;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #111;
+}
+
+/* 📲 BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  display: none;
+  justify-content: space-around;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.bottom-nav a {
+  font-size: 20px;
+  text-decoration: none;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 480px) {
   .nav-links {
     display: none;
   }
 
   .search-bar {
-    max-width: 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .topbar {
-    padding: 8px 12px;
-    gap: 10px;
+    display: none;
   }
 
-  .logo {
-    width: 100px;
+  .menu-icon {
+    display: flex;
   }
 
-  .search-bar {
-    max-width: 150px;
-  }
-
-  .search-bar input {
-    padding: 6px;
-    font-size: 13px;
-  }
-
-  .search-bar button {
-    padding: 6px 10px;
-    font-size: 13px;
+  .bottom-nav {
+    display: flex;
   }
 }

@@ -1,7 +1,8 @@
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
-  baseURL: "https://jm-cart-server.onrender.com/api/v1",
+  baseURL: apiUrl || "http://localhost:4000/api/v1",
   withCredentials: true,
 });
 

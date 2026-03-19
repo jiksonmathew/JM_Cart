@@ -82,6 +82,7 @@
 @media (max-width: 480px) {
   .contactCard {
     padding: 20px;
+    border-radius: 0;
   }
 
   .contactText {
