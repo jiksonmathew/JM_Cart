@@ -97,19 +97,9 @@
 }
 
 @media (max-width: 480px) {
-  .footer {
-    padding: 20px 5%;
+  .footer{
+    background: #fff;
   }
+ 
 
-  .footerStores img {
-    width: 100px;
-  }
-
-  .footerMiddle h1 {
-    font-size: 20px;
-  }
-
-  .footerCopyright {
-    font-size: 13px;
-  }
 }
