@@ -15,12 +15,9 @@ const upload = require("../middlewares/upload");
 const { isAuthenticated, isAdmin } = require("../middlewares/auth");
 const router = express.Router();
 
-// Public Routes
 router.get("/products", getAllProducts);
 router.get("/product/:id", getProductDetails);
 router.get("/products/featured", getFeaturedProducts);
-
-// Admin Routes
 router.post(
   "/admin/product/new",
   isAuthenticated,
@@ -29,21 +26,16 @@ router.post(
   createProduct,
 );
 router.get("/admin/products", isAuthenticated, isAdmin, getAdminProducts);
-
 router
   .route("/admin/product/:id")
   .get(isAuthenticated, isAdmin, getProductDetails)
   .put(isAuthenticated, isAdmin, upload.array("images", 5), updateProduct)
   .delete(isAuthenticated, isAdmin, deleteProduct);
-// Review Routes
 router.post("/review", isAuthenticated, createProductReview);
-
 router
   .route("/reviews")
   .get(isAuthenticated, getProductReviews)
   .delete(isAuthenticated, deleteReview);
-
-// Optional: Admin delete any review
 router.delete("/admin/review", isAuthenticated, isAdmin, deleteReview);
 
 module.exports = router;

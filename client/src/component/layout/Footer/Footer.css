@@ -97,18 +97,18 @@
 }
 
 @media (max-width: 480px) {
-  .footer {
-    flex-direction: row;
-    text-align: center;
-    gap: 24px;
-  }
-
-  .footerRight {
+  .footer{
+    flex-direction: column;
     align-items: center;
   }
-
-  .footerStores {
-    justify-content: center;
+  .footerRight{
+    order: 2;
+  }
+  .footerLeft{
+    order: 1;
+  }
+  .footerMiddle{
+    order: 3;
   }
 
 }

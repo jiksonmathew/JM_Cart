@@ -145,9 +145,10 @@
 
 @media (max-width: 480px) {
   .LoginSignUpContainer{
+    position: absolute;
     padding: 20px;
     width: 90%;
-
+    height: 60vh;
   }
 
   .LoginSignUpBox {

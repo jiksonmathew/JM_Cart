@@ -1,115 +1,128 @@
-.productsHeading {
-  text-align: center;
-  font-size: 2rem;
-  margin: 1.5rem 0;
-  font-weight: 600;
-  color: #111827;
-}
-
 .productsPage {
   display: flex;
-  gap: 20px;
-  padding: 0 20px;
+  gap: 28px;
+  padding: 24px;
+  background: #f5f7fb;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+.productsHeading {
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 20px 0;
 }
 
 .filterBox {
-  width: 200px;
-  min-width: 200px;
-  background: #ffffff;
-  color: #111827;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  width: 240px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   position: sticky;
-  top: 90px;
-  height: fit-content;
+  top: 20px;
 }
 
-.filterBox .MuiTypography-root {
-  color: #6b7280 !important;
-  font-weight: 500 !important;
-  margin-bottom: 10px !important;
+.productBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.categoryBox {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
+.products {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(4, 1fr);
 }
 
-.category-link {
-  padding: 8px 12px;
-  margin: 6px 0;
-  cursor: pointer;
+.paginationBox {
+  margin:25px auto;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.paginationBox ul {
+  display: flex;
+  flex-wrap: nowrap !important;
+  gap: 6px;
+}
+
+.productCard {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  transition: 0.3s;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.productCard:hover {
+  transform: translateY(-5px);
+}
+
+.filterItem {
+  margin-bottom: 20px;
+}
+
+.filterOption {
+  padding: 8px;
   border-radius: 8px;
-  transition: all 0.25s ease;
-  color: #374151;
-  font-size: 0.9rem;
+  cursor: pointer;
 }
 
-.category-link:hover {
-  background: #f3f4f6;
-  color: #111827;
+.filterOption:hover {
+  background: #f0f0f0;
 }
 
 .activeCategory {
-  background: #2563eb;
-  color: white;
+  background: #1976d2;
+  color: #fff;
 }
 
-.MuiSlider-root {
-  color: #2563eb !important;
+.checkboxItem {
+  display: flex;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.sortBar select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
 }
 
 .clearFiltersBtn {
   width: 100%;
   padding: 10px;
-  margin-top: 15px;
-  border: none;
-  background: #111827;
+  background: red;
   color: white;
+  border: none;
   border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.clearFiltersBtn:hover {
-  background: #1f2937;
-}
-
-.products {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.products > * {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.products > *:hover {
-  transform: translateY(-6px);
 }
 
 .paginationBox {
+  margin-top: 25px;
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
 }
 
-@media (max-width: 768px) {
+.products p {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
   .productsPage {
     flex-direction: column;
   }
 
   .filterBox {
     width: 100%;
-    position: relative;
-    top: 0;
+    position: static;
   }
 
   .products {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
 }

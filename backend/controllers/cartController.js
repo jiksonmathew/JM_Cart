@@ -1,6 +1,5 @@
 const Cart = require("../models/cartModel");
 
-// ADD OR UPDATE CART ITEM
 exports.addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -47,7 +46,6 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-// GET USER CART
 exports.getUserCart = async (req, res) => {
   try {
     const cartItems = await Cart.find({ user: req.user._id }).populate(
@@ -67,8 +65,6 @@ exports.getUserCart = async (req, res) => {
   }
 };
 
-// REMOVE SINGLE CART ITEM
-// REMOVE SINGLE CART ITEM
 exports.removeCartItem = async (req, res) => {
   try {
     const cartItem = await Cart.findById(req.params.id);
@@ -80,7 +76,6 @@ exports.removeCartItem = async (req, res) => {
       });
     }
 
-    // Ensure the item belongs to the logged-in user
     if (cartItem.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,

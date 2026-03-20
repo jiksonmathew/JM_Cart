@@ -34,13 +34,15 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
 
   const baseQuery = new ApiFeatures(Product.find(), req.query)
     .search()
-    .filter();
+    .filter()
+    .sort();
 
   const filteredProductsCount = await baseQuery.query.clone().countDocuments();
 
   const paginatedQuery = new ApiFeatures(Product.find(), req.query)
     .search()
     .filter()
+    .sort()
     .pagination(resultPerPage);
 
   const products = await paginatedQuery.query;

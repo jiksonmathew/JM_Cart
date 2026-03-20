@@ -40,6 +40,7 @@ export const getAllProducts = createAsyncThunk(
       price = [0, 100000],
       category,
       ratings = 0,
+      sort,
     },
     thunkAPI,
   ) => {
@@ -47,7 +48,7 @@ export const getAllProducts = createAsyncThunk(
       let link = `/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
 
       if (category) link += `&category=${category}`;
-
+      if (sort) link += `&sort=${sort}`;
       const { data } = await api.get(link);
       return data;
     } catch (error) {

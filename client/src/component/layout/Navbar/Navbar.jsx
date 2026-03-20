@@ -1,79 +1,6 @@
-// import React, { useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import "./Navbar.css";
-
-// import { useSelector } from "react-redux";
-
-// import SearchIcon from "@mui/icons-material/Search";
-// import LockRoundedIcon from "@mui/icons-material/LockRounded";
-
-// import UserOptions from "../Header/UserOptions";
-// import logo from "../../../images/jm_cart.png";
-
-// export default function Header() {
-//   const { isAuthenticated, user } = useSelector((state) => state.user);
-//   const [keyword, setKeyword] = useState("");
-
-//   const navigate = useNavigate();
-
-//   const handleLoginClick = () => {
-//     if (!isAuthenticated) {
-//       navigate("/login");
-//       return;
-//     }
-//     navigate("/account");
-//   };
-
-//   const searchHandler = () => {
-//     if (keyword.trim()) {
-//       navigate(`/products/${keyword}`);
-//     } else {
-//       navigate("/products");
-//     }
-//   };
-
-//   return (
-//     <header className="topbar">
-//       <Link to="/">
-//         <img src={logo} alt="Logo" className="logo" />
-//       </Link>
-
-//       <div className="search-bar">
-//         <input
-//           type="text"
-//           placeholder="Search products..."
-//           value={keyword}
-//           onChange={(e) => setKeyword(e.target.value)}
-//           onKeyDown={(e) => e.key === "Enter" && searchHandler()}
-//         />
-//         <button onClick={searchHandler}>
-//           <SearchIcon />
-//         </button>
-//       </div>
-
-//       <div className="nav-links">
-//         <Link to="/products">Products</Link>
-//         <Link to="/about">About</Link>
-//         <Link to="/contact">Contact</Link>
-//       </div>
-
-//       <div className="right">
-//         {isAuthenticated ? (
-//           <UserOptions user={user} />
-//         ) : (
-//           <LockRoundedIcon
-//             className="icon"
-//             onClick={handleLoginClick}
-//             titleAccess="Login"
-//           />
-//         )}
-//       </div>
-//     </header>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 
 import { useSelector } from "react-redux";
@@ -84,7 +11,7 @@ import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import UserOptions from "../Header/UserOptions";
 import logo from "../../../images/jm_cart.png";
 
-export default function Header() {
+export default function Navbar() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [keyword, setKeyword] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -94,72 +21,49 @@ export default function Header() {
   const handleLoginClick = () => {
     if (!isAuthenticated) {
       navigate("/login");
-      return;
+    } else {
+      navigate("/account");
     }
-    navigate("/account");
   };
 
   const searchHandler = () => {
-    if (keyword.trim()) {
-      navigate(`/products/${keyword}`);
-    } else {
-      navigate("/products");
-    }
+    navigate(keyword.trim() ? `/products/${keyword}` : "/products");
   };
 
-  // 🔒 prevent scroll when sidebar open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
   }, [menuOpen]);
 
   return (
-    <>
-      <header className="topbar">
-        <Link to="/">
-          <img src={logo} alt="Logo" className="logo" />
-        </Link>
+    <header className="topbar">
+      <Link to="/">
+        <img src={logo} alt="Logo" className="logo" />
+      </Link>
 
-        {/* 🔍 Search */}
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && searchHandler()}
-          />
-          <button onClick={searchHandler}>
-            <SearchIcon />
-          </button>
-        </div>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && searchHandler()}
+        />
+        <button onClick={searchHandler}>
+          <SearchIcon />
+        </button>
+      </div>
 
-        {/* 🖥 Desktop Links */}
-        <div className="nav-links">
-          <Link to="/products">Products</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact">Contact</Link>
-        </div>
+      <div className="nav-links">
+        <Link to="/products">Products</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+      </div>
 
-        {/* 👤 Right */}
-        <div className="right">
-          {isAuthenticated ? (
-            <UserOptions user={user} />
-          ) : (
-            <LockRoundedIcon
-              className="icon"
-              onClick={handleLoginClick}
-              titleAccess="Login"
-            />
-          )}
-        </div>
+      <div className="menuIcon" onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </div>
 
-        <div className="menu-arrow" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? "×" : "<"}
-        </div>
-      </header>
-
-      {/* 📱 Sidebar */}
-      <div className={`sidebar ${menuOpen ? "active" : ""}`}>
+      <div className={`mobileMenu ${menuOpen ? "active" : ""}`}>
         <Link to="/" onClick={() => setMenuOpen(false)}>
           Home
         </Link>
@@ -174,13 +78,17 @@ export default function Header() {
         </Link>
       </div>
 
-      {/* 📲 Bottom Nav */}
-      <div className="bottom-nav">
-        <Link to="/">🏠</Link>
-        <Link to="/products">🛍️</Link>
-        <Link to="/search">🔍</Link>
-        <Link to="/account">👤</Link>
+      <div className="right">
+        {isAuthenticated ? (
+          <UserOptions user={user} />
+        ) : (
+          <LockRoundedIcon
+            className="icon"
+            onClick={handleLoginClick}
+            titleAccess="Login"
+          />
+        )}
       </div>
-    </>
+    </header>
   );
 }

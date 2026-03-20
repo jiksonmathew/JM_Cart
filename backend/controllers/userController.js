@@ -7,7 +7,6 @@ const sendEmail = require("../utils/sendEmail");
 const fs = require("fs");
 const cloudinary = require("../config/cloudinary.js");
 
-// Register user
 exports.registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -69,7 +68,6 @@ exports.registerUser = async (req, res, next) => {
   }
 };
 
-// Login
 exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -102,7 +100,6 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Logout
 exports.logoutUser = catchAsyncError(async (req, res) => {
   clearAuthToken(res);
 
@@ -112,7 +109,6 @@ exports.logoutUser = catchAsyncError(async (req, res) => {
   });
 });
 
-// Forgot password
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email?.toLowerCase() });
 
@@ -152,7 +148,6 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
   }
 });
 
-// Reset password
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -187,7 +182,6 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Get logged in user
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
@@ -201,7 +195,6 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Update password
 exports.updatePassword = catchAsyncError(async (req, res, next) => {
   const { oldPassword, newPassword, confirmPassword } = req.body;
 
@@ -221,7 +214,6 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Old password is incorrect", 401));
   }
 
-  // ❗ prevent same password
   if (oldPassword === newPassword) {
     return next(
       new ErrorHandler("New password cannot be same as old password", 400),
@@ -247,7 +239,6 @@ exports.updatePassword = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Update profile
 exports.updateProfile = catchAsyncError(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
@@ -289,7 +280,6 @@ exports.updateProfile = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Admin - get all users
 exports.getAllUsers = catchAsyncError(async (req, res) => {
   const users = await User.find();
 
@@ -299,7 +289,6 @@ exports.getAllUsers = catchAsyncError(async (req, res) => {
   });
 });
 
-// Admin - get single user
 exports.getSingleUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
@@ -311,7 +300,6 @@ exports.getSingleUser = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Admin - update user
 exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
   const newUserData = {
     name: req.body.name,
@@ -333,7 +321,6 @@ exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// Admin - delete user
 exports.deleteUser = catchAsyncError(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 

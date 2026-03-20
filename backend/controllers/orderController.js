@@ -4,7 +4,6 @@ const Cart = require("../models/cartModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 
-// CREATE ORDER
 exports.createOrder = catchAsyncError(async (req, res, next) => {
   const {
     shippingInfo,
@@ -32,7 +31,6 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
     user: req.user._id,
   });
 
-  // REMOVE ORDERED ITEMS FROM CART
   const orderedProductIds = orderItems.map((item) => item.product);
 
   await Cart.deleteMany({
@@ -46,7 +44,6 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// GET SINGLE ORDER
 exports.getSingleOrder = catchAsyncError(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
@@ -71,7 +68,6 @@ exports.getSingleOrder = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// GET MY ORDERS
 exports.getMyOrders = catchAsyncError(async (req, res, next) => {
   const orders = await Order.find({ user: req.user._id });
 
@@ -81,7 +77,6 @@ exports.getMyOrders = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// ADMIN GET ALL ORDERS
 exports.getAllOrders = catchAsyncError(async (req, res, next) => {
   const orders = await Order.find();
 
@@ -98,7 +93,6 @@ exports.getAllOrders = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// UPDATE STOCK
 const updateStock = async (productId, quantity) => {
   const product = await Product.findById(productId);
 
@@ -115,7 +109,6 @@ const updateStock = async (productId, quantity) => {
   await product.save({ validateBeforeSave: false });
 };
 
-// UPDATE ORDER STATUS
 exports.updateOrder = catchAsyncError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -151,7 +144,6 @@ exports.updateOrder = catchAsyncError(async (req, res, next) => {
   });
 });
 
-// DELETE ORDER
 exports.deleteOrder = catchAsyncError(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 

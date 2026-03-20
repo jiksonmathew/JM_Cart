@@ -17,9 +17,15 @@ const Footer = () => {
       </div>
 
       <div className="footerMiddle">
-        <h1>JM-CART</h1>
-        <p>High Quality is our first priority</p>
-        <p className="footerCopyright">© 2026 JM-Cart. All rights reserved.</p>
+        <div className="footerLogo">
+          <h1>JM-CART</h1>
+          <p>High Quality is our first priority</p>
+        </div>
+        <div className="footerCopyright">
+          <p className="footerCopyright">
+            © 2026 JM-Cart. All rights reserved.
+          </p>
+        </div>
       </div>
 
       <div className="footerRight">

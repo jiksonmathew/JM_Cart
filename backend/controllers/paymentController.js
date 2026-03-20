@@ -23,6 +23,7 @@ exports.verifyPayment = async (req, res) => {
     message: "Invalid signature",
   });
 };
+
 exports.processPayment = async (req, res) => {
   try {
     const options = {

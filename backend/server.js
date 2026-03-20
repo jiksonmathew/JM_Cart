@@ -37,7 +37,6 @@ process.on("uncaughtException", (err) => {
       });
     });
 
-    // Graceful shutdown (for Docker / Cloud / PM2)
     process.on("SIGTERM", () => {
       console.log("SIGTERM received. Shutting down gracefully.");
       server.close(() => {

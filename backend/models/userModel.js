@@ -49,8 +49,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// 🔐 HASH PASSWORD BEFORE SAVE
-
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;
@@ -59,12 +57,10 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-// 🔑 COMPARE PASSWORD
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// 🔑 GENERATE RESET TOKEN
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
 
