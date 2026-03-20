@@ -1,3 +1,57 @@
+/* wrapper */
 .featuredProducts {
+  position: relative;
   margin-bottom: 32px;
+}
+
+/* horizontal scroll */
+.featuredProducts .products {
+  display: flex !important;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px;
+
+  scroll-snap-type: x mandatory; /* 🔥 snap effect */
+}
+
+/* hide scrollbar */
+.featuredProducts .products::-webkit-scrollbar {
+  display: none;
+}
+
+/* cards */
+.featuredProducts .productCard {
+  min-width: 220px;
+  flex-shrink: 0;
+
+  scroll-snap-align: start; /* 🔥 snap alignment */
+}
+
+/* buttons */
+.scrollBtn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.scrollBtn:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.scrollBtn.left {
+  left: 5px;
+}
+
+.scrollBtn.right {
+  right: 5px;
 }

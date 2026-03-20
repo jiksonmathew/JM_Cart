@@ -249,7 +249,7 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 
 exports.getFeaturedProducts = async (req, res) => {
   try {
-    const products = await Product.aggregate([{ $sample: { size: 8 } }]);
+    const products = await Product.aggregate([{ $sample: { size: 20 } }]);
 
     res.status(200).json({
       success: true,
