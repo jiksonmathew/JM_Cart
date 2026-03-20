@@ -144,9 +144,14 @@
 }
 
 @media (max-width: 480px) {
-  .LoginSignUpBox {
-    margin: 16px;
+  .LoginSignUpContainer{
     padding: 20px;
+    width: 90%;
+
+  }
+
+  .LoginSignUpBox {
+    padding: 10px;
   }
 
   .inputBox input {

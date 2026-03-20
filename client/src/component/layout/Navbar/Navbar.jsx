@@ -153,15 +153,9 @@ export default function Header() {
           )}
         </div>
 
-        {/* 🍔 Hamburger */}
-        {/* <div
-          className={`menu-icon ${menuOpen ? "open" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div> */}
+        <div className="menu-arrow" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? "×" : "<"}
+        </div>
       </header>
 
       {/* 📱 Sidebar */}

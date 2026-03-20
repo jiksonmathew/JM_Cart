@@ -115,13 +115,24 @@
 
 @media (max-width: 480px) {
   .aboutSectionContainer {
-    padding: 20px;
-    border-radius: 12px;
+    padding: 10px;
+    flex-direction: column; /* better for mobile */
+    align-items: center;     /* centers everything */
+    text-align: center;
+    border-radius: 10px;
   }
 
   .aboutAvatar {
-    width: 100px !important;
-    height: 100px !important;
+    display: flex;           /* REQUIRED */
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;          /* extra safety */
+  }
+
+  .aboutAvatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
   }
 
   .aboutDescription {

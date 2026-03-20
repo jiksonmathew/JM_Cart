@@ -97,9 +97,18 @@
 }
 
 @media (max-width: 480px) {
-  .footer{
-    background: #fff;
+  .footer {
+    flex-direction: row;
+    text-align: center;
+    gap: 24px;
   }
- 
+
+  .footerRight {
+    align-items: center;
+  }
+
+  .footerStores {
+    justify-content: center;
+  }
 
 }
