@@ -11,6 +11,54 @@
   gap: 32px;
 }
 
+/* ===== ACTION BUTTON WRAPPER ===== */
+.actionButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ===== ADD TO CART ===== */
+.addToCartBtn {
+  flex: 1;
+  padding: 10px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.addToCartBtn:hover {
+  transform: scale(1.03);
+}
+
+/* ===== BUY NOW (GREEN) ===== */
+.buyNowBtn {
+  flex: 1;
+  padding: 10px;
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.buyNowBtn:hover {
+  transform: scale(1.03);
+}
+
+/* Disabled state */
+.buyNowBtn:disabled,
+.addToCartBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
 .carousel {
   flex: 1;
   max-width: 500px;

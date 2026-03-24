@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Products.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,97 +7,30 @@ import {
 } from "../../features/product/productSlice";
 import ProductCard from "../Home/ProductCard";
 import Pagination from "@mui/material/Pagination";
-import Typography from "@mui/material/Typography";
-import Skeleton from "@mui/material/Skeleton";
 import toast from "react-hot-toast";
-import { useParams, useSearchParams } from "react-router-dom";
-
-const categories = [
-  "Smartphone",
-  "Laptop",
-  "Washing Machine",
-  "Refrigerator",
-  "Television",
-  "Shirts",
-  "Pants",
-  "Footwear",
-];
-
-const priceRanges = [
-  { label: "All", value: [0, 100000] },
-  { label: "Under ₹1,000", value: [0, 1000] },
-  { label: "₹1,000 - ₹5,000", value: [1000, 5000] },
-  { label: "₹5,000 - ₹10,000", value: [5000, 10000] },
-  { label: "₹10,000 - ₹50,000", value: [10000, 50000] },
-  { label: "Above ₹50,000", value: [50000, 100000] },
-];
-
-const ProductSkeleton = () => {
-  return (
-    <div className="productCard">
-      <Skeleton variant="rectangular" height={180} />
-      <Skeleton variant="text" height={25} />
-      <Skeleton variant="text" width="60%" />
-    </div>
-  );
-};
+import { motion } from "framer-motion";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const { keyword } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [currentPage, setCurrentPage] = useState(
-    Number(searchParams.get("page")) || 1,
-  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("");
 
-  const [price, setPrice] = useState([
-    Number(searchParams.get("minPrice")) || 0,
-    Number(searchParams.get("maxPrice")) || 100000,
-  ]);
-
-  const [category, setCategory] = useState(searchParams.get("category") || "");
-
-  const [ratings, setRatings] = useState(
-    Number(searchParams.get("ratings")) || 0,
-  );
-
-  const [sort, setSort] = useState(searchParams.get("sort") || "");
-
-  const {
-    products,
-    loading,
-    error,
-    productCount,
-    resultPerPage,
-    filteredProductsCount,
-  } = useSelector((state) => state.product);
-
-  useEffect(() => {
-    const params = {};
-
-    if (currentPage !== 1) params.page = currentPage;
-    if (ratings > 0) params.ratings = ratings;
-    if (price[0] !== 0) params.minPrice = price[0];
-    if (price[1] !== 100000) params.maxPrice = price[1];
-    if (category) params.category = category;
-    if (sort) params.sort = sort;
-
-    setSearchParams(params);
-  }, [currentPage, category, ratings, price, sort]);
+  const { products, loading, error, filteredProductsCount, resultPerPage } =
+    useSelector((state) => state.product);
 
   useEffect(() => {
     dispatch(
       getAllProducts({
-        keyword: keyword || "",
+        keyword: debouncedSearch,
         currentPage,
-        price,
         category,
-        ratings,
         sort,
       }),
     );
-  }, [dispatch, keyword, currentPage, price, category, ratings, sort]);
+  }, [dispatch, currentPage, debouncedSearch, category, sort]);
 
   useEffect(() => {
     if (error) {
@@ -106,132 +39,92 @@ const Products = () => {
     }
   }, [error, dispatch]);
 
-  const setCurrentPageNo = (_, value) => {
-    setCurrentPage(value);
-  };
-
-  const clearFilters = () => {
-    setPrice([0, 100000]);
-    setCategory("");
-    setRatings(0);
-    setSort("");
-    setCurrentPage(1);
-    setSearchParams({});
-  };
-
-  const count = filteredProductsCount ?? productCount;
+  const categories = [
+    "All",
+    "Smartphone",
+    "Television",
+    "Refrigerator",
+    "Washing Machine",
+    "Laptop",
+    "Shirts",
+    "Pants",
+    "Footwear",
+  ];
 
   return (
-    <Fragment>
-      <div className="productsPage">
-        <div className="filterBox">
-          <div className="sortBar">
-            <Typography>Sort By:</Typography>
-            <select
-              value={sort}
-              onChange={(e) => {
-                setSort(e.target.value);
+    <div className="productsPage">
+      <div className="premiumHeader">
+        <h1>Find Your Perfect Product</h1>
+      </div>
+
+      <div className="topBar">
+        <div className="categoryBar">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={
+                category === cat || (cat === "All" && category === "")
+                  ? "active"
+                  : ""
+              }
+              onClick={() => {
+                setCategory(cat === "All" ? "" : cat);
                 setCurrentPage(1);
               }}
             >
-              <option value="">Default</option>
-              <option value="price_asc">Price: Low → High</option>
-              <option value="price_desc">Price: High → Low</option>
-              <option value="rating_desc">Top Rated</option>
-              <option value="newest">Newest</option>
-            </select>
-          </div>
-
-          <div className="filterItem">
-            <Typography>Price</Typography>
-            {priceRanges.map((range) => (
-              <div
-                key={range.label}
-                className={`filterOption ${
-                  price[0] === range.value[0] && price[1] === range.value[1]
-                    ? "activeCategory"
-                    : ""
-                }`}
-                onClick={() => {
-                  setPrice(range.value);
-                  setCurrentPage(1);
-                }}
-              >
-                {range.label}
-              </div>
-            ))}
-          </div>
-
-          <div className="filterItem">
-            <Typography>Categories</Typography>
-            {categories.map((cat) => (
-              <label key={cat} className="checkboxItem">
-                <input
-                  type="radio"
-                  name="category"
-                  checked={category === cat}
-                  onChange={() => {
-                    setCategory(cat);
-                    setCurrentPage(1);
-                  }}
-                />
-                {cat}
-              </label>
-            ))}
-          </div>
-
-          <div className="filterItem">
-            <Typography>Ratings</Typography>
-            <select
-              value={ratings}
-              onChange={(e) => {
-                setRatings(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-            >
-              <option value={0}>All</option>
-              <option value={4}>4★ & above</option>
-              <option value={3}>3★ & above</option>
-              <option value={2}>2★ & above</option>
-            </select>
-          </div>
-
-          {(category ||
-            ratings > 0 ||
-            price[0] !== 0 ||
-            price[1] !== 100000) && (
-            <button className="clearFiltersBtn" onClick={clearFilters}>
-              Clear Filters
+              {cat}
             </button>
-          )}
+          ))}
         </div>
-        <div className="productBox">
-          <h2 className="productsHeading">Products</h2>
-          <div className="products">
-            {loading ? (
-              [...Array(8)].map((_, i) => <ProductSkeleton key={i} />)
-            ) : products && products.length > 0 ? (
-              products.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))
-            ) : (
-              <p>No Products Found</p>
-            )}
 
-            {count > resultPerPage && (
-              <div className="paginationBox">
-                <Pagination
-                  count={Math.ceil(count / resultPerPage)}
-                  page={currentPage}
-                  onChange={setCurrentPageNo}
-                  color="primary"
-                />
-              </div>
-            )}
-          </div>
+        <div className="sortBox">
+          <select
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">Sort</option>
+            <option value="price_asc">Price: Low → High</option>
+            <option value="price_desc">Price: High → Low</option>
+            <option value="rating">Top Rated</option>
+            <option value="newest">Newest</option>
+          </select>
         </div>
       </div>
-    </Fragment>
+
+      <div className="products">
+        {loading ? (
+          <p>Loading...</p>
+        ) : products?.length > 0 ? (
+          products.map((product) => (
+            <motion.div
+              key={product._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="premiumCard">
+                <ProductCard product={product} />
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <p>No Products Found</p>
+        )}
+      </div>
+
+      {filteredProductsCount > resultPerPage && (
+        <div className="paginationBox">
+          <Pagination
+            count={Math.ceil(filteredProductsCount / resultPerPage)}
+            page={currentPage}
+            onChange={(_, value) => setCurrentPage(value)}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

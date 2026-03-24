@@ -24,13 +24,14 @@ import {
 import Loader from "../layout/Loader/Loader";
 import ReviewCard from "./ReviewCard";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import no_image from "../../images/image_not_available.png";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { product, loading, error } = useSelector((state) => state.product);
   const { isAuthenticated, user } = useSelector((state) => state.user);
 
@@ -66,6 +67,26 @@ const ProductDetails = () => {
       toast.success("Item Added To Cart");
     } catch (err) {
       toast.error(err?.message || "Failed to add item");
+    }
+  };
+
+  const buyNowHandler = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to continue");
+      return;
+    }
+
+    try {
+      await dispatch(
+        addToCart({
+          productId: product._id,
+          quantity,
+        }),
+      ).unwrap();
+
+      navigate("/cart");
+    } catch (err) {
+      toast.error(err?.message || "Failed to proceed");
     }
   };
 
@@ -191,9 +212,23 @@ const ProductDetails = () => {
                 <button onClick={increaseQuantity}>+</button>
               </div>
 
-              <button disabled={product?.stock < 1} onClick={addToCartHandler}>
-                {product?.stock < 1 ? "Out Of Stock" : "Add to Cart"}
-              </button>
+              <div className="actionButtons">
+                <button
+                  className="addToCartBtn"
+                  disabled={product?.stock < 1}
+                  onClick={addToCartHandler}
+                >
+                  Add to Cart
+                </button>
+
+                <button
+                  className="buyNowBtn"
+                  disabled={product?.stock < 1}
+                  onClick={buyNowHandler}
+                >
+                  Buy Now
+                </button>
+              </div>
             </div>
 
             <p>
