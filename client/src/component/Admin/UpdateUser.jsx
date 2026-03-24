@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-
 import {
   getSingleUser,
   updateUserProfile,
   clearErrors,
   resetUpdateUser,
 } from "../../features/user/userSlice";
-
 import { Button } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-
 import toast from "react-hot-toast";
-import SideBar from "./Sidebar";
 import Loader from "../layout/Loader/Loader";
+import Sidebar from "./Sidebar";
 
 const UpdateUser = () => {
   const dispatch = useDispatch();
@@ -81,8 +77,7 @@ const UpdateUser = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
+      <Sidebar />
       <div className="newProductContainer">
         {loading && <Loader />}
 

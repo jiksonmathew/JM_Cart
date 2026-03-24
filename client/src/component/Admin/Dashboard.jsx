@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./dashboard.css";
 import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Doughnut, Line } from "react-chartjs-2";
+import { Line, Doughnut } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
+import { FaBox, FaShoppingCart, FaUsers, FaRupeeSign } from "react-icons/fa";
 
 import {
   Chart as ChartJS,
@@ -18,6 +19,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 import {
   getAdminProducts,
@@ -42,28 +45,30 @@ ChartJS.register(
   PointElement,
   Tooltip,
   Legend,
+  ChartDataLabels,
 );
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     products = [],
-    loading: productLoading,
-    error: productError,
-  } = useSelector((state) => state.product);
-
+    loading: pLoad,
+    error: pErr,
+  } = useSelector((s) => s.product);
   const {
     orders = [],
-    loading: orderLoading,
-    error: orderError,
-  } = useSelector((state) => state.order);
-
+    loading: oLoad,
+    error: oErr,
+  } = useSelector((s) => s.order);
   const {
     users = [],
-    loading: userLoading,
-    error: userError,
-  } = useSelector((state) => state.user);
+    loading: uLoad,
+    error: uErr,
+  } = useSelector((s) => s.user);
+
+  const loading = pLoad || oLoad || uLoad;
 
   useEffect(() => {
     dispatch(getAdminProducts());
@@ -72,99 +77,148 @@ const Dashboard = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (productError) {
-      toast.error(productError);
+    if (pErr) {
+      toast.error(pErr);
       dispatch(clearProductErrors());
     }
-
-    if (orderError) {
-      toast.error(orderError);
+    if (oErr) {
+      toast.error(oErr);
       dispatch(clearOrderErrors());
     }
-
-    if (userError) {
-      toast.error(userError);
+    if (uErr) {
+      toast.error(uErr);
       dispatch(clearUserErrors());
     }
-  }, [productError, orderError, userError, dispatch]);
+  }, [pErr, oErr, uErr, dispatch]);
 
-  if (productLoading || orderLoading || userLoading) return <Loader />;
+  const totalAmount = orders.reduce((a, o) => a + (o.totalPrice || 0), 0);
+  const outOfStock = products.filter((p) => p.stock === 0).length;
 
-  const outOfStock = products.filter((item) => item.stock === 0).length;
+  const delivered = orders.filter((o) => o.orderStatus === "Delivered").length;
+  const processing = orders.filter(
+    (o) => o.orderStatus === "Processing",
+  ).length;
+  const shipped = orders.filter((o) => o.orderStatus === "Shipped").length;
 
-  const totalAmount = orders.reduce(
-    (acc, item) => acc + (item.totalPrice || 0),
-    0,
-  );
-
-  const formatPrice = (price) =>
-    new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    }).format(price);
-
-  const lineState = {
-    labels: ["Initial Amount", "Amount Earned"],
-    datasets: [
-      {
-        label: "TOTAL AMOUNT",
-        backgroundColor: "tomato",
-        hoverBackgroundColor: "rgb(197,72,49)",
-        data: [0, totalAmount],
+  const doughnutOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: "bottom" },
+      datalabels: {
+        color: "#fff",
+        formatter: (value, ctx) => {
+          const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+          return total ? ((value / total) * 100).toFixed(0) + "%" : "0%";
+        },
       },
-    ],
-  };
-
-  const doughnutState = {
-    labels: ["Out of Stock", "In Stock"],
-    datasets: [
-      {
-        backgroundColor: ["#00A6B4", "#6800B4"],
-        hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [outOfStock, products.length - outOfStock],
-      },
-    ],
+    },
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboardWrapper">
       <Sidebar />
-
       <div className="dashboardContainer">
-        <Typography variant="h4">Dashboard</Typography>
-
-        <div className="dashboardSummary">
-          <div>
-            <p>
-              Total Amount <br /> {formatPrice(totalAmount)}
-            </p>
+        {loading ? (
+          <div className="loaderCenter">
+            <Loader />
           </div>
+        ) : (
+          <>
+            <div className="topBar">
+              <Typography variant="h4">Admin Dashboard</Typography>
+            </div>
 
-          <div className="dashboardSummaryBox2">
-            <Link to="/admin/products">
-              <p>Products</p>
-              <p>{products.length}</p>
-            </Link>
+            <div className="kpiGrid">
+              <div
+                className="kpiCard"
+                onClick={() => navigate("/admin/dashboard")}
+              >
+                <p>Total Earnings</p>
+                <FaRupeeSign /> ₹{totalAmount}
+              </div>
 
-            <Link to="/admin/orders">
-              <p>Orders</p>
-              <p>{orders.length}</p>
-            </Link>
+              <div
+                className="kpiCard"
+                onClick={() => navigate("/admin/products")}
+              >
+                <p>All Products</p>
+                <FaBox /> {products.length}
+              </div>
 
-            <Link to="/admin/users">
-              <p>Users</p>
-              <p>{users.length}</p>
-            </Link>
-          </div>
-        </div>
+              <div
+                className="kpiCard"
+                onClick={() => navigate("/admin/orders")}
+              >
+                <p>Total Orders</p>
+                <FaShoppingCart /> {orders.length}
+              </div>
 
-        <div className="lineChart">
-          <Line data={lineState} />
-        </div>
+              <div className="kpiCard" onClick={() => navigate("/admin/users")}>
+                <p>All Users</p>
+                <FaUsers /> {users.length}
+              </div>
+            </div>
 
-        <div className="doughnutChart">
-          <Doughnut data={doughnutState} />
-        </div>
+            <div className="topCharts">
+              <div className="chartBox">
+                <h3>Stock</h3>
+                <div className="chartWrapper">
+                  <Doughnut
+                    data={{
+                      labels: ["Out", "In"],
+                      datasets: [
+                        {
+                          data: [outOfStock, products.length - outOfStock],
+                          backgroundColor: ["#ff4d6d", "#4cc9f0"],
+                          cutout: "65%",
+                        },
+                      ],
+                    }}
+                    options={doughnutOptions}
+                  />
+                </div>
+              </div>
+
+              <div className="chartBox">
+                <h3>Orders</h3>
+                <div className="chartWrapper">
+                  <Doughnut
+                    data={{
+                      labels: ["Delivered", "Shipped", "Processing"],
+                      datasets: [
+                        {
+                          data: [delivered, shipped, processing],
+                          backgroundColor: ["#00c853", "#ff9800", "#ff1744"],
+                          cutout: "65%",
+                        },
+                      ],
+                    }}
+                    options={doughnutOptions}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="fullGraph">
+              <h3>Revenue Growth</h3>
+              <Line
+                data={{
+                  labels: ["Start", "Revenue"],
+                  datasets: [
+                    {
+                      data: [0, totalAmount],
+                      borderColor: "#667eea",
+                      backgroundColor: "rgba(102,126,234,0.2)",
+                      fill: true,
+                    },
+                  ],
+                }}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

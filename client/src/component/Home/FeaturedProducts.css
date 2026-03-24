@@ -1,10 +1,9 @@
-/* wrapper */
 .featuredProducts {
+  height: 70vh;
   position: relative;
   margin-bottom: 32px;
 }
 
-/* horizontal scroll */
 .featuredProducts .products {
   display: flex !important;
   gap: 20px;
@@ -12,23 +11,20 @@
   scroll-behavior: smooth;
   padding: 10px;
 
-  scroll-snap-type: x mandatory; /* 🔥 snap effect */
+  scroll-snap-type: x mandatory;
 }
 
-/* hide scrollbar */
 .featuredProducts .products::-webkit-scrollbar {
   display: none;
 }
 
-/* cards */
 .featuredProducts .productCard {
   min-width: 220px;
   flex-shrink: 0;
 
-  scroll-snap-align: start; /* 🔥 snap alignment */
+  scroll-snap-align: start;
 }
 
-/* buttons */
 .scrollBtn {
   position: absolute;
   top: 45%;
@@ -45,6 +41,7 @@
 }
 
 .scrollBtn:hover {
+  background: var(--primary-color-hover);
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -54,4 +51,14 @@
 
 .scrollBtn.right {
   right: 5px;
+}
+
+@media (max-width: 480px) {
+  .scrollBtn.left {
+  left: 5px;
+}
+
+.scrollBtn.right {
+  right: 5px;
+}
 }

@@ -1,25 +1,20 @@
 import { useEffect } from "react";
-
 import { DataGrid } from "@mui/x-data-grid";
-
-import "./productList.css";
-
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { Button, Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
+import Loader from "../layout/Loader/Loader";
+import "./List.css";
 import {
   clearErrors,
   getAdminProducts,
   deleteProduct,
   resetDeleteProduct,
 } from "../../features/product/productSlice";
-
-import { Link } from "react-router-dom";
-
-import { Button, Typography } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import SideBar from "./Sidebar";
-import toast from "react-hot-toast";
 
 const ProductList = () => {
   const dispatch = useDispatch();
@@ -55,37 +50,47 @@ const ProductList = () => {
     {
       field: "id",
       headerName: "Product ID",
-      minWidth: 250,
-      flex: 0.5,
+      minWidth: 230,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "name",
       headerName: "Name",
       minWidth: 200,
       flex: 1,
+      align: "left",
+      headerAlign: "center",
     },
     {
       field: "stock",
       headerName: "Stock",
       type: "number",
-      minWidth: 150,
-      flex: 0.3,
+      minWidth: 200,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "price",
       headerName: "Price",
       type: "number",
       minWidth: 200,
-      flex: 0.5,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "actions",
       headerName: "Actions",
-      flex: 0.3,
-      minWidth: 150,
+      minWidth: 100,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       sortable: false,
       renderCell: (params) => (
-        <>
+        <div style={{ display: "flex", justifyContent: "center", gap: "40px" }}>
           <Link to={`/admin/product/${params.row.id}`}>
             <EditIcon />
           </Link>
@@ -96,7 +101,7 @@ const ProductList = () => {
           >
             <DeleteIcon />
           </Button>
-        </>
+        </div>
       ),
     },
   ];
@@ -110,21 +115,26 @@ const ProductList = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
-      <div className="productListContainer">
-        <Typography id="productListHeading">ALL PRODUCTS</Typography>
-
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          loading={loading}
-          pageSizeOptions={[10, 25, 50, 100]}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
-          }}
-          autoHeight
-        />
+      <Sidebar />
+      <div className="dashboardContent">
+        <Typography className="dashboardHeading">ALL PRODUCTS</Typography>
+        <div className="tableWrapper">
+          {loading ? (
+            <Loader />
+          ) : (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              loading={loading}
+              getRowId={(row) => row.id}
+              pageSizeOptions={[10, 20, 50]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10 } },
+              }}
+              autoHeight
+            />
+          )}
+        </div>
       </div>
     </div>
   );

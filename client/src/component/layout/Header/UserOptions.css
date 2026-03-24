@@ -190,6 +190,25 @@
     width: 160px;
   }
 
+  .adminProfileWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.adminProfile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+  transition: 0.3s;
+}
+
+.adminProfile:hover {
+  transform: scale(1.1);
+}
   .nav-links {
     flex-direction: column;
     gap: 35px;

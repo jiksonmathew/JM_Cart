@@ -6,14 +6,16 @@ body{
     overflow-x: hidden; 
 }
 
-.greenColor {
-  color: green;
-}
+:root {
+  --primary-color: #3498db;
+  --primary-color-hover:#1976d2;
+  
+.redColor {color: red;}
+  
+.greenColor {color: green}
 
-.orangeColor {
-  color: orange;
-}
+.orangeColor {color: orange}
 
-.redColor {
-  color: red;
+.yellowColor {color: yellow}
+
 }

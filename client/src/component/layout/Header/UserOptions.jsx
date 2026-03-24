@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "./Header.css";
+import "./UserOptions.css";
 
 import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
@@ -10,6 +10,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { createPortal } from "react-dom";
 
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -19,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserOptions = ({ user }) => {
   const { cartItems = [] } = useSelector((state) => state.cart);
+  const { adminMode } = useSelector((state) => state.adminMode);
 
   const [open, setOpen] = useState(false);
 
@@ -27,8 +29,27 @@ const UserOptions = ({ user }) => {
 
   const logoutHandler = () => {
     dispatch(logoutUserAction());
+
+    dispatch({ type: "SET_MODE", payload: false });
+    localStorage.removeItem("adminMode");
+
     toast.success("Logout Successfully");
+    navigate("/");
   };
+
+  if (user?.role === "admin" && adminMode) {
+    return (
+      <div className="adminProfileWrapper">
+        <img
+          src={user?.avatar?.url || "/Profile.png"}
+          alt="Admin"
+          className="adminProfile"
+          onDoubleClick={logoutHandler}
+          title="Double click to logout"
+        />
+      </div>
+    );
+  }
 
   const options = [
     {
@@ -57,17 +78,12 @@ const UserOptions = ({ user }) => {
     },
   ];
 
-  if (user?.role === "admin") {
-    options.unshift({
-      icon: <DashboardIcon />,
-      name: "Dashboard",
-      func: () => navigate("/admin/dashboard"),
-    });
+  if (user?.role === "admin" && !adminMode) {
   }
 
-  return (
+  return createPortal(
     <Fragment>
-      <Backdrop open={open} sx={{ zIndex: 10 }} />
+      <Backdrop open={open} sx={{ zIndex: 1300 }} />
 
       <SpeedDial
         ariaLabel="User Options"
@@ -76,7 +92,7 @@ const UserOptions = ({ user }) => {
         onClose={() => setOpen(false)}
         direction="down"
         className="speedDial"
-        sx={{ zIndex: 11 }}
+        sx={{ zIndex: 1400 }}
         icon={
           <img
             className="speedDialIcon"
@@ -98,7 +114,8 @@ const UserOptions = ({ user }) => {
           />
         ))}
       </SpeedDial>
-    </Fragment>
+    </Fragment>,
+    document.body,
   );
 };
 

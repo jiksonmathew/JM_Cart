@@ -7,7 +7,6 @@ import WebFont from "webfontloader";
 import "./App.css";
 
 import Footer from "./component/layout/Footer/Footer";
-import UserOptions from "./component/layout/Header/UserOptions";
 import Home from "./component/Home/Home";
 import ProductDetails from "./component/Product/ProductDetails";
 import Products from "./component/Product/Products";
@@ -44,6 +43,8 @@ import ScrollToTop from "./component/layout/Scroll Top/ScrollToTop";
 import { getUserDetails } from "./features/user/userSlice";
 import Navbar from "./component/layout/Navbar/Navbar";
 import Loader from "./component/layout/Loader/Loader";
+import ProtectedAdminRoute from "./component/Route/ProtectedAdminRoute";
+import RestrictAdminRoute from "./component/Route/RestrictAdminRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -79,16 +80,67 @@ const App = () => {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <ScrollToTop />
-      {isAuthenticated && <UserOptions user={user} />}
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:keyword" element={<Products />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/"
+          element={
+            <RestrictAdminRoute>
+              <Home />
+            </RestrictAdminRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <RestrictAdminRoute>
+              <ProductDetails />
+            </RestrictAdminRoute>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <RestrictAdminRoute>
+              <Products />
+            </RestrictAdminRoute>
+          }
+        />
+
+        <Route
+          path="/products/:keyword"
+          element={
+            <RestrictAdminRoute>
+              <Products />
+            </RestrictAdminRoute>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <RestrictAdminRoute>
+              <Search />
+            </RestrictAdminRoute>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <RestrictAdminRoute>
+              <About />
+            </RestrictAdminRoute>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <RestrictAdminRoute>
+              <Contact />
+            </RestrictAdminRoute>
+          }
+        />
+
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
 
@@ -194,90 +246,90 @@ const App = () => {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute>
               <Dashboard />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/product"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <NewProduct />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/products"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <ProductList />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/product/:id"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <UpdateProduct />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/orders"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <OrderList />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/order/:id"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <ProcessOrder />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/users"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <UsersList />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/user/:id"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <UpdateUser />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/reviews"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <ProductReviews />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 
         <Route
           path="/admin/sidebar"
           element={
-            <ProtectedRoute isAdmin>
+            <ProtectedAdminRoute isAdmin>
               <Sidebar />
-            </ProtectedRoute>
+            </ProtectedAdminRoute>
           }
         />
 

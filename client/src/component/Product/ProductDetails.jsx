@@ -141,7 +141,7 @@ const ProductDetails = () => {
   if (loading) return <Loader />;
 
   return (
-    <>
+    <div className="ProductDetailsContainer">
       <div className="ProductDetails">
         <div className="carousel">
           <Swiper
@@ -255,7 +255,7 @@ const ProductDetails = () => {
       ) : (
         <p className="noReviews">No Reviews Yet</p>
       )}
-    </>
+    </div>
   );
 };
 

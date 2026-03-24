@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import SideBar from "./Sidebar";
 import toast from "react-hot-toast";
-
+import Sidebar from "./Sidebar";
+import Loader from "../layout/Loader/Loader";
+import "./List.css";
 import {
   deleteOrder,
   resetDeleteOrder,
@@ -19,7 +19,12 @@ import {
 const OrderList = () => {
   const dispatch = useDispatch();
 
-  const { orders = [], error, isDeleted } = useSelector((state) => state.order);
+  const {
+    orders = [],
+    error,
+    loading,
+    isDeleted,
+  } = useSelector((state) => state.order);
 
   const deleteOrderHandler = (id) => {
     if (window.confirm("Delete this order?")) {
@@ -46,14 +51,36 @@ const OrderList = () => {
     {
       field: "id",
       headerName: "Order ID",
-      minWidth: 120,
+      minWidth: 230,
       flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "itemsQty",
+      headerName: "Items",
+      type: "number",
+      minWidth: 200,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      type: "number",
+      minWidth: 200,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "status",
       headerName: "Status",
-      minWidth: 130,
-      flex: 0.5,
+      minWidth: 200,
+      flex: 1,
+      align: "left",
+      headerAlign: "center",
       cellClassName: (params) => {
         if (params.row.status === "Delivered") return "greenColor";
         if (params.row.status === "Shipped") return "orangeColor";
@@ -61,27 +88,15 @@ const OrderList = () => {
       },
     },
     {
-      field: "itemsQty",
-      headerName: "Items",
-      type: "number",
-      minWidth: 100,
-      flex: 0.4,
-    },
-    {
-      field: "amount",
-      headerName: "Amount",
-      type: "number",
-      minWidth: 150,
-      flex: 0.5,
-    },
-    {
       field: "actions",
       headerName: "Actions",
-      minWidth: 130,
-      flex: 0.4,
+      minWidth: 100,
+      flex: 1,
+      align: "center",
+      headerAlign: "center",
       sortable: false,
       renderCell: (params) => (
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "40px" }}>
           <Link to={`/admin/order/${params.row.id}`}>
             <EditIcon style={{ color: "#1976d2" }} />
           </Link>
@@ -107,24 +122,26 @@ const OrderList = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
-      <div className="dashboardContainer">
-        <Typography variant="h5" sx={{ mb: 2 }}>
-          ALL ORDERS
-        </Typography>
-
-        <div className="orderListTable">
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSizeOptions={[10, 20, 50]}
-            initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
-            }}
-            autoHeight
-            disableRowSelectionOnClick
-          />
+      <Sidebar />
+      <div className="dashboardContent">
+        <Typography className="dashboardHeading">ALL ORDERS</Typography>
+        <div className="tableWrapper">
+          {loading ? (
+            <Loader />
+          ) : (
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              loading={loading}
+              getRowId={(row) => row.id}
+              pageSizeOptions={[10, 20, 50]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 10 } },
+              }}
+              autoHeight
+              disableRowSelectionOnClick
+            />
+          )}
         </div>
       </div>
     </div>

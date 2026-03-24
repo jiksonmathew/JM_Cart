@@ -15,9 +15,9 @@ import StorageIcon from "@mui/icons-material/Storage";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-import SideBar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
 const categories = [
   "Smartphone",
@@ -116,8 +116,7 @@ const NewProduct = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
+      <Sidebar />
       <div className="newProductContainer">
         <form
           className="createProductForm"

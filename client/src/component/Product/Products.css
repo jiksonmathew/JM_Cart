@@ -11,7 +11,7 @@
   text-align: center;
   font-size: 30px;
   font-weight: 600;
-  margin: 20px 0;
+  margin: 10px;
 }
 
 .filterBox {
@@ -76,7 +76,7 @@
 }
 
 .activeCategory {
-  background: #1976d2;
+  background: var(--primary-color);
   color: #fff;
 }
 
@@ -99,7 +99,7 @@
 .clearFiltersBtn {
   width: 100%;
   padding: 10px;
-  background: red;
+  background:red;
   color: white;
   border: none;
   border-radius: 8px;
@@ -128,5 +128,12 @@
 
   .products {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
+
+
+@media (max-width: 900px) {
+  .products{
+    grid-template-columns: repeat(2,1fr);
   }
 }

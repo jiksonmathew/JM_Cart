@@ -47,7 +47,11 @@ const MyOrders = () => {
       flex: 0.5,
 
       cellClassName: (params) =>
-        params.row.status === "Delivered" ? "greenColor" : "redColor",
+        params.row.status === "Delivered"
+          ? "greenColor"
+          : params.row.status === "Shipped"
+            ? "orangeColor"
+            : "redColor",
     },
 
     {

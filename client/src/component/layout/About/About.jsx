@@ -1,4 +1,4 @@
-import "./aboutSection.css";
+import "./About.css";
 
 import { Typography, Avatar } from "@mui/material";
 

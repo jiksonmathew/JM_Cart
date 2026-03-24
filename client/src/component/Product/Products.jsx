@@ -123,8 +123,6 @@ const Products = () => {
 
   return (
     <Fragment>
-      <h2 className="productsHeading">Products</h2>
-
       <div className="productsPage">
         <div className="filterBox">
           <div className="sortBar">
@@ -208,6 +206,7 @@ const Products = () => {
           )}
         </div>
         <div className="productBox">
+          <h2 className="productsHeading">Products</h2>
           <div className="products">
             {loading ? (
               [...Array(8)].map((_, i) => <ProductSkeleton key={i} />)

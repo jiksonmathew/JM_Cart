@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router-dom";
 import { Typography, Button } from "@mui/material";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 
-import SideBar from "./Sidebar";
 import "./processOrder.css";
 
 import {
@@ -19,6 +18,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
 const ProcessOrder = () => {
   const dispatch = useDispatch();
@@ -57,9 +57,8 @@ const ProcessOrder = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
-      <div className="newProductContainer">
+      <Sidebar />
+      <div className="confirmOrderPageContainer">
         {loading ? (
           <Loader />
         ) : (

@@ -107,7 +107,7 @@ const Payment = () => {
 
             setTimeout(() => {
               navigate("/success");
-            }, 1500);
+            }, 500);
           } catch (err) {
             toast.error(err?.message || "Order creation failed");
             setProcessing(false);

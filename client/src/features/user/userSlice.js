@@ -281,6 +281,9 @@ const userSlice = createSlice({
         state.loading = false;
         state.users = action.payload;
       })
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+      })
 
       .addCase(getSingleUser.fulfilled, (state, action) => {
         state.loading = false;

@@ -17,9 +17,9 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import StorageIcon from "@mui/icons-material/Storage";
 
-import SideBar from "./Sidebar";
 import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
 const UpdateProduct = () => {
   const dispatch = useDispatch();
@@ -126,8 +126,7 @@ const UpdateProduct = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
+      <Sidebar />
       <div className="newProductContainer">
         {loading ? (
           <Loader />

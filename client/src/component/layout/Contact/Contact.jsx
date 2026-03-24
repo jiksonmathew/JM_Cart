@@ -20,7 +20,7 @@ const Contact = () => {
 
         <Typography className="contactText">
           If you have any questions or project inquiries, feel free to contact
-          me.
+          us.
         </Typography>
 
         <a href={`mailto:${email}`} className="contactLink">

@@ -1,8 +1,9 @@
 .confirmOrderPage {
   display: flex;
-  max-width: 1200px;
-  margin: 32px auto;
+  max-width: 98%;
+  margin: 2px auto;
   gap: 32px;
+  min-height: 100vh;
   padding: 16px;
 }
 
@@ -83,7 +84,6 @@
   padding: 19px;
   border-radius: 14px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  position: sticky;
   top: 100px;
 }
 

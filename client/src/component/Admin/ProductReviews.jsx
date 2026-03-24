@@ -16,8 +16,8 @@ import { Button, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import StarIcon from "@mui/icons-material/Star";
 
-import SideBar from "./Sidebar";
 import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
 const ProductReviews = () => {
   const dispatch = useDispatch();
@@ -115,8 +115,7 @@ const ProductReviews = () => {
 
   return (
     <div className="dashboard">
-      <SideBar />
-
+      <Sidebar />
       <div className="productReviewsContainer">
         <form
           className="productReviewsForm"

@@ -1,7 +1,8 @@
 .aboutSection {
-  width: 100%;
+  width: 99%;
   min-height: 79vh;
   display: flex;
+  margin: auto;
   justify-content: center;
   align-items: center;
   position: relative;
