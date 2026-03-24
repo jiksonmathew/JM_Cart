@@ -20,6 +20,19 @@
   padding: 10px 0;
 }
 
+.skeletonCard {
+  height: 250px;
+  background: #eee;
+  border-radius: 12px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
 .categoryBar {
   display: flex;
   overflow-x: auto;

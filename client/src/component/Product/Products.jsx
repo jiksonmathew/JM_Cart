@@ -96,7 +96,13 @@ const Products = () => {
 
       <div className="products">
         {loading ? (
-          <p>Loading...</p>
+          <div className="skeletonGrid">
+            {Array(8)
+              .fill()
+              .map((_, i) => (
+                <div key={i} className="skeletonCard"></div>
+              ))}
+          </div>
         ) : products?.length > 0 ? (
           products.map((product) => (
             <motion.div
