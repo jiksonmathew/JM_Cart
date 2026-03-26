@@ -1,5 +1,18 @@
 const Cart = require("../models/cartModel");
 
+const calculateFinalPrice = (product) => {
+  const basePrice = product.originalPrice || 0;
+
+  if (product.fallbackOfferPercentage > 0) {
+    const discounted =
+      basePrice - (basePrice * product.fallbackOfferPercentage) / 100;
+
+    return Math.round(discounted);
+  }
+
+  return Math.round(basePrice);
+};
+
 exports.addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
@@ -31,12 +44,24 @@ exports.addToCart = async (req, res) => {
 
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name price stock images",
+      "name originalPrice fallbackOfferPercentage stock images",
     );
+
+    const updatedCartItems = cartItems.map((item) => {
+      const product = item.product.toObject();
+
+      return {
+        ...item.toObject(),
+        product: {
+          ...product,
+          finalPrice: calculateFinalPrice(product),
+        },
+      };
+    });
 
     res.status(200).json({
       success: true,
-      cartItems,
+      cartItems: updatedCartItems,
     });
   } catch (error) {
     res.status(500).json({
@@ -50,12 +75,24 @@ exports.getUserCart = async (req, res) => {
   try {
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name price stock images",
+      "name originalPrice fallbackOfferPercentage stock images",
     );
+
+    const updatedCartItems = cartItems.map((item) => {
+      const product = item.product.toObject();
+
+      return {
+        ...item.toObject(),
+        product: {
+          ...product,
+          finalPrice: calculateFinalPrice(product),
+        },
+      };
+    });
 
     res.status(200).json({
       success: true,
-      cartItems,
+      cartItems: updatedCartItems,
     });
   } catch (error) {
     res.status(500).json({
@@ -79,7 +116,7 @@ exports.removeCartItem = async (req, res) => {
     if (cartItem.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
-        message: "Not authorized to delete this cart item",
+        message: "Not authorized",
       });
     }
 
@@ -87,13 +124,25 @@ exports.removeCartItem = async (req, res) => {
 
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name price stock images",
+      "name originalPrice fallbackOfferPercentage stock images",
     );
+
+    const updatedCartItems = cartItems.map((item) => {
+      const product = item.product.toObject();
+
+      return {
+        ...item.toObject(),
+        product: {
+          ...product,
+          finalPrice: calculateFinalPrice(product),
+        },
+      };
+    });
 
     res.status(200).json({
       success: true,
-      message: "Item removed from cart",
-      cartItems,
+      message: "Item removed",
+      cartItems: updatedCartItems,
     });
   } catch (error) {
     res.status(500).json({

@@ -5,23 +5,46 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.createOrder = catchAsyncError(async (req, res, next) => {
-  const {
-    shippingInfo,
-    orderItems,
-    paymentInfo,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body;
+  const { shippingInfo, orderItems, paymentInfo, taxPrice, shippingPrice } =
+    req.body;
 
   if (!orderItems || orderItems.length === 0) {
     return next(new ErrorHandler("No order items found", 400));
   }
 
+  const updatedOrderItems = await Promise.all(
+    orderItems.map(async (item) => {
+      const product = await Product.findById(item.product);
+
+      if (!product) {
+        throw new ErrorHandler("Product not found", 404);
+      }
+
+      const basePrice = product.originalPrice || 0;
+      const discount = product.fallbackOfferPercentage || 0;
+
+      const finalPrice = Math.round(basePrice - (basePrice * discount) / 100);
+
+      return {
+        product: item.product,
+        name: product.name,
+        price: finalPrice,
+        image: product.images?.[0]?.url || "/placeholder.png",
+        quantity: item.quantity,
+      };
+    }),
+  );
+
+  const itemsPrice = updatedOrderItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
+
+  const totalPrice = Math.round(itemsPrice + taxPrice + shippingPrice);
+
   const order = await Order.create({
     shippingInfo,
-    orderItems,
+    orderItems: updatedOrderItems,
     paymentInfo,
     itemsPrice,
     taxPrice,
@@ -31,7 +54,7 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
     user: req.user._id,
   });
 
-  const orderedProductIds = orderItems.map((item) => item.product);
+  const orderedProductIds = updatedOrderItems.map((item) => item.product);
 
   await Cart.deleteMany({
     user: req.user._id,

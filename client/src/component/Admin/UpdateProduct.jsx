@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -20,7 +19,7 @@ import StorageIcon from "@mui/icons-material/Storage";
 import Loader from "../layout/Loader/Loader";
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
-
+import "./newProduct.css";
 const UpdateProduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,7 +57,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     if (product) {
       setName(product.name || "");
-      setPrice(product.price || "");
+      setPrice(product.originalPrice || "");
       setDescription(product.description || "");
       setCategory(product.category || "");
       setStock(product.stock || "");
@@ -92,7 +91,7 @@ const UpdateProduct = () => {
     const formData = new FormData();
 
     formData.set("name", name);
-    formData.set("price", price);
+    formData.set("originalPrice", price);
     formData.set("description", description);
     formData.set("category", category);
     formData.set("stock", stock);
@@ -127,110 +126,115 @@ const UpdateProduct = () => {
   return (
     <div className="dashboard">
       <Sidebar />
-      <div className="newProductContainer">
+
+      <>
         {loading ? (
           <Loader />
         ) : (
-          <form
-            className="createProductForm"
-            encType="multipart/form-data"
-            onSubmit={updateProductSubmitHandler}
-          >
-            <h1>Update Product</h1>
-
-            <div>
-              <SpellcheckIcon />
-              <input
-                type="text"
-                placeholder="Product Name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <AttachMoneyIcon />
-              <input
-                type="number"
-                placeholder="Price"
-                required
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <DescriptionIcon />
-              <textarea
-                placeholder="Product Description"
-                rows="2"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <AccountTreeIcon />
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+          <>
+            {/* LEFT SIDE */}
+            <div className="newProductContainer">
+              <form
+                className="createProductForm"
+                encType="multipart/form-data"
+                onSubmit={updateProductSubmitHandler}
               >
-                <option value="">Choose Category</option>
+                <h1>Update Product</h1>
 
-                {categories.map((cate) => (
-                  <option key={cate} value={cate}>
-                    {cate}
-                  </option>
-                ))}
-              </select>
+                <div>
+                  <SpellcheckIcon />
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <AttachMoneyIcon />
+                  <input
+                    type="number"
+                    placeholder="Original Price"
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <DescriptionIcon />
+                  <textarea
+                    placeholder="Product Description"
+                    rows="2"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <AccountTreeIcon />
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    <option value="">Choose Category</option>
+                    {categories.map((cate) => (
+                      <option key={cate} value={cate}>
+                        {cate}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <StorageIcon />
+                  <input
+                    type="number"
+                    placeholder="Stock"
+                    required
+                    value={stock}
+                    onChange={(e) => setStock(e.target.value)}
+                  />
+                </div>
+
+                <div id="createProductFormFile">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={updateProductImagesChange}
+                  />
+                </div>
+
+                <h3>Old Images</h3>
+                <div id="createProductFormImage">
+                  {oldImages.map((image, index) => (
+                    <img key={index} src={image.url} alt="Old Preview" />
+                  ))}
+                </div>
+
+                <h3>New Images</h3>
+                <div id="createProductFormImage">
+                  {imagesPreview.map((image, index) => (
+                    <img key={index} src={image} alt="Preview" />
+                  ))}
+                </div>
+
+                <Button
+                  id="createProductBtn"
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                >
+                  Update
+                </Button>
+              </form>
             </div>
-
-            <div>
-              <StorageIcon />
-              <input
-                type="number"
-                placeholder="Stock"
-                required
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
-              />
-            </div>
-
-            <div id="createProductFormFile">
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={updateProductImagesChange}
-              />
-            </div>
-
-            <h3>Old Images</h3>
-            <div id="createProductFormImage">
-              {oldImages.map((image, index) => (
-                <img key={index} src={image.url} alt="Old Preview" />
-              ))}
-            </div>
-
-            <h3>New Images</h3>
-            <div id="createProductFormImage">
-              {imagesPreview.map((image, index) => (
-                <img key={index} src={image} alt="Preview" />
-              ))}
-            </div>
-
-            <Button
-              id="createProductBtn"
-              type="submit"
-              variant="contained"
-              disabled={loading}
-            >
-              Update
-            </Button>
-          </form>
+          </>
         )}
-      </div>
+      </>
     </div>
   );
 };

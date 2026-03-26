@@ -45,7 +45,46 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
     .sort()
     .pagination(resultPerPage);
 
-  const products = await paginatedQuery.query;
+  let products = await paginatedQuery.query;
+
+  const now = new Date();
+
+  products = products.map((product) => {
+    let activeOffer = product.offer;
+    let percentage = 0;
+    let title = "";
+    let startDate = null;
+    let endDate = null;
+
+    if (
+      activeOffer &&
+      activeOffer.startDate <= now &&
+      activeOffer.endDate >= now
+    ) {
+      percentage = activeOffer.percentage;
+      title = activeOffer.title;
+      startDate = activeOffer.startDate;
+      endDate = activeOffer.endDate;
+    } else {
+      percentage = product.fallbackOfferPercentage ?? 0;
+      title = "Regular Offer";
+    }
+
+    const finalPrice = Math.round(
+      product.originalPrice * (1 - percentage / 100),
+    );
+
+    return {
+      ...product._doc,
+      price: finalPrice,
+      offer: {
+        percentage,
+        title,
+        startDate: product.offer.startDate,
+        endDate,
+      },
+    };
+  });
 
   res.status(200).json({
     success: true,
@@ -57,15 +96,48 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
 });
 
 exports.getProductDetails = catchAsyncError(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  let product = await Product.findById(req.params.id);
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
 
+  const now = new Date();
+
+  let percentage = 0;
+  let title = "";
+  let endDate = null;
+
+  if (
+    product.offer &&
+    product.offer.startDate <= now &&
+    product.offer.endDate >= now
+  ) {
+    percentage = product.offer.percentage;
+    title = product.offer.title;
+    startDate = product.offer?.startDate;
+    endDate = product.offer.endDate;
+  } else {
+    percentage = product.fallbackOfferPercentage || 0;
+    title = "Regular Offer";
+  }
+
+  const finalPrice = Math.round(product.originalPrice * (1 - percentage / 100));
+
+  const updatedProduct = {
+    ...product._doc,
+    price: finalPrice,
+    offer: {
+      percentage,
+      title,
+      startDate: product.offer?.startDate,
+      endDate,
+    },
+  };
+
   res.status(200).json({
     success: true,
-    product,
+    product: updatedProduct,
   });
 });
 
@@ -249,11 +321,92 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
 
 exports.getFeaturedProducts = async (req, res) => {
   try {
-    const products = await Product.aggregate([{ $sample: { size: 20 } }]);
+    let products = await Product.aggregate([{ $sample: { size: 20 } }]);
+
+    const now = new Date();
+
+    products = products.map((product) => {
+      let percentage = 0;
+      let title = "";
+      let endDate = null;
+
+      if (
+        product.offer &&
+        product.offer.startDate <= now &&
+        product.offer.endDate >= now
+      ) {
+        percentage = product.offer.percentage;
+        title = product.offer.title;
+        startDate = product.offer?.startDate;
+        endDate = product.offer.endDate;
+      } else {
+        percentage = product.fallbackOfferPercentage || 0;
+        title = "Regular Offer";
+      }
+
+      const finalPrice = Math.round(
+        product.originalPrice * (1 - percentage / 100),
+      );
+
+      return {
+        ...(product._doc || product),
+        price: finalPrice,
+        offer: { percentage, title, endDate },
+      };
+    });
 
     res.status(200).json({
       success: true,
       products,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.updateProductOffer = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      offerPercentage,
+      offerTitle,
+      startDate,
+      endDate,
+      fallbackOfferPercentage,
+      originalPrice,
+    } = req.body;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    // 🔥 Update fields
+    product.originalPrice = originalPrice;
+
+    product.offer = {
+      percentage: offerPercentage,
+      title: offerTitle,
+      startDate,
+      endDate,
+    };
+
+    product.fallbackOfferPercentage = fallbackOfferPercentage;
+
+    await product.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Offer updated successfully",
+      product,
     });
   } catch (error) {
     res.status(500).json({

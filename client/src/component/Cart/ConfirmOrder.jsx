@@ -16,8 +16,11 @@ const ConfirmOrder = () => {
   const { shippingInfo, cartItems = [] } = useSelector((state) => state.cart);
   const { user, isAuthenticated } = useSelector((state) => state.user);
 
+  const getPrice = (product) =>
+    product?.finalPrice ?? product?.originalPrice ?? 0;
+
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.quantity * (item.product?.price || 0),
+    (acc, item) => acc + item.quantity * getPrice(item.product),
     0,
   );
 
@@ -93,30 +96,27 @@ const ConfirmOrder = () => {
             <Typography variant="h6">Your Cart Items</Typography>
 
             <div className="confirmCartItemsContainer">
-              {cartItems.map((item) => (
-                <div key={item._id}>
-                  <img
-                    src={
-                      item.product?.images?.[0]?.url ||
-                      item.product?.image ||
-                      "/placeholder.png"
-                    }
-                    alt={item.product?.name}
-                  />
+              {cartItems.map((item) => {
+                const price = getPrice(item.product);
 
-                  <Link to={`/product/${item.product?._id}`}>
-                    {item.product?.name}
-                  </Link>
+                return (
+                  <div key={item._id}>
+                    <img
+                      src={item.product?.images?.[0]?.url || "/placeholder.png"}
+                      alt={item.product?.name}
+                    />
 
-                  <span>
-                    {item.quantity} × {formatPrice(item.product?.price || 0)} =
-                    <b>
-                      {" "}
-                      {formatPrice((item.product?.price || 0) * item.quantity)}
-                    </b>
-                  </span>
-                </div>
-              ))}
+                    <Link to={`/product/${item.product?._id}`}>
+                      {item.product?.name}
+                    </Link>
+
+                    <span>
+                      {item.quantity} × {formatPrice(price)} =
+                      <b> {formatPrice(price * item.quantity)}</b>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

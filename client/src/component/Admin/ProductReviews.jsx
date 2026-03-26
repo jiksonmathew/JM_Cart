@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
 
-// import "./productReviews.css";
+import "./productReviews.css";
 
 import { useSelector, useDispatch } from "react-redux";
 import {

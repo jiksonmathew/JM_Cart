@@ -1,48 +1,121 @@
-import { Link } from "react-router-dom";
-
-import Rating from "@mui/material/Rating";
-
-import no_image from "../../images/image_not_available.png";
+import React, { useEffect, useState } from "react";
 import "./ProductCard.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../features/cart/cartSlice";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import no_image from "../../images/image_not_available.png";
+
+/* ⏳ Countdown Hook */
+const useOfferCountdown = (endDate) => {
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    if (!endDate) return;
+
+    const end = new Date(endDate);
+
+    if (isNaN(end)) {
+      console.error("Invalid endDate:", endDate);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = end - now;
+
+      if (diff <= 0) {
+        setTimeLeft("");
+        clearInterval(interval);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [endDate]);
+
+  return timeLeft;
+};
 
 const ProductCard = ({ product }) => {
-  if (!product) return null;
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.user);
 
-  const { _id, name, price, ratings, numOfReviews, images = [] } = product;
+  const countdown = useOfferCountdown(product?.offer?.endDate);
 
-  const imageUrl = images?.[0]?.url || no_image;
+  const addToCartHandler = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
 
-  const formattedPrice = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-  }).format(price || 0);
+    try {
+      await dispatch(
+        addToCart({
+          productId: product._id,
+          quantity: 1,
+        }),
+      ).unwrap();
+
+      toast.success("Item Added To Cart 🛒");
+    } catch (err) {
+      toast.error(err?.message || "Failed to add item");
+    }
+  };
 
   return (
-    <Link className="productCard" to={`/product/${_id}`}>
-      <img
-        src={imageUrl}
-        alt={name}
-        loading="lazy"
-        onError={(e) => (e.target.src = no_image)}
-      />
+    <div className="card">
+      <Link to={`/product/${product._id}`} className="cardLink">
+        {product.offer?.title && (
+          <div className="offerBadge">{product.offer.title}</div>
+        )}
 
-      <p className="productName" title={name}>
-        {name}
-      </p>
-
-      <div className="productCardRating">
-        <Rating
-          value={Number(ratings) || 0}
-          readOnly
-          precision={0.5}
-          size="small"
+        <img
+          src={product.images?.[0]?.url || no_image}
+          alt={product.name}
+          onError={(e) => (e.target.src = no_image)}
         />
 
-        <span className="productCardSpan">({numOfReviews || 0} Reviews)</span>
-      </div>
+        <h3>{product.name}</h3>
 
-      <span className="productCardPrice">{formattedPrice}</span>
-    </Link>
+        <div className="rating">
+          ⭐ {product.ratings || 0} ({product.numOfReviews || 0})
+        </div>
+
+        <div className="priceBox">
+          <span className="price">
+            ₹{product.price ?? product.originalPrice}
+          </span>
+
+          {product.offer?.percentage > 0 && (
+            <>
+              <span className="oldPrice">₹{product.originalPrice}</span>
+              <span className="discount">{product.offer.percentage}% OFF</span>
+            </>
+          )}
+        </div>
+
+        {/* ⏳ Countdown */}
+        {product.offer?.endDate && countdown && (
+          <div className="offerTimer">⏳ Ends in {countdown}</div>
+        )}
+      </Link>
+
+      <button
+        className="cartBtn"
+        disabled={product.stock < 1}
+        onClick={addToCartHandler}
+      >
+        {product.stock < 1 ? "Out of Stock" : "Add to Cart"}
+      </button>
+    </div>
   );
 };
 

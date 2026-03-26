@@ -44,21 +44,28 @@ class ApiFeatures {
   }
 
   sort() {
-    let sortOption = {};
+    if (this.queryStr.sort) {
+      let sortBy = {};
 
-    if (this.queryStr.sort === "price_asc") {
-      sortOption.price = 1;
-    } else if (this.queryStr.sort === "price_desc") {
-      sortOption.price = -1;
-    } else if (this.queryStr.sort === "rating_desc") {
-      sortOption.ratings = -1;
-    } else if (this.queryStr.sort === "newest") {
-      sortOption.createdAt = -1;
-    } else {
-      sortOption.createdAt = -1;
+      switch (this.queryStr.sort) {
+        case "price_asc":
+          sortBy.originalPrice = 1;
+          break;
+        case "price_desc":
+          sortBy.originalPrice = -1;
+          break;
+        case "rating":
+          sortBy.ratings = -1;
+          break;
+        case "newest":
+          sortBy.createdAt = -1;
+          break;
+        default:
+          break;
+      }
+
+      this.query = this.query.sort(sortBy);
     }
-
-    this.query = this.query.sort(sortOption);
     return this;
   }
 

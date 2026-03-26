@@ -5,6 +5,7 @@ import {
   clearErrors,
   getAllProducts,
 } from "../../features/product/productSlice";
+import { useParams } from "react-router-dom";
 import ProductCard from "../Home/ProductCard";
 import Pagination from "@mui/material/Pagination";
 import toast from "react-hot-toast";
@@ -14,7 +15,7 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [debouncedSearch] = useState("");
+  const { keyword } = useParams();
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
 
@@ -24,13 +25,17 @@ const Products = () => {
   useEffect(() => {
     dispatch(
       getAllProducts({
-        keyword: debouncedSearch,
+        keyword: keyword || "",
         currentPage,
         category,
         sort,
       }),
     );
-  }, [dispatch, currentPage, debouncedSearch, category, sort]);
+  }, [dispatch, keyword, currentPage, category, sort]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [keyword]);
 
   useEffect(() => {
     if (error) {
@@ -109,11 +114,8 @@ const Products = () => {
               key={product._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
             >
-              <div className="premiumCard">
-                <ProductCard product={product} />
-              </div>
+              <ProductCard product={product} />
             </motion.div>
           ))
         ) : (
@@ -121,10 +123,10 @@ const Products = () => {
         )}
       </div>
 
-      {filteredProductsCount > resultPerPage && (
+      {(filteredProductsCount || 0) > resultPerPage && (
         <div className="paginationBox">
           <Pagination
-            count={Math.ceil(filteredProductsCount / resultPerPage)}
+            count={Math.ceil((filteredProductsCount || 0) / resultPerPage)}
             page={currentPage}
             onChange={(_, value) => setCurrentPage(value)}
           />

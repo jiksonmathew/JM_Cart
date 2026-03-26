@@ -11,9 +11,9 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter product description"],
     },
-    price: {
+    originalPrice: {
       type: Number,
-      required: [true, "Please enter product price"],
+      required: [true, "Please enter product original price"],
       max: [99999999, "Price cannot exceed 8 digits"],
     },
     ratings: {
@@ -42,6 +42,24 @@ const productSchema = new mongoose.Schema(
       required: [true, "Please enter product stock"],
       max: [9999, "Stock cannot exceed 4 digits"],
       default: 1,
+    },
+
+    offer: {
+      percentage: {
+        type: Number,
+        default: 0,
+      },
+      title: {
+        type: String,
+        default: "",
+      },
+      startDate: Date,
+      endDate: Date,
+    },
+
+    fallbackOfferPercentage: {
+      type: Number,
+      default: 5,
     },
     reviews: [
       {

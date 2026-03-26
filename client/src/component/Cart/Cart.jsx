@@ -30,6 +30,11 @@ const Cart = () => {
     }
   }, [dispatch, isAuthenticated]);
 
+  // 🔥 Price helper
+  const getPrice = (product) => {
+    return product?.finalPrice || product?.price || 0;
+  };
+
   const increaseQuantity = async (productId, quantity, stock) => {
     if (!isAuthenticated) {
       toast.error("Please login to modify cart");
@@ -85,11 +90,12 @@ const Cart = () => {
     navigate("/shipping");
   };
 
+  // 🔥 FIXED GROSS TOTAL
   const grossTotal = cartItems.reduce(
-    (acc, item) => acc + item.quantity * (item.product?.price ?? 0),
+    (acc, item) => acc + item.quantity * getPrice(item.product),
     0,
   );
-
+  console.log(cartItems);
   return (
     <Fragment>
       {cartItems.length === 0 ? (
@@ -134,8 +140,9 @@ const Cart = () => {
                 </button>
               </div>
 
+              {/* 🔥 FIXED SUBTOTAL */}
               <p className="cartSubtotal">
-                ₹{(item.product?.price || 0) * item.quantity}
+                ₹{getPrice(item.product) * item.quantity}
               </p>
             </div>
           ))}

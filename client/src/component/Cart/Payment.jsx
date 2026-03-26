@@ -25,16 +25,18 @@ const Payment = () => {
 
   const order = {
     shippingInfo,
-    orderItems: cartItems.map((item) => ({
-      product: item.product._id,
-      name: item.product.name,
-      price: item.product.price,
-      image:
-        item.product?.images?.[0]?.url ||
-        item.product?.image ||
-        "/placeholder.png",
-      quantity: item.quantity,
-    })),
+    orderItems: cartItems.map((item) => {
+      const price =
+        item.product?.finalPrice ?? item.product?.originalPrice ?? 0;
+
+      return {
+        product: item.product._id,
+        name: item.product.name,
+        price,
+        image: item.product?.images?.[0]?.url || "/placeholder.png",
+        quantity: item.quantity,
+      };
+    }),
     itemsPrice: orderInfo?.itemsPrice,
     taxPrice: orderInfo?.taxPrice,
     shippingPrice: orderInfo?.shippingPrice,

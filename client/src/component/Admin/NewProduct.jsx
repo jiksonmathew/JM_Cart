@@ -40,7 +40,7 @@ const NewProduct = () => {
 
   const [form, setForm] = useState({
     name: "",
-    price: "",
+    originalPrice: "",
     description: "",
     category: "",
     stock: "",
@@ -102,7 +102,7 @@ const NewProduct = () => {
     const myForm = new FormData();
 
     myForm.set("name", form.name);
-    myForm.set("price", form.price);
+    myForm.set("originalPrice", form.originalPrice);
     myForm.set("description", form.description);
     myForm.set("category", form.category);
     myForm.set("stock", form.stock);
@@ -142,10 +142,10 @@ const NewProduct = () => {
             <AttachMoneyIcon />
             <input
               type="number"
-              name="price"
+              name="originalPrice"
               placeholder="Price"
               required
-              value={form.price}
+              value={form.originalPrice}
               onChange={handleChange}
             />
           </div>

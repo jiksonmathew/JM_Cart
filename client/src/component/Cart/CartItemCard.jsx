@@ -12,6 +12,8 @@ const CartItemCard = ({ item, deleteCartItems }) => {
     toast.success("Item removed from cart");
   };
 
+  const price = item.product?.finalPrice ?? item.product?.originalPrice ?? 0;
+
   return (
     <div className="CartItemCard">
       <img
@@ -22,7 +24,7 @@ const CartItemCard = ({ item, deleteCartItems }) => {
       <div>
         <Link to={`/product/${item.product?._id}`}>{item.product?.name}</Link>
 
-        <span>Price: ₹{item.product?.price?.toFixed(2)}</span>
+        <span>Price: ₹{price.toFixed(2)}</span>
 
         <p onClick={handleRemove}>Remove</p>
       </div>

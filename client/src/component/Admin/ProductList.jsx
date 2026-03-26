@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
@@ -67,16 +68,16 @@ const ProductList = () => {
       field: "stock",
       headerName: "Stock",
       type: "number",
-      minWidth: 200,
+      minWidth: 50,
       flex: 1,
       align: "center",
       headerAlign: "center",
     },
     {
-      field: "price",
-      headerName: "Price",
+      field: "originalPrice",
+      headerName: "M.R.P",
       type: "number",
-      minWidth: 200,
+      minWidth: 100,
       flex: 1,
       align: "center",
       headerAlign: "center",
@@ -90,11 +91,13 @@ const ProductList = () => {
       headerAlign: "center",
       sortable: false,
       renderCell: (params) => (
-        <div style={{ display: "flex", justifyContent: "center", gap: "40px" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "30px" }}>
           <Link to={`/admin/product/${params.row.id}`}>
             <EditIcon />
           </Link>
-
+          <Link to={`/admin/product/${params.row.id}/offer`}>
+            <LocalOfferIcon fontSize="small" style={{ color: "orange" }} />
+          </Link>
           <Button
             color="error"
             onClick={() => deleteProductHandler(params.row.id)}
@@ -109,7 +112,7 @@ const ProductList = () => {
   const rows = products.map((item) => ({
     id: item._id,
     stock: item.stock,
-    price: item.price,
+    originalPrice: item.originalPrice,
     name: item.name,
   }));
 
