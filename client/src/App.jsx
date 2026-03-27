@@ -45,7 +45,6 @@ import Loader from "./component/layout/Loader/Loader";
 import ProtectedAdminRoute from "./component/Route/ProtectedAdminRoute";
 import RestrictAdminRoute from "./component/Route/RestrictAdminRoute";
 import AdminOffer from "./component/Admin/AdminOffer";
-import BannerAdminPanel from "./component/Admin/BannerAdminPanel";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -91,7 +90,7 @@ const App = () => {
             </RestrictAdminRoute>
           }
         />
-        <Route path="/banner" element={<BannerAdminPanel />} />
+
         <Route
           path="/product/:id"
           element={
