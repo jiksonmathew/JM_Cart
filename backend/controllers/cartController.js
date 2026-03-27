@@ -1,12 +1,17 @@
 const Cart = require("../models/cartModel");
 
-const calculateFinalPrice = (product) => {
-  const basePrice = product.originalPrice || 0;
+const calculateFinalPrice = (product = {}) => {
+  const basePrice = Number(product.originalPrice) || 0;
 
-  if (product.fallbackOfferPercentage > 0) {
-    const discounted =
-      basePrice - (basePrice * product.fallbackOfferPercentage) / 100;
+  // ✅ Use correct offer structure
+  const offer =
+    Number(product.offer?.percentage) ||
+    Number(product.offerPercentage) ||
+    Number(product.fallbackOfferPercentage) ||
+    0;
 
+  if (offer > 0) {
+    const discounted = basePrice - (basePrice * offer) / 100;
     return Math.round(discounted);
   }
 
@@ -15,6 +20,13 @@ const calculateFinalPrice = (product) => {
 
 exports.addToCart = async (req, res) => {
   try {
+    if (!req.user?._id) {
+      return res.status(401).json({
+        success: false,
+        message: "Login required",
+      });
+    }
+
     const { productId, quantity } = req.body;
 
     if (!productId) {
@@ -44,26 +56,31 @@ exports.addToCart = async (req, res) => {
 
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name originalPrice fallbackOfferPercentage stock images",
+      "name originalPrice offer offerPercentage fallbackOfferPercentage stock images",
     );
 
-    const updatedCartItems = cartItems.map((item) => {
-      const product = item.product.toObject();
+    const updatedCartItems = cartItems
+      .map((item) => {
+        if (!item.product) return null;
 
-      return {
-        ...item.toObject(),
-        product: {
-          ...product,
-          finalPrice: calculateFinalPrice(product),
-        },
-      };
-    });
+        const product = item.product.toObject();
+
+        return {
+          ...item.toObject(),
+          product: {
+            ...product,
+            finalPrice: calculateFinalPrice(product),
+          },
+        };
+      })
+      .filter(Boolean);
 
     res.status(200).json({
       success: true,
       cartItems: updatedCartItems,
     });
   } catch (error) {
+    console.error("ADD TO CART ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -73,28 +90,40 @@ exports.addToCart = async (req, res) => {
 
 exports.getUserCart = async (req, res) => {
   try {
+    if (!req.user?._id) {
+      return res.status(401).json({
+        success: false,
+        message: "Login required",
+      });
+    }
+
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name originalPrice fallbackOfferPercentage stock images",
+      "name originalPrice offer offerPercentage fallbackOfferPercentage stock images",
     );
 
-    const updatedCartItems = cartItems.map((item) => {
-      const product = item.product.toObject();
+    const updatedCartItems = cartItems
+      .map((item) => {
+        if (!item.product) return null;
 
-      return {
-        ...item.toObject(),
-        product: {
-          ...product,
-          finalPrice: calculateFinalPrice(product),
-        },
-      };
-    });
+        const product = item.product.toObject();
+
+        return {
+          ...item.toObject(),
+          product: {
+            ...product,
+            finalPrice: calculateFinalPrice(product),
+          },
+        };
+      })
+      .filter(Boolean);
 
     res.status(200).json({
       success: true,
       cartItems: updatedCartItems,
     });
   } catch (error) {
+    console.error("GET CART ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -104,6 +133,13 @@ exports.getUserCart = async (req, res) => {
 
 exports.removeCartItem = async (req, res) => {
   try {
+    if (!req.user?._id) {
+      return res.status(401).json({
+        success: false,
+        message: "Login required",
+      });
+    }
+
     const cartItem = await Cart.findById(req.params.id);
 
     if (!cartItem) {
@@ -124,20 +160,24 @@ exports.removeCartItem = async (req, res) => {
 
     const cartItems = await Cart.find({ user: req.user._id }).populate(
       "product",
-      "name originalPrice fallbackOfferPercentage stock images",
+      "name originalPrice offer offerPercentage fallbackOfferPercentage stock images",
     );
 
-    const updatedCartItems = cartItems.map((item) => {
-      const product = item.product.toObject();
+    const updatedCartItems = cartItems
+      .map((item) => {
+        if (!item.product) return null;
 
-      return {
-        ...item.toObject(),
-        product: {
-          ...product,
-          finalPrice: calculateFinalPrice(product),
-        },
-      };
-    });
+        const product = item.product.toObject();
+
+        return {
+          ...item.toObject(),
+          product: {
+            ...product,
+            finalPrice: calculateFinalPrice(product),
+          },
+        };
+      })
+      .filter(Boolean);
 
     res.status(200).json({
       success: true,
@@ -145,6 +185,7 @@ exports.removeCartItem = async (req, res) => {
       cartItems: updatedCartItems,
     });
   } catch (error) {
+    console.error("REMOVE CART ERROR:", error);
     res.status(500).json({
       success: false,
       message: error.message,

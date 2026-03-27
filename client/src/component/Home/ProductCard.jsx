@@ -78,9 +78,12 @@ const ProductCard = ({ product }) => {
         )}
 
         <img
-          src={product.images?.[0]?.url || no_image}
+          src={
+            product.images && product.images.length > 0
+              ? product.images[0].url
+              : "/placeholder.png"
+          }
           alt={product.name}
-          onError={(e) => (e.target.src = no_image)}
         />
 
         <h3>{product.name}</h3>

@@ -45,9 +45,6 @@ const UpdateProduct = () => {
     "Television",
     "Refrigerator",
     "Washing Machine",
-    "Shirts",
-    "Pants",
-    "Footwear",
   ];
 
   useEffect(() => {

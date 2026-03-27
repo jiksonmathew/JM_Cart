@@ -1,100 +1,258 @@
 [
   {
-    "_id": { "$oid": "660000000000000000000001" },
-    "name": "Doll",
-    "description": "Soft kids doll",
-    "originalPrice": 1200,
-    "price": 1140,
-    "category": "toys",
-    "stock": 5,
-    "ratings": 4.2,
+    "name": "Whirlpool Double Door Refrigerator",
+    "description": "Spacious double door refrigerator with efficient cooling technology, modern design and good energy savings for everyday use.",
+    "originalPrice": 1000,
     "images": [],
-    "offer": { "percentage": 0, "title": "" },
-    "fallbackOfferPercentage": 5,
-    "appliedOffer": { "percentage": 5, "title": "Regular Offer" },
-    "numOfReviews": 2,
-    "reviews": [],
-    "createdAt": { "$date": "2026-03-24T10:00:00Z" },
-    "updatedAt": { "$date": "2026-03-24T10:00:00Z" },
-    "__v": 0
+    "category": "Appliance",
+    "stock": 6
   },
   {
-    "_id": { "$oid": "660000000000000000000002" },
-    "name": "Toy Car",
-    "description": "Remote control car",
+    "name": "Xiaomi Smart TV A Series 32",
+    "description": "Compact smart TV with HD display, built-in streaming apps and smooth performance for daily entertainment.",
+    "originalPrice": 300,
+    "images": [],
+    "category": "Television",
+    "stock": 10
+  },
+  {
+    "name": "LG Double Door Refrigerator Floral Design",
+    "description": "Stylish refrigerator with floral finish, reliable cooling system and energy-efficient performance.",
+    "originalPrice": 950,
+    "images": [],
+    "category": "Appliance",
+    "stock": 7
+  },
+  {
+    "name": "Nothing Phone 4a Pro",
+    "description": "Modern smartphone with unique transparent design, smooth performance and clean user interface experience.",
+    "originalPrice": 550,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 9
+  },
+  {
+    "name": "Realme C75 5G",
+    "description": "Affordable 5G smartphone with decent performance, good battery life and stylish design.",
+    "originalPrice": 250,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 14
+  },
+  {
+    "name": "Realme Premium Series",
+    "description": "Mid-range smartphone with strong camera features, smooth display and reliable everyday performance.",
+    "originalPrice": 400,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 11
+  },
+  {
+    "name": "Redmi A3",
+    "description": "Budget smartphone suitable for basic usage with long battery backup and simple interface.",
+    "originalPrice": 180,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 18
+  },
+  {
+    "name": "Samsung Front Load Washing Machine 9kg",
+    "description": "Efficient washing machine with multiple wash modes, low noise operation and energy-saving features.",
+    "originalPrice": 750,
+    "images": [],
+    "category": "Appliance",
+    "stock": 6
+  },
+  {
+    "name": "Samsung Galaxy A56 5G",
+    "description": "Samsung smartphone with 5G support, smooth performance, good camera and reliable battery life.",
+    "originalPrice": 500,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 13
+  },
+  {
+    "name": "Samsung QLED 4K Smart TV",
+    "description": "Premium smart TV with QLED technology, vibrant colors, high brightness and immersive viewing experience.",
+    "originalPrice": 1600,
+    "images": [],
+    "category": "Television",
+    "stock": 5
+  },
+  {
+    "name": "TCL Full HD Smart TV 32",
+    "description": "Affordable smart TV with Full HD display, streaming support and user-friendly interface.",
+    "originalPrice": 280,
+    "images": [],
+    "category": "Television",
+    "stock": 12
+  },
+  {
+    "name": "Vivo Y400 5G",
+    "description": "Stylish smartphone with smooth performance, good camera quality and 5G connectivity.",
+    "originalPrice": 320,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 15
+  },
+  {
+    "name": "Whirlpool Single Door Refrigerator Blue Floral",
+    "description": "Compact refrigerator with attractive floral design, energy efficiency and reliable cooling performance.",
+    "originalPrice": 400,
+    "images": [],
+    "category": "Appliance",
+    "stock": 9
+  },
+  {
+    "name": "Whirlpool Single Door Refrigerator Red Floral",
+    "description": "Stylish single door refrigerator with vibrant design, efficient cooling and durable build quality.",
+    "originalPrice": 420,
+    "images": [],
+    "category": "Appliance",
+    "stock": 8
+  },
+  {
+    "name": "iPhone 15 Pro Max",
+    "description": "Apple flagship smartphone with premium design, advanced camera system, powerful performance and long battery life.",
     "originalPrice": 2000,
-    "price": 1800,
-    "category": "toys",
-    "stock": 10,
-    "ratings": 4.5,
     "images": [],
-    "offer": { "percentage": 10, "title": "Festive Offer" },
-    "fallbackOfferPercentage": 5,
-    "appliedOffer": { "percentage": 10, "title": "Festive Offer" },
-    "numOfReviews": 5,
-    "reviews": [],
-    "createdAt": { "$date": "2026-03-24T10:10:00Z" },
-    "updatedAt": { "$date": "2026-03-24T10:10:00Z" },
-    "__v": 0
+    "category": "Smartphone",
+    "stock": 10
   },
-
   {
-    "_id": { "$oid": "660000000000000000000003" },
-    "name": "Teddy Bear",
-    "description": "Cuddly teddy",
+    "name": "Google Pixel 8a",
+    "description": "Google smartphone with clean Android experience, great camera quality and AI-powered features.",
+    "originalPrice": 600,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 15
+  },
+  {
+    "name": "Google Pixel 10a",
+    "description": "Latest Google smartphone with improved performance, smart AI tools and excellent photography capabilities.",
+    "originalPrice": 700,
+    "images": [],
+    "category": "Smartphone",
+    "stock": 12
+  },
+  {
+    "name": "Acer Aspire 3",
+    "description": "Budget-friendly laptop suitable for students and office work with reliable performance and decent battery life.",
+    "originalPrice": 700,
+    "images": [],
+    "category": "Laptop",
+    "stock": 8
+  },
+  {
+    "name": "Dell Ryzen 5 Laptop",
+    "description": "Powerful laptop designed for multitasking, office work and smooth everyday performance.",
+    "originalPrice": 1000,
+    "images": [],
+    "category": "Laptop",
+    "stock": 9
+  },
+  {
+    "name": "HP Victus Gaming Laptop",
+    "description": "Gaming laptop with strong graphics performance, smooth gameplay experience and modern design.",
+    "originalPrice": 1300,
+    "images": [],
+    "category": "Laptop",
+    "stock": 6
+  },
+  {
+    "name": "HP Omen Gaming Laptop",
+    "description": "High-end gaming laptop built for heavy gaming, fast processing and advanced cooling system.",
+    "originalPrice": 1800,
+    "images": [],
+    "category": "Laptop",
+    "stock": 5
+  },
+  {
+    "name": "HP OmniBook 5",
+    "description": "Slim and lightweight laptop ideal for daily productivity, browsing and office tasks.",
+    "originalPrice": 900,
+    "images": [],
+    "category": "Laptop",
+    "stock": 10
+  },
+  {
+    "name": "Apple MacBook Air M5",
+    "description": "Premium Apple laptop with powerful chip, sleek design, long battery life and smooth macOS experience.",
+    "originalPrice": 2500,
+    "images": [],
+    "category": "Laptop",
+    "stock": 4
+  },
+  {
+    "name": "Apple MacBook Neo",
+    "description": "Lightweight Apple laptop with efficient performance, modern design and optimized software experience.",
+    "originalPrice": 1800,
+    "images": [],
+    "category": "Laptop",
+    "stock": 5
+  },
+  {
+    "name": "LG 4K UHD Smart TV",
+    "description": "Smart television with 4K resolution, vibrant colors, streaming apps and smart features.",
+    "originalPrice": 1200,
+    "images": [],
+    "category": "Television",
+    "stock": 7
+  },
+  {
+    "name": "Haier Mini LED 4K TV",
+    "description": "Premium smart TV with Mini LED technology, better brightness, contrast and immersive viewing experience.",
     "originalPrice": 1500,
-    "price": 1350,
-    "category": "toys",
-    "stock": 8,
-    "ratings": 4.6,
     "images": [],
-    "offer": { "percentage": 10, "title": "Special Offer" },
-    "fallbackOfferPercentage": 5,
-    "appliedOffer": { "percentage": 10, "title": "Special Offer" },
-    "numOfReviews": 6,
-    "reviews": [],
-    "createdAt": { "$date": "2026-03-24T10:20:00Z" },
-    "updatedAt": { "$date": "2026-03-24T10:20:00Z" },
-    "__v": 0
+    "category": "Television",
+    "stock": 6
   },
-
   {
-    "_id": { "$oid": "660000000000000000000004" },
-    "name": "Smartphone",
-    "description": "Android smartphone 6GB RAM",
-    "originalPrice": 15000,
-    "price": 13500,
-    "category": "electronics",
-    "stock": 20,
-    "ratings": 4.4,
+    "name": "Bosch Double Door Refrigerator",
+    "description": "Energy-efficient refrigerator with spacious storage, modern design and reliable cooling performance.",
+    "originalPrice": 1100,
     "images": [],
-    "offer": { "percentage": 10, "title": "Electronics Sale" },
-    "fallbackOfferPercentage": 5,
-    "appliedOffer": { "percentage": 10, "title": "Electronics Sale" },
-    "numOfReviews": 12,
-    "reviews": [],
-    "createdAt": { "$date": "2026-03-24T10:30:00Z" },
-    "updatedAt": { "$date": "2026-03-24T10:30:00Z" },
-    "__v": 0
+    "category": "Appliance",
+    "stock": 5
   },
-
   {
-    "_id": { "$oid": "660000000000000000000005" },
-    "name": "Laptop",
-    "description": "15 inch laptop i5 processor",
-    "originalPrice": 60000,
-    "price": 54000,
-    "category": "electronics",
-    "stock": 6,
-    "ratings": 4.7,
+    "name": "Godrej Double Door Refrigerator",
+    "description": "Durable refrigerator with good storage capacity, energy efficiency and stylish design.",
+    "originalPrice": 900,
     "images": [],
-    "offer": { "percentage": 10, "title": "Mega Sale" },
-    "fallbackOfferPercentage": 5,
-    "appliedOffer": { "percentage": 10, "title": "Mega Sale" },
-    "numOfReviews": 9,
-    "reviews": [],
-    "createdAt": { "$date": "2026-03-24T10:40:00Z" },
-    "updatedAt": { "$date": "2026-03-24T10:40:00Z" },
-    "__v": 0
+    "category": "Appliance",
+    "stock": 8
+  },
+  {
+    "name": "Haier Side by Side Refrigerator",
+    "description": "Large capacity refrigerator with side-by-side doors, advanced cooling and modern features.",
+    "originalPrice": 1400,
+    "images": [],
+    "category": "Appliance",
+    "stock": 4
+  },
+  {
+    "name": "LG Front Load Washing Machine",
+    "description": "Efficient washing machine with multiple wash programs, low noise and energy saving technology.",
+    "originalPrice": 700,
+    "images": [],
+    "category": "Appliance",
+    "stock": 6
+  },
+  {
+    "name": "Haier Front Load Washing Machine",
+    "description": "High-capacity washing machine with smart features, strong performance and modern design.",
+    "originalPrice": 650,
+    "images": [],
+    "category": "Appliance",
+    "stock": 7
+  },
+  {
+    "name": "IFB Front Load Washing Machine",
+    "description": "Premium washing machine with advanced wash technology, durability and efficient cleaning performance.",
+    "originalPrice": 680,
+    "images": [],
+    "category": "Appliance",
+    "stock": 6
   }
 ]

@@ -13,7 +13,13 @@ export const addToCart = createAsyncThunk(
   "cart/addToCart",
   async (cartData, thunkAPI) => {
     try {
-      const { data } = await api.post(`/cart`, cartData);
+      const token = localStorage.getItem("token");
+
+      const { data } = await api.post(`/cart`, cartData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

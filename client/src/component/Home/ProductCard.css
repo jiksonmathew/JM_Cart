@@ -33,7 +33,6 @@
   display: block;
 }
 
-/* 🧱 Card */
 .card {
   position: relative;
   background: #fff;
@@ -73,7 +72,6 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* 🖼 Image */
 .card img {
   width: 100%;
   height: 180px;
@@ -85,7 +83,6 @@
   transform: scale(1.05);
 }
 
-/* 📦 Title */
 .card h3 {
   font-size: 14px;
   font-weight: 500;
@@ -93,21 +90,18 @@
   color: #111;
 }
 
-/* ⭐ Rating */
 .rating {
   font-size: 13px;
   color: #f0c14b;
   font-weight: 500;
 }
 
-/* ⏳ Timer */
 .dealTimer {
   font-size: 12px;
   color: #ff3b30;
   font-weight: 500;
 }
 
-/* 💰 Price */
 .priceBox {
   display: flex;
   align-items: center;
@@ -133,7 +127,6 @@
   font-weight: 600;
 }
 
-/* 🛒 Button */
 .cartBtn {
   margin-top: auto;
   padding: 8px;
@@ -150,13 +143,11 @@
   background: #333;
 }
 
-/* ❌ Disabled */
 .cartBtn:disabled {
   background: #ccc;
   cursor: not-allowed;
 }
 
-/* 🔥 Optional badge (if you re-add it later) */
 .dealBadge {
   position: absolute;
   top: 10px;
@@ -169,7 +160,6 @@
   font-weight: 600;
 }
 
-/* 📱 Responsive */
 @media (max-width: 768px) {
   .card img {
     height: 140px;

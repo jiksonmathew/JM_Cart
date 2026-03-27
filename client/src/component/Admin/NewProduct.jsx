@@ -25,9 +25,6 @@ const categories = [
   "Television",
   "Refrigerator",
   "Washing Machine",
-  "Shirts",
-  "Pants",
-  "Footwear",
 ];
 
 const NewProduct = () => {

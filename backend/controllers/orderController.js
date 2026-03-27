@@ -5,8 +5,13 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middlewares/catchAsyncError");
 
 exports.createOrder = catchAsyncError(async (req, res, next) => {
-  const { shippingInfo, orderItems, paymentInfo, taxPrice, shippingPrice } =
-    req.body;
+  const {
+    shippingInfo,
+    orderItems,
+    paymentInfo,
+    taxPrice = 0,
+    shippingPrice = 0,
+  } = req.body;
 
   if (!orderItems || orderItems.length === 0) {
     return next(new ErrorHandler("No order items found", 400));
@@ -20,10 +25,19 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
         throw new ErrorHandler("Product not found", 404);
       }
 
-      const basePrice = product.originalPrice || 0;
-      const discount = product.fallbackOfferPercentage || 0;
+      const basePrice = Number(product.originalPrice) || 0;
 
-      const finalPrice = Math.round(basePrice - (basePrice * discount) / 100);
+      // ✅ FIXED OFFER LOGIC
+      const offer =
+        Number(product.offer?.percentage) ||
+        Number(product.offerPercentage) ||
+        Number(product.fallbackOfferPercentage) ||
+        0;
+
+      const finalPrice =
+        offer > 0
+          ? Math.round(basePrice - (basePrice * offer) / 100)
+          : basePrice;
 
       return {
         product: item.product,
@@ -31,6 +45,8 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
         price: finalPrice,
         image: product.images?.[0]?.url || "/placeholder.png",
         quantity: item.quantity,
+        originalPrice: basePrice,
+        offerPercentage: offer,
       };
     }),
   );
@@ -40,6 +56,7 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
     0,
   );
 
+  // ✅ SAFE TOTAL CALCULATION
   const totalPrice = Math.round(itemsPrice + taxPrice + shippingPrice);
 
   const order = await Order.create({
