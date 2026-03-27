@@ -18,30 +18,18 @@ class ApiFeatures {
     return this;
   }
 
-  filter() {
+ filter() {
     const queryCopy = { ...this.queryStr };
-
-    const removeFields = ["keyword", "page", "limit", "sort"];
+    const removeFields = ["keyword", "page", "limit", "sort", "currentPage"];
     removeFields.forEach((key) => delete queryCopy[key]);
-
-    if (queryCopy.category) {
+    if (queryCopy.category && queryCopy.category !== "") {
       this.query = this.query.find({
         category: { $regex: queryCopy.category, $options: "i" },
       });
-
-      delete queryCopy.category;
     }
-
-    let queryStr = JSON.stringify(queryCopy);
-
-    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
-
-    const parsed = JSON.parse(queryStr);
-
-    this.query = this.query.find(parsed);
-
     return this;
   }
+
 
   sort() {
     if (this.queryStr.sort) {
