@@ -389,7 +389,6 @@ exports.updateProductOffer = async (req, res) => {
       });
     }
 
-    // 🔥 Update fields
     product.originalPrice = originalPrice;
 
     product.offer = {

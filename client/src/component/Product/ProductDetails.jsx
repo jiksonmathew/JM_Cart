@@ -27,7 +27,6 @@ import toast from "react-hot-toast";
 import no_image from "../../images/image_not_available.png";
 import "./ProductDetails.css";
 
-/* ✅ COUNTDOWN */
 const useOfferCountdown = (endDate) => {
   const [timeLeft, setTimeLeft] = useState("");
 
@@ -78,10 +77,8 @@ const ProductDetails = () => {
     dispatch(getProductDetails(id));
   }, [dispatch, id, error]);
 
-  /* ✅ COUNTDOWN */
   const countdown = useOfferCountdown(product?.offer?.endDate);
 
-  /* ✅ QUANTITY */
   const increaseQuantity = () => {
     if (quantity >= (product?.stock || 0)) return;
     setQuantity((prev) => prev + 1);
@@ -92,7 +89,6 @@ const ProductDetails = () => {
     setQuantity((prev) => prev - 1);
   };
 
-  /* ✅ CART */
   const addToCartHandler = async () => {
     if (!isAuthenticated) {
       toast.error("Please login to add items to cart");
@@ -121,7 +117,6 @@ const ProductDetails = () => {
     }
   };
 
-  /* ✅ REVIEW */
   const submitReviewToggle = () => setOpen(!open);
 
   const reviewSubmitHandler = async () => {
@@ -168,7 +163,6 @@ const ProductDetails = () => {
   return (
     <div className="ProductDetailsContainer">
       <div className="ProductDetails">
-        {/* IMAGE */}
         <div className="carousel">
           <Swiper
             modules={[Navigation, Pagination]}
@@ -189,7 +183,6 @@ const ProductDetails = () => {
           </Swiper>
         </div>
 
-        {/* DETAILS */}
         <div className="details">
           <h2>{product.name}</h2>
           <p>Product # {product._id}</p>
@@ -197,7 +190,6 @@ const ProductDetails = () => {
           <Rating {...ratingOptions} />
           <span>({product.numOfReviews || 0} Reviews)</span>
 
-          {/* PRICE */}
           <div className="priceDetails">
             <span className="price">₹{product.price}</span>
 
@@ -211,17 +203,14 @@ const ProductDetails = () => {
             )}
           </div>
 
-          {/* OFFER */}
           {product.offer?.title && (
             <p className="offerTitle">{product.offer.title}</p>
           )}
 
-          {/* ⏳ COUNTDOWN */}
           {product.offer?.endDate && countdown && (
             <p className="offerTimer">⏳ Ends in {countdown}</p>
           )}
 
-          {/* QUANTITY */}
           <div>
             <button className="qtyBtn" onClick={decreaseQuantity}>
               -
@@ -232,7 +221,6 @@ const ProductDetails = () => {
             </button>
           </div>
 
-          {/* BUTTONS */}
           <button
             className="cart-btn"
             disabled={product.stock < 1}
@@ -264,7 +252,6 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* REVIEW MODAL */}
       <Dialog open={open} onClose={submitReviewToggle}>
         <DialogTitle>Submit Review</DialogTitle>
         <DialogContent>

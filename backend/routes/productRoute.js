@@ -18,13 +18,9 @@ const { isAuthenticated, isAdmin } = require("../middlewares/auth");
 
 const router = express.Router();
 
-/* ================= PUBLIC ROUTES ================= */
-
 router.get("/products", getAllProducts);
 router.get("/product/:id", getProductDetails);
 router.get("/products/featured", getFeaturedProducts);
-
-/* ================= ADMIN PRODUCT ================= */
 
 router.post(
   "/admin/product/new",
@@ -42,15 +38,12 @@ router
   .put(isAuthenticated, isAdmin, upload.array("images", 5), updateProduct)
   .delete(isAuthenticated, isAdmin, deleteProduct);
 
-/* 🔥 OFFER UPDATE (ONLY ONE ROUTE) */
 router.put(
   "/admin/product/:id/offer",
   isAuthenticated,
   isAdmin,
   updateProductOffer,
 );
-
-/* ================= REVIEWS ================= */
 
 router.post("/review", isAuthenticated, createProductReview);
 

@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import no_image from "../../images/image_not_available.png";
 
-/* ⏳ Countdown Hook */
 const useOfferCountdown = (endDate) => {
   const [timeLeft, setTimeLeft] = useState("");
 
@@ -105,7 +104,6 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
-        {/* ⏳ Countdown */}
         {product.offer?.endDate && countdown && (
           <div className="offerTimer">⏳ Ends in {countdown}</div>
         )}

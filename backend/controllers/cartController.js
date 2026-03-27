@@ -3,7 +3,6 @@ const Cart = require("../models/cartModel");
 const calculateFinalPrice = (product = {}) => {
   const basePrice = Number(product.originalPrice) || 0;
 
-  // ✅ Use correct offer structure
   const offer =
     Number(product.offer?.percentage) ||
     Number(product.offerPercentage) ||

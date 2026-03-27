@@ -4,14 +4,12 @@
   padding: 20px;
 }
 
-/* Layout */
 .ProductDetails {
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
 }
 
-/* Image carousel */
 .carousel {
   flex: 1;
   min-width: 300px;
@@ -23,13 +21,11 @@
   object-fit: contain;
 }
 
-/* Details section */
 .ProductDetails > div:last-child {
   flex: 1;
   min-width: 300px;
 }
 
-/* Price */
 .priceDetails {
   margin: 15px 0;
 }
@@ -52,14 +48,12 @@
   font-weight: 600;
 }
 
-/* Offer */
 .offerTitle {
   color: #ff4d4f;
   font-weight: bold;
   margin-top: 5px;
 }
 
-/* ⏳ Countdown */
 .offerTimer {
   margin-top: 8px;
   padding: 6px 10px;
@@ -70,8 +64,6 @@
   display: inline-block;
 }
 
-
-/* QUANTITY */
 .qtyBtn {
   padding: 0.5rem 1rem;
   border: none;
@@ -90,7 +82,6 @@
   border-radius: 6px;
 }
 
-/* BUTTONS */
 .cart-btn {
   width: 40%;
   padding: 0.8rem;
@@ -132,7 +123,6 @@
   font-size: larger;
 }
 
-/* STOCK COLORS */
 .redColor {
   color: #dc2626;
   font-weight: bold;
@@ -143,7 +133,6 @@
   font-weight: bold;
 }
 
-/* REVIEWS */
 h3 {
   margin-top: 3rem;
 }
@@ -155,8 +144,6 @@ textarea {
   border: 1px solid #ddd;
 }
 
-
-/* Responsive */
 @media (max-width: 768px) {
   .ProductDetails {
     flex-direction: column;

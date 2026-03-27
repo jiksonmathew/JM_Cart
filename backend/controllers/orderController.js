@@ -27,7 +27,6 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
 
       const basePrice = Number(product.originalPrice) || 0;
 
-      // ✅ FIXED OFFER LOGIC
       const offer =
         Number(product.offer?.percentage) ||
         Number(product.offerPercentage) ||
@@ -56,7 +55,6 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
     0,
   );
 
-  // ✅ SAFE TOTAL CALCULATION
   const totalPrice = Math.round(itemsPrice + taxPrice + shippingPrice);
 
   const order = await Order.create({

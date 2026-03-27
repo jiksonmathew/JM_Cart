@@ -129,7 +129,6 @@ const UpdateProduct = () => {
           <Loader />
         ) : (
           <>
-            {/* LEFT SIDE */}
             <div className="newProductContainer">
               <form
                 className="createProductForm"

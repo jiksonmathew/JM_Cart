@@ -44,7 +44,6 @@ const AdminOffer = () => {
     }
   }, [error, dispatch]);
 
-  // ✅ Convert ISO → datetime-local format
   const formatDateTimeLocal = (iso) => {
     if (!iso) return "";
     const date = new Date(iso);
@@ -68,7 +67,6 @@ const AdminOffer = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ Convert datetime-local → ISO before sending
   const submitHandler = async (e) => {
     e.preventDefault();
 
