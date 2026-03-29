@@ -150,6 +150,41 @@ exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
   });
 });
 
+// exports.updateProduct = catchAsyncError(async (req, res, next) => {
+//   let product = await Product.findById(req.params.id);
+
+//   if (!product) {
+//     return next(new ErrorHandler("Product not found", 404));
+//   }
+
+//   let imagesLinks = product.images ? [...product.images] : [];
+
+//   if (req.files && req.files.length > 0) {
+//     req.files.forEach((file) => {
+//       imagesLinks.push({
+//         public_id: file.filename,
+//         url: file.path,
+//       });
+//     });
+//   }
+
+//   req.body.images = imagesLinks;
+
+//   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+//     new: true,
+//     runValidators: true,
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     message: "Product updated successfully",
+//     product,
+//   });
+// });
+
+const fs = require("fs");
+const path = require("path");
+
 exports.updateProduct = catchAsyncError(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
@@ -157,23 +192,52 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Product not found", 404));
   }
 
-  let imagesLinks = product.images ? [...product.images] : [];
+  // 🟡 old images from frontend (order + remaining)
+  let oldImages = req.body.oldImages || [];
 
+  if (!Array.isArray(oldImages)) {
+    oldImages = [oldImages];
+  }
+
+  // 🔴 DELETE REMOVED IMAGES FROM SERVER
+  for (let img of product.images) {
+    if (!oldImages.includes(img.public_id)) {
+      const filePath = path.join(__dirname, "..", img.url);
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // delete file
+      }
+    }
+  }
+
+  // 🔄 KEEP + REORDER
+  let updatedImages = [];
+
+  for (let id of oldImages) {
+    const found = product.images.find((i) => i.public_id === id);
+    if (found) updatedImages.push(found);
+  }
+
+  // 🆕 ADD NEW IMAGES
   if (req.files && req.files.length > 0) {
     req.files.forEach((file) => {
-      imagesLinks.push({
+      updatedImages.push({
         public_id: file.filename,
         url: file.path,
       });
     });
   }
 
-  req.body.images = imagesLinks;
+  // ✅ FINAL SAVE
+  product.images = updatedImages;
 
-  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  product.name = req.body.name;
+  product.originalPrice = req.body.originalPrice;
+  product.description = req.body.description;
+  product.category = req.body.category;
+  product.stock = req.body.stock;
+
+  await product.save();
 
   res.status(200).json({
     success: true,
